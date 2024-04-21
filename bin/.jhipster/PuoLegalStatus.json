@@ -1,0 +1,35 @@
+{
+  "name": "PuoLegalStatus",
+  "fields": [
+    {
+      "fieldName": "value",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "descriptionEn",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "descriptionCyr",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "changelogDate": "20230622061729",
+  "entityTableName": "puo_legal_status",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "searchEngine": false,
+  "databaseType": "sql"
+}

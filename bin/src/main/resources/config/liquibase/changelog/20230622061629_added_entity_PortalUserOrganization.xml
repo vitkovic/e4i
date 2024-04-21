@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    
+    <!--
+        Added the entity PortalUserOrganization.
+    -->
+    <changeSet id="20230622061629-1" author="jhipster">
+        <createTable tableName="portal_user_organization">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="legal_name_sr" type="varchar(255)" remarks="Legal name of PUO in Serbian">
+                <constraints nullable="true" />
+            </column>
+            <column name="legal_name_en" type="varchar(255)" remarks="Legal name of PUO in English">
+                <constraints nullable="true" />
+            </column>
+            <column name="short_name" type="varchar(255)" remarks="Short name - abbreviation">
+                <constraints nullable="true" />
+            </column>
+            <column name="web_address" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="pib" type="varchar(8)" remarks="Tax identification number">
+                <constraints nullable="true" />
+            </column>
+            <column name="registration_number" type="varchar(8)" remarks="registration number (matični broj) assigned by Statistical Office of the Republic of Serbia">
+                <constraints nullable="true" />
+            </column>
+            <column name="keywords" type="varchar(255)" remarks="Keywords related to PUO. Used for search function of the portal">
+                <constraints nullable="true" />
+            </column>
+            <column name="address" type="varchar(255)" remarks="Streat name and number of the PUO">
+                <constraints nullable="true" />
+            </column>
+            <column name="postal_code" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="city" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="country" type="varchar(255)" remarks="Default value Serbia">
+                <constraints nullable="true" />
+            </column>
+            <column name="legal_name_sr_cyr" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="legal_status_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20230622061629-1-relations" author="jhipster">
+
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+    <!--
+        Load sample data generated with Faker.js
+        - This data can be easily edited using a CSV editor (or even MS Excel) and
+          is located in the 'src/main/resources/config/liquibase/fake-data' directory
+        - By default this data is applied when running with the JHipster 'dev' profile.
+          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
+          Spring Boot configuration key.
+    -->
+    <changeSet id="20230622061629-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/portal_user_organization.csv"
+                  separator=";"
+                  tableName="portal_user_organization">
+            <column name="id" type="numeric"/>
+            <column name="legal_name_sr" type="string"/>
+            <column name="legal_name_en" type="string"/>
+            <column name="short_name" type="string"/>
+            <column name="web_address" type="string"/>
+            <column name="pib" type="string"/>
+            <column name="registration_number" type="string"/>
+            <column name="keywords" type="string"/>
+            <column name="address" type="string"/>
+            <column name="postal_code" type="string"/>
+            <column name="city" type="string"/>
+            <column name="country" type="string"/>
+            <column name="legal_name_sr_cyr" type="string"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>

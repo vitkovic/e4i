@@ -1,0 +1,14 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="Dragan (generated)" id="1687446058068-69">
+        <addColumn tableName="portal_user">
+            <column name="user_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1687446058068-70">
+        <addUniqueConstraint columnNames="user_id" constraintName="UC_PORTAL_USERUSER_ID_COL" tableName="portal_user"/>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1687446058068-71">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="portal_user" constraintName="FKpbse822dltn6l1v9iry3rn61d" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="jhi_user" validate="true"/>
+    </changeSet>    
+</databaseChangeLog>

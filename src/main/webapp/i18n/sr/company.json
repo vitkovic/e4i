@@ -1,0 +1,47 @@
+{
+  "riportalApp": {
+    "company": {
+      "home": {
+        "title": "Companies",
+        "createLabel": "Kreiraj novi Company",
+        "createOrEditLabel": "Kreirajte ili izmenite Company",
+        "notFound": "No Companies found"
+      },
+      "created": "Kreiran je novi Company pod nazivom {{ param }}",
+      "updated": "Company pod nazivom {{ param }} je ažuriran",
+      "deleted": "Company pod nazivom {{ param }} je obrisan",
+      "delete": {
+        "question": "Da li ste sigurni da želite da obrišete Company pod nazivom {{ id }}?"
+      },
+      "detail": {
+        "title": "Company"
+      },
+      "view": {
+        "type": "Tip kompanije",
+        "typeRSNIS": "Tip kompanije sa portala RSNIS",
+        "registrationDate": "Datum registracije",
+        "address": "Adresa",
+        "category": "Kategorija",
+        "badges": "Bedževi"
+      },
+      "createdAt": "Created At",
+      "modifiedAt": "Modified At",
+      "rsnisId": "Rsnis Id",
+      "aprId": "Apr Id",
+      "name": "Name",
+      "about": "About",
+      "fields": "Fields",
+      "portalUser": "Portal User",
+      "advertisement": "Advertisement",
+      "collaborationOffer": "Collaboration Offer",
+      "collaborationRequest": "Collaboration Request",
+      "advertisementSupporter": "Advertisement Supporter",
+      "thread": "Thread",
+      "badge": "Badge",
+      "document": "Document",
+      "createdBy": "Created By",
+      "modifiedBy": "Modified By",
+      "logo": "Logo"
+    }
+  }
+}

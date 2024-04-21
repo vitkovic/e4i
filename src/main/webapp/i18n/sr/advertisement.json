@@ -1,0 +1,41 @@
+{
+  "riportalApp": {
+    "advertisement": {
+      "home": {
+        "title": "Advertisements",
+        "createLabel": "Kreiraj novi Advertisement",
+        "createOrEditLabel": "Kreirajte ili izmenite Advertisement",
+        "notFound": "No Advertisements found"
+      },
+      "created": "Kreiran je novi Advertisement pod nazivom {{ param }}",
+      "updated": "Advertisement pod nazivom {{ param }} je ažuriran",
+      "deleted": "Advertisement pod nazivom {{ param }} je obrisan",
+      "delete": {
+        "question": "Da li ste sigurni da želite da obrišete Advertisement pod nazivom {{ id }}?"
+      },
+      "detail": {
+        "title": "Advertisement"
+      },
+      "createdAt": "Created At",
+      "modifiedAt": "Modified At",
+      "activationDatetime": "Activation Datetime",
+      "title": "Title",
+      "description": "Description",
+      "budget": "Budget",
+      "conditions": "Conditions",
+      "advertisementSupporter": "Advertisement Supporter",
+      "collaboration": "Collaboration",
+      "meeting": "Meeting",
+      "document": "Document",
+      "createdBy": "Created By",
+      "modifiedBy": "Modified By",
+      "company": "Company",
+      "status": "Status",
+      "duration": "Duration",
+      "type": "Type",
+      "kind": "Kind",
+      "subsubcategory": "Subsubcategory",
+      "thread": "Thread"
+    }
+  }
+}

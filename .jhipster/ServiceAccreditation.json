@@ -1,0 +1,44 @@
+{
+  "name": "ServiceAccreditation",
+  "fields": [
+    {
+      "fieldName": "status",
+      "fieldType": "String",
+      "javadoc": "accredited, non-accredited"
+    },
+    {
+      "fieldName": "meaning",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "statusEn",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "statusCyr",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "meaningEn",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "meaningCyr",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "changelogDate": "20230622063129",
+  "entityTableName": "service_accreditation",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "searchEngine": false,
+  "databaseType": "sql"
+}

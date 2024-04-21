@@ -1,0 +1,71 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    
+    <changeSet author="Dragan (generated)" id="1692955641467-1">
+        <sql dbms="postgresql"
+		      endDelimiter=";"
+		      splitStatements="true"
+		      stripComments="true">
+			   ALTER TABLE ri_service ADD COLUMN serbian_search tsvector GENERATED ALWAYS AS (to_tsvector('serbian', coalesce(keywords, '') || ' ' || coalesce(description_sr, '') || ' ' || coalesce(name_sr,'') || ' ' || coalesce(keywords_cyr, '') || ' ' || coalesce(description_sr_cyr, '') || ' ' || coalesce(name_sr_cyr,''))) STORED;
+		 </sql>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1692955641467-2">
+        <sql dbms="postgresql"
+		      endDelimiter=";"
+		      splitStatements="true"
+		      stripComments="true">
+			   CREATE INDEX serbian_search_idx ON ri_service USING GIN (serbian_search);
+		 </sql>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1692955641467-3">
+        <sql dbms="postgresql"
+		      endDelimiter=";"
+		      splitStatements="true"
+		      stripComments="true">
+			   ALTER TABLE ri_service ADD COLUMN english_search tsvector GENERATED ALWAYS AS (to_tsvector('english', coalesce(keywords_en, '') || ' ' || coalesce(description_en, '') || ' ' || coalesce(name_en,''))) STORED;
+		 </sql>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1692955641467-4">
+        <sql dbms="postgresql"
+		      endDelimiter=";"
+		      splitStatements="true"
+		      stripComments="true">
+			   CREATE INDEX english_search_idx ON ri_service USING GIN (english_search);
+		 </sql>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1692955641467-5">
+        <sql dbms="postgresql"
+		      endDelimiter=";"
+		      splitStatements="true"
+		      stripComments="true">
+			   ALTER TABLE research_infrastructure ADD COLUMN serbian_search tsvector GENERATED ALWAYS AS (to_tsvector('serbian', coalesce(keywords, '') || ' ' || coalesce(description_sr, '') || ' ' || coalesce(name_sr,'') || ' ' || coalesce(keywords_cyr, '') || ' ' || coalesce(description_sr_cyr, '') || ' ' || coalesce(name_sr_cyr,''))) STORED;
+		 </sql>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1692955641467-6">
+        <sql dbms="postgresql"
+		      endDelimiter=";"
+		      splitStatements="true"
+		      stripComments="true">
+			   CREATE INDEX serbian_search_idx1 ON research_infrastructure USING GIN (serbian_search);
+		 </sql>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1692955641467-7">
+        <sql dbms="postgresql"
+		      endDelimiter=";"
+		      splitStatements="true"
+		      stripComments="true">
+			   ALTER TABLE research_infrastructure ADD COLUMN english_search tsvector GENERATED ALWAYS AS (to_tsvector('english', coalesce(keywords_en, '') || ' ' || coalesce(name_en,'') || ' ' || coalesce(description_en, ''))) STORED;
+		 </sql>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1692955641467-8">
+        <sql dbms="postgresql"
+		      endDelimiter=";"
+		      splitStatements="true"
+		      stripComments="true">
+			   CREATE INDEX english_search_idx1 ON research_infrastructure USING GIN (english_search);
+		 </sql>
+    </changeSet>
+    
+    
+    
+</databaseChangeLog>

@@ -1,0 +1,107 @@
+{
+  "name": "PortalUserOrganization",
+  "fields": [
+    {
+      "fieldName": "legalNameSr",
+      "fieldType": "String",
+      "javadoc": "Legal name of PUO in Serbian"
+    },
+    {
+      "fieldName": "legalNameEn",
+      "fieldType": "String",
+      "javadoc": "Legal name of PUO in English"
+    },
+    {
+      "fieldName": "shortName",
+      "fieldType": "String",
+      "javadoc": "Short name - abbreviation"
+    },
+    {
+      "fieldName": "webAddress",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "pib",
+      "fieldType": "String",
+      "javadoc": "Tax identification number",
+      "fieldValidateRules": ["minlength", "maxlength"],
+      "fieldValidateRulesMinlength": "8",
+      "fieldValidateRulesMaxlength": "8"
+    },
+    {
+      "fieldName": "registrationNumber",
+      "fieldType": "String",
+      "javadoc": "registration number (matični broj) assigned by Statistical Office of the Republic of Serbia",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "8"
+    },
+    {
+      "fieldName": "keywords",
+      "fieldType": "String",
+      "javadoc": "Keywords related to PUO. Used for search function of the portal"
+    },
+    {
+      "fieldName": "address",
+      "fieldType": "String",
+      "javadoc": "Streat name and number of the PUO"
+    },
+    {
+      "fieldName": "postalCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "city",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "country",
+      "fieldType": "String",
+      "javadoc": "Default value Serbia"
+    },
+    {
+      "fieldName": "legalNameSrCyr",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "portalUser",
+      "otherEntityRelationshipName": "userOrganization",
+      "relationshipName": "portalUsers"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "requestForService",
+      "otherEntityRelationshipName": "organizations",
+      "relationshipName": "requests"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "puoLegalStatus",
+      "otherEntityRelationshipName": "portalUserOrganization",
+      "relationshipName": "legalStatus",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "riResearchOrganization",
+      "otherEntityRelationshipName": "puOrganization",
+      "relationshipName": "researchOrganization",
+      "ownerSide": false
+    }
+  ],
+  "changelogDate": "20230622061629",
+  "entityTableName": "portal_user_organization",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "searchEngine": false,
+  "databaseType": "sql"
+}

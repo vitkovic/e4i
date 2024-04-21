@@ -1,0 +1,160 @@
+2023-11-19 11:50:10,756 INFO  [restartedMain] RiportalApp: Starting RiportalApp on LenovoNikG3 with PID 6616 (C:\Users\nikol\git\riportal\target\classes started by nikola in C:\Users\nikol\git\riportal)
+2023-11-19 11:50:10,759 DEBUG [restartedMain] RiportalApp: Running with Spring Boot v2.2.7.RELEASE, Spring v5.2.6.RELEASE
+2023-11-19 11:50:10,759 INFO  [restartedMain] RiportalApp: The following profiles are active: dev,swagger
+2023-11-19 11:50:12,676 DEBUG [restartedMain] InternalLoggerFactory: Using SLF4J as the default logging framework
+2023-11-19 11:50:12,835 DEBUG [restartedMain] WebConfigurer: Registering CORS filter
+2023-11-19 11:50:12,857 INFO  [restartedMain] WebConfigurer: Web application configuration, using profiles: dev
+2023-11-19 11:50:12,858 INFO  [restartedMain] WebConfigurer: Web application fully configured
+2023-11-19 11:50:13,037 DEBUG [restartedMain] Ehcache-usersByLogin: Initialize successful.
+2023-11-19 11:50:13,050 DEBUG [restartedMain] Ehcache-usersByEmail: Initialize successful.
+2023-11-19 11:50:13,052 DEBUG [restartedMain] User: Initialize successful.
+2023-11-19 11:50:13,053 DEBUG [restartedMain] Authority: Initialize successful.
+2023-11-19 11:50:13,055 DEBUG [restartedMain] authorities: Initialize successful.
+2023-11-19 11:50:13,057 DEBUG [restartedMain] PortalUser: Initialize successful.
+2023-11-19 11:50:13,058 DEBUG [restartedMain] managedOrganizations: Initialize successful.
+2023-11-19 11:50:13,060 DEBUG [restartedMain] contactOrganizations: Initialize successful.
+2023-11-19 11:50:13,062 DEBUG [restartedMain] managedInfrastructures: Initialize successful.
+2023-11-19 11:50:13,064 DEBUG [restartedMain] contactInfrastructures: Initialize successful.
+2023-11-19 11:50:13,066 DEBUG [restartedMain] requests: Initialize successful.
+2023-11-19 11:50:13,067 DEBUG [restartedMain] calendars: Initialize successful.
+2023-11-19 11:50:13,068 DEBUG [restartedMain] riProposals: Initialize successful.
+2023-11-19 11:50:13,069 DEBUG [restartedMain] serviceProposals: Initialize successful.
+2023-11-19 11:50:13,070 DEBUG [restartedMain] portalUserRoles: Initialize successful.
+2023-11-19 11:50:13,072 DEBUG [restartedMain] PortalUserRole: Initialize successful.
+2023-11-19 11:50:13,074 DEBUG [restartedMain] users: Initialize successful.
+2023-11-19 11:50:13,075 DEBUG [restartedMain] PortalUserOrganization: Initialize successful.
+2023-11-19 11:50:13,076 DEBUG [restartedMain] portalUsers: Initialize successful.
+2023-11-19 11:50:13,077 DEBUG [restartedMain] requests: Initialize successful.
+2023-11-19 11:50:13,079 DEBUG [restartedMain] PuoLegalStatus: Initialize successful.
+2023-11-19 11:50:13,080 DEBUG [restartedMain] RiResearchOrganization: Initialize successful.
+2023-11-19 11:50:13,082 DEBUG [restartedMain] infrastructures: Initialize successful.
+2023-11-19 11:50:13,083 DEBUG [restartedMain] subdomains: Initialize successful.
+2023-11-19 11:50:13,083 DEBUG [restartedMain] RipoActivityStatus: Initialize successful.
+2023-11-19 11:50:13,085 DEBUG [restartedMain] ScientificDomain: Initialize successful.
+2023-11-19 11:50:13,086 DEBUG [restartedMain] subdomains: Initialize successful.
+2023-11-19 11:50:13,087 DEBUG [restartedMain] ScientificSubdomain: Initialize successful.
+2023-11-19 11:50:13,088 DEBUG [restartedMain] organizations: Initialize successful.
+2023-11-19 11:50:13,089 DEBUG [restartedMain] infrastructures: Initialize successful.
+2023-11-19 11:50:13,090 DEBUG [restartedMain] services: Initialize successful.
+2023-11-19 11:50:13,092 DEBUG [restartedMain] ResearchInfrastructure: Initialize successful.
+2023-11-19 11:50:13,092 DEBUG [restartedMain] services: Initialize successful.
+2023-11-19 11:50:13,093 DEBUG [restartedMain] calendars: Initialize successful.
+2023-11-19 11:50:13,096 DEBUG [restartedMain] subdomains: Initialize successful.
+2023-11-19 11:50:13,097 DEBUG [restartedMain] subcategories: Initialize successful.
+2023-11-19 11:50:13,098 DEBUG [restartedMain] RiStatus: Initialize successful.
+2023-11-19 11:50:13,098 DEBUG [restartedMain] RiCategory: Initialize successful.
+2023-11-19 11:50:13,099 DEBUG [restartedMain] RiSubcategory: Initialize successful.
+2023-11-19 11:50:13,100 DEBUG [restartedMain] infrastructures: Initialize successful.
+2023-11-19 11:50:13,102 DEBUG [restartedMain] RiAccessType: Initialize successful.
+2023-11-19 11:50:13,103 DEBUG [restartedMain] RiAccessMode: Initialize successful.
+2023-11-19 11:50:13,104 DEBUG [restartedMain] RiService: Initialize successful.
+2023-11-19 11:50:13,105 DEBUG [restartedMain] requests: Initialize successful.
+2023-11-19 11:50:13,107 DEBUG [restartedMain] calendars: Initialize successful.
+2023-11-19 11:50:13,108 DEBUG [restartedMain] subdomains: Initialize successful.
+2023-11-19 11:50:13,110 DEBUG [restartedMain] ServiceType: Initialize successful.
+2023-11-19 11:50:13,111 DEBUG [restartedMain] ServiceSubtype: Initialize successful.
+2023-11-19 11:50:13,113 DEBUG [restartedMain] ServiceAccreditation: Initialize successful.
+2023-11-19 11:50:13,113 DEBUG [restartedMain] ServiceAvailability: Initialize successful.
+2023-11-19 11:50:13,114 DEBUG [restartedMain] RequestForService: Initialize successful.
+2023-11-19 11:50:13,115 DEBUG [restartedMain] RequestRespond: Initialize successful.
+2023-11-19 11:50:13,115 DEBUG [restartedMain] respondsToOffers: Initialize successful.
+2023-11-19 11:50:13,116 DEBUG [restartedMain] RequestAnswer: Initialize successful.
+2023-11-19 11:50:13,117 DEBUG [restartedMain] ServiceOfferRespond: Initialize successful.
+2023-11-19 11:50:13,118 DEBUG [restartedMain] AnswerToOffer: Initialize successful.
+2023-11-19 11:50:13,119 DEBUG [restartedMain] RiServiceStatus: Initialize successful.
+2023-11-19 11:50:13,120 DEBUG [restartedMain] RiProcurementProposal: Initialize successful.
+2023-11-19 11:50:13,121 DEBUG [restartedMain] ServiceProposal: Initialize successful.
+2023-11-19 11:50:13,122 DEBUG [restartedMain] Researcher: Initialize successful.
+2023-11-19 11:50:13,122 DEBUG [restartedMain] institutions: Initialize successful.
+2023-11-19 11:50:13,123 DEBUG [restartedMain] ResearchInstitution: Initialize successful.
+2023-11-19 11:50:13,125 DEBUG [restartedMain] researchers: Initialize successful.
+2023-11-19 11:50:13,126 DEBUG [restartedMain] RiCalendar: Initialize successful.
+2023-11-19 11:50:13,141 DEBUG [restartedMain] AsyncConfiguration: Creating Async Task Executor
+2023-11-19 11:50:13,150 DEBUG [restartedMain] LiquibaseConfiguration: Configuring Liquibase
+2023-11-19 11:50:13,294 WARN  [riportal-task-1] AsyncSpringLiquibase: Starting Liquibase asynchronously, your database might not be ready at startup!
+2023-11-19 11:50:14,026 WARN  [restartedMain] cache: HHH90001006: Missing cache[riportal.domain.PortalUserStatus] was created on-the-fly. The created cache will use a provider-specific default configuration: make sure you defined one. You can disable this warning by setting 'hibernate.javax.cache.missing_cache_strategy' to 'create'.
+2023-11-19 11:50:14,029 DEBUG [restartedMain] PortalUserStatus: Initialize successful.
+2023-11-19 11:50:14,033 WARN  [restartedMain] cache: HHH90001006: Missing cache[riportal.domain.ResearchInfrastructure.images] was created on-the-fly. The created cache will use a provider-specific default configuration: make sure you defined one. You can disable this warning by setting 'hibernate.javax.cache.missing_cache_strategy' to 'create'.
+2023-11-19 11:50:14,034 DEBUG [restartedMain] images: Initialize successful.
+2023-11-19 11:50:14,034 WARN  [restartedMain] cache: HHH90001006: Missing cache[riportal.domain.RequestState] was created on-the-fly. The created cache will use a provider-specific default configuration: make sure you defined one. You can disable this warning by setting 'hibernate.javax.cache.missing_cache_strategy' to 'create'.
+2023-11-19 11:50:14,035 DEBUG [restartedMain] RequestState: Initialize successful.
+2023-11-19 11:50:14,035 WARN  [restartedMain] cache: HHH90001006: Missing cache[riportal.domain.InfrastructureProposalsLikes] was created on-the-fly. The created cache will use a provider-specific default configuration: make sure you defined one. You can disable this warning by setting 'hibernate.javax.cache.missing_cache_strategy' to 'create'.
+2023-11-19 11:50:14,037 DEBUG [restartedMain] InfrastructureProposalsLikes: Initialize successful.
+2023-11-19 11:50:14,038 WARN  [restartedMain] cache: HHH90001006: Missing cache[riportal.domain.InfrastructureImage] was created on-the-fly. The created cache will use a provider-specific default configuration: make sure you defined one. You can disable this warning by setting 'hibernate.javax.cache.missing_cache_strategy' to 'create'.
+2023-11-19 11:50:14,038 DEBUG [restartedMain] InfrastructureImage: Initialize successful.
+2023-11-19 11:50:14,039 WARN  [restartedMain] cache: HHH90001006: Missing cache[riportal.domain.ServiceProposalsLikes] was created on-the-fly. The created cache will use a provider-specific default configuration: make sure you defined one. You can disable this warning by setting 'hibernate.javax.cache.missing_cache_strategy' to 'create'.
+2023-11-19 11:50:14,039 DEBUG [restartedMain] ServiceProposalsLikes: Initialize successful.
+2023-11-19 11:50:14,603 DEBUG [restartedMain] FilesStorageServiceImpl: Enter: init() with argument[s] = []
+2023-11-19 11:50:14,607 DEBUG [restartedMain] FilesStorageServiceImpl: Exit: init() with result = null
+2023-11-19 11:50:14,687 DEBUG [restartedMain] TokenProvider: Using a Base64-encoded JWT secret key
+2023-11-19 11:50:15,210 DEBUG [riportal-task-1] AsyncSpringLiquibase: Liquibase has updated your database in 1914 ms
+2023-11-19 11:50:16,031 WARN  [restartedMain] NamedQuery: Finder method public abstract org.springframework.data.domain.Page riportal.repository.RiProcurementProposalRepository.findAllEditableForAdmin(org.springframework.data.domain.Pageable) is backed by a NamedQuery but contains a Pageable parameter! Sorting delivered via this Pageable will not be applied!
+2023-11-19 11:50:16,035 WARN  [restartedMain] NamedQuery: Finder method public abstract org.springframework.data.domain.Page riportal.repository.RiProcurementProposalRepository.pronadjiAllEditableForUser(java.lang.Long,org.springframework.data.domain.Pageable) is backed by a NamedQuery but contains a Pageable parameter! Sorting delivered via this Pageable will not be applied!
+2023-11-19 11:50:16,208 WARN  [restartedMain] NamedQuery: Finder method public abstract org.springframework.data.domain.Page riportal.repository.ServiceProposalRepository.findAllEditableForAdmin(org.springframework.data.domain.Pageable) is backed by a NamedQuery but contains a Pageable parameter! Sorting delivered via this Pageable will not be applied!
+2023-11-19 11:50:16,209 WARN  [restartedMain] NamedQuery: Finder method public abstract org.springframework.data.domain.Page riportal.repository.ServiceProposalRepository.pronadjiAllEditableForUser(java.lang.Long,org.springframework.data.domain.Pageable) is backed by a NamedQuery but contains a Pageable parameter! Sorting delivered via this Pageable will not be applied!
+2023-11-19 11:50:16,799 DEBUG [restartedMain] SwaggerAutoConfiguration: Starting Swagger
+2023-11-19 11:50:16,804 DEBUG [restartedMain] SwaggerAutoConfiguration: Started Swagger in 4 ms
+2023-11-19 11:50:18,386 INFO  [restartedMain] RiportalApp: Started RiportalApp in 8.078 seconds (JVM running for 8.524)
+2023-11-19 11:50:18,391 INFO  [restartedMain] RiportalApp: 
+----------------------------------------------------------
+	Application 'riportal' is running! Access URLs:
+	Local: 		http://localhost:8080/
+	External: 	http://192.168.0.36:8080/
+	Profile(s): 	[dev, swagger]
+----------------------------------------------------------
+2023-11-19 11:51:36,798 DEBUG [XNIO-1 task-14] CustomAuditEventRepository: Enter: add() with argument[s] = [AuditEvent [timestamp=2023-11-19T10:51:36.793822300Z, principal=anonymousUser, type=AUTHORIZATION_FAILURE, data={details=org.springframework.security.web.authentication.WebAuthenticationDetails@b364: RemoteIpAddress: 0:0:0:0:0:0:0:1; SessionId: null, type=org.springframework.security.access.AccessDeniedException, message=Access is denied}]]
+2023-11-19 11:51:36,800 DEBUG [XNIO-1 task-14] CustomAuditEventRepository: Exit: add() with result = null
+2023-11-19 11:51:36,813 WARN  [XNIO-1 task-14] AdviceTraits: Unauthorized: Full authentication is required to access this resource
+2023-11-19 11:51:36,834 DEBUG [XNIO-1 task-16] RiServiceResource: Enter: countRiServicesPregled() with argument[s] = []
+2023-11-19 11:51:36,834 DEBUG [XNIO-1 task-17] ResearchInfrastructureResource: Enter: countResearchInfrastructurePregled() with argument[s] = []
+2023-11-19 11:51:36,834 DEBUG [XNIO-1 task-19] PortalUserResource: Enter: countPortalUsersPregled() with argument[s] = []
+2023-11-19 11:51:36,834 DEBUG [XNIO-1 task-18] PortalUserOrganizationResource: Enter: countPortalUserOrganizationsPregled() with argument[s] = []
+2023-11-19 11:51:36,837 DEBUG [XNIO-1 task-16] RiServiceResource: REST request to get count of riservices: {}
+2023-11-19 11:51:36,837 DEBUG [XNIO-1 task-18] PortalUserOrganizationResource: REST request to get count of organizations: {}
+2023-11-19 11:51:36,837 DEBUG [XNIO-1 task-16] RiServiceService: Enter: countAll() with argument[s] = []
+2023-11-19 11:51:36,837 DEBUG [XNIO-1 task-17] ResearchInfrastructureResource: REST request to get ResearchInfrastructure : {}
+2023-11-19 11:51:36,837 DEBUG [XNIO-1 task-19] PortalUserResource: REST request to get count of portal users: {}
+2023-11-19 11:51:36,837 DEBUG [XNIO-1 task-17] ResearchInfrastructureService: Enter: countAll() with argument[s] = []
+2023-11-19 11:51:36,838 DEBUG [XNIO-1 task-19] PortalUserService: Enter: countAll() with argument[s] = []
+2023-11-19 11:51:36,842 WARN  [XNIO-1 task-14] ExceptionHandlerExceptionResolver: Resolved [org.springframework.security.authentication.InsufficientAuthenticationException: Full authentication is required to access this resource]
+2023-11-19 11:51:36,858 DEBUG [XNIO-1 task-17] ResearchInfrastructureService: Exit: countAll() with result = 0
+2023-11-19 11:51:36,858 DEBUG [XNIO-1 task-16] RiServiceService: Exit: countAll() with result = 0
+2023-11-19 11:51:36,858 DEBUG [XNIO-1 task-19] PortalUserService: Exit: countAll() with result = 0
+2023-11-19 11:51:36,858 DEBUG [XNIO-1 task-18] PortalUserOrganizationResource: Exit: countPortalUserOrganizationsPregled() with result = <200 OK OK,0,[]>
+2023-11-19 11:51:36,859 DEBUG [XNIO-1 task-19] PortalUserResource: Exit: countPortalUsersPregled() with result = <200 OK OK,0,[]>
+2023-11-19 11:51:36,859 DEBUG [XNIO-1 task-16] RiServiceResource: Exit: countRiServicesPregled() with result = <200 OK OK,0,[]>
+2023-11-19 11:51:36,861 DEBUG [XNIO-1 task-17] ResearchInfrastructureResource: Exit: countResearchInfrastructurePregled() with result = <200 OK OK,0,[]>
+2023-11-19 11:51:45,104 DEBUG [XNIO-1 task-27] UserJWTController: Enter: authorize() with argument[s] = [LoginVM{username='admin', rememberMe=null}]
+2023-11-19 11:51:45,111 DEBUG [XNIO-1 task-27] UserService: Enter: getUserWithAuthoritiesByLogin() with argument[s] = [admin]
+2023-11-19 11:51:45,171 DEBUG [XNIO-1 task-27] UserService: Exit: getUserWithAuthoritiesByLogin() with result = Optional[User{login='admin', firstName='Administrator', lastName='Administrator', email='admin@localhost', imageUrl='', activated='true', langKey='sr', activationKey='null'}]
+2023-11-19 11:51:45,251 DEBUG [XNIO-1 task-27] DomainUserDetailsService: Authenticating admin
+2023-11-19 11:51:45,317 DEBUG [XNIO-1 task-27] CustomAuditEventRepository: Enter: add() with argument[s] = [AuditEvent [timestamp=2023-11-19T10:51:45.317412100Z, principal=admin, type=AUTHENTICATION_SUCCESS, data={}]]
+2023-11-19 11:51:45,332 DEBUG [XNIO-1 task-27] CustomAuditEventRepository: Exit: add() with result = null
+2023-11-19 11:51:45,367 DEBUG [XNIO-1 task-27] UserJWTController: Exit: authorize() with result = <200 OK OK,riportal.web.rest.UserJWTController$JWTToken@5ad7a1e2,[Authorization:"Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTcwMDQ3NzUwNX0.bwYwjKsGAiddeOIsv1aT1keZ9wJBtq4B14IKXOzHvrkarbwuxDhA_gvbSKV7ve1HC9mwKhPe7mCLVZOoollFmA"]>
+2023-11-19 11:51:45,393 DEBUG [XNIO-1 task-28] AccountResource: Enter: getAccount() with argument[s] = []
+2023-11-19 11:51:45,396 DEBUG [XNIO-1 task-28] UserService: Enter: getUserWithAuthorities() with argument[s] = []
+2023-11-19 11:51:45,397 DEBUG [XNIO-1 task-28] UserService: Exit: getUserWithAuthorities() with result = Optional[User{login='admin', firstName='Administrator', lastName='Administrator', email='admin@localhost', imageUrl='', activated='true', langKey='sr', activationKey='null'}]
+2023-11-19 11:51:45,398 DEBUG [XNIO-1 task-28] AccountResource: Exit: getAccount() with result = UserDTO{login='admin', firstName='Administrator', lastName='Administrator', email='admin@localhost', imageUrl='', activated=true, langKey='sr', createdBy=system, createdDate=null, lastModifiedBy='system', lastModifiedDate=null, authorities=[ROLE_USER, ROLE_ADMIN]}
+2023-11-19 11:51:45,440 DEBUG [XNIO-1 task-29] PortalUserResource: Enter: getRoles() with argument[s] = []
+2023-11-19 11:51:45,440 DEBUG [XNIO-1 task-29] PortalUserResource: REST request to get roles for current PortalUser : {}
+2023-11-19 11:51:45,441 DEBUG [XNIO-1 task-29] PortalUserService: Enter: getRoles() with argument[s] = []
+2023-11-19 11:51:45,441 DEBUG [XNIO-1 task-29] UserService: Enter: getUserWithAuthorities() with argument[s] = []
+2023-11-19 11:51:45,441 DEBUG [XNIO-1 task-29] UserService: Exit: getUserWithAuthorities() with result = Optional[User{login='admin', firstName='Administrator', lastName='Administrator', email='admin@localhost', imageUrl='', activated='true', langKey='sr', activationKey='null'}]
+2023-11-19 11:51:45,446 DEBUG [XNIO-1 task-29] PortalUserService: Exit: getRoles() with result = []
+2023-11-19 11:51:45,446 DEBUG [XNIO-1 task-29] PortalUserResource: Exit: getRoles() with result = []
+2023-11-19 11:51:49,726 DEBUG [XNIO-1 task-31] ResearchInfrastructureResource: Enter: getAllResearchInfrastructures() with argument[s] = [Page request [number: 0, size 20, sort: id: DESC], false]
+2023-11-19 11:51:49,726 DEBUG [XNIO-1 task-31] ResearchInfrastructureResource: REST request to get a page of ResearchInfrastructures
+2023-11-19 11:51:49,727 DEBUG [XNIO-1 task-31] ResearchInfrastructureService: Enter: findAll() with argument[s] = [Page request [number: 0, size 20, sort: id: DESC]]
+2023-11-19 11:51:49,727 DEBUG [XNIO-1 task-31] ResearchInfrastructureService: Request to get all ResearchInfrastructures
+2023-11-19 11:51:49,734 DEBUG [XNIO-1 task-31] ResearchInfrastructureService: Exit: findAll() with result = Page 1 of 0 containing UNKNOWN instances
+2023-11-19 11:51:49,739 DEBUG [XNIO-1 task-31] ResearchInfrastructureResource: Exit: getAllResearchInfrastructures() with result = <200 OK OK,[],[X-Total-Count:"0", Link:"<http://localhost:8080/api/research-infrastructures?sort=id%2Cdesc&page=-1&size=20>; rel="last",<http://localhost:8080/api/research-infrastructures?sort=id%2Cdesc&page=0&size=20>; rel="first""]>
+2023-11-19 12:00:00,004 DEBUG [riportal-scheduling-1] AuditEventService: Enter: removeOldAuditEvents() with argument[s] = []
+2023-11-19 12:00:00,017 DEBUG [riportal-scheduling-1] AuditEventService: Deleting audit data PersistentAuditEvent{principal='admin', auditEventDate=2023-07-30T18:55:37.513596Z, auditEventType='AUTHENTICATION_SUCCESS'}
+2023-11-19 12:00:00,018 DEBUG [riportal-scheduling-1] AuditEventService: Deleting audit data PersistentAuditEvent{principal='admin', auditEventDate=2023-08-03T10:39:05.566317Z, auditEventType='AUTHENTICATION_SUCCESS'}
+2023-11-19 12:00:00,019 DEBUG [riportal-scheduling-1] AuditEventService: Deleting audit data PersistentAuditEvent{principal='admin', auditEventDate=2023-08-03T11:53:51.070053Z, auditEventType='AUTHENTICATION_SUCCESS'}
+2023-11-19 12:00:00,020 DEBUG [riportal-scheduling-1] AuditEventService: Exit: removeOldAuditEvents() with result = null
+2023-11-19 13:58:29,993 WARN  [Hikari housekeeper] HikariPool: Hikari - Thread starvation or clock leap detected (housekeeper delta=57m15s521ms990µs800ns).
+2023-11-19 17:07:49,610 WARN  [Hikari housekeeper] HikariPool: Hikari - Thread starvation or clock leap detected (housekeeper delta=2h34m19s90ms447µs700ns).
+2023-11-19 19:10:22,833 WARN  [Hikari housekeeper] HikariPool: Hikari - Thread starvation or clock leap detected (housekeeper delta=1h18m32s541ms282µs).
+2023-11-19 19:49:31,187 WARN  [Hikari housekeeper] HikariPool: Hikari - Thread starvation or clock leap detected (housekeeper delta=1m37s802ms480µs700ns).
+2023-11-19 19:55:23,930 WARN  [Hikari housekeeper] HikariPool: Hikari - Thread starvation or clock leap detected (housekeeper delta=5m52s743ms76µs800ns).

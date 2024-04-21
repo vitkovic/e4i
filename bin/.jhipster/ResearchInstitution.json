@@ -1,0 +1,38 @@
+{
+  "name": "ResearchInstitution",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "researcher",
+      "otherEntityRelationshipName": "institutions",
+      "relationshipName": "researchers",
+      "otherEntityField": "id",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "riResearchOrganization",
+      "otherEntityRelationshipName": "researchInstitution",
+      "javadoc": "ID of registered PUO in SRIP",
+      "relationshipName": "ripo",
+      "ownerSide": false
+    }
+  ],
+  "changelogDate": "20230622064229",
+  "entityTableName": "research_institution",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

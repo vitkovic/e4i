@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity RiResearchOrganization.
+    -->
+    <changeSet id="20230622061829-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="pu_organization_id"
+                                 baseTableName="ri_research_organization"
+                                 constraintName="fk_ri_research_organization_pu_organization_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="portal_user_organization"/>
+
+        <addForeignKeyConstraint baseColumnNames="research_institution_id"
+                                 baseTableName="ri_research_organization"
+                                 constraintName="fk_ri_research_organization_research_institution_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="research_institution"/>
+
+        <addForeignKeyConstraint baseColumnNames="activity_status_id"
+                                 baseTableName="ri_research_organization"
+                                 constraintName="fk_ri_research_organization_activity_status_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ripo_activity_status"/>
+
+        <addForeignKeyConstraint baseColumnNames="ri_research_organization_id"
+                                 baseTableName="ri_research_organization_subdomains"
+                                 constraintName="ri_research_organization_subdo_ri_research_organization_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ri_research_organization"/>
+
+        <addForeignKeyConstraint baseColumnNames="subdomains_id"
+                                 baseTableName="ri_research_organization_subdomains"
+                                 constraintName="fk_ri_research_organization_subdomains_subdomains_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="scientific_subdomain"/>
+        
+        <addForeignKeyConstraint baseColumnNames="manager_id"
+                                 baseTableName="ri_research_organization"
+                                 constraintName="fk_ri_research_organization_manager_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="portal_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="contact_person_id"
+                                 baseTableName="ri_research_organization"
+                                 constraintName="fk_ri_research_organization_contact_person_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="portal_user"/>
+
+    </changeSet>
+</databaseChangeLog>

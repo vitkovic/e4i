@@ -1,0 +1,38 @@
+{
+  "riportalApp": {
+    "company": {
+      "home": {
+        "title": "Companies",
+        "createLabel": "Kreiraj novi Company",
+        "createOrEditLabel": "Kreirajte ili izmenite Company",
+        "notFound": "No Companies found"
+      },
+      "created": "Kreiran je novi Company pod nazivom {{ param }}",
+      "updated": "Company pod nazivom {{ param }} je ažuriran",
+      "deleted": "Company pod nazivom {{ param }} je obrisan",
+      "delete": {
+        "question": "Da li ste sigurni da želite da obrišete Company pod nazivom {{ id }}?"
+      },
+      "detail": {
+        "title": "Company"
+      },
+      "view": {
+        "type": "Тип компаније",
+        "typeRSNIS": "Тип компаније са портала РСНИС",
+        "registrationDate": "Датум регистрације",
+        "address": "Адреса",
+        "category": "Категорија",
+        "badges": "Беџеви"
+      },
+      "title": "Title",
+      "content": "Content",
+      "note": "Note",
+      "cmsCompany": "Cms Company",
+      "companyLocation": "Company Location",
+      "historyCompany": "History Company",
+      "portalUsers": "Portal Users",
+      "companyPortalAdds": "Company Portal Adds",
+      "companyType": "Company Type"
+    }
+  }
+}

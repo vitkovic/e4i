@@ -1,0 +1,53 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="Dragan (generated)" id="1690104636364-2">
+        <addColumn tableName="answer_to_offer">
+            <column name="answer_cyr" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1690104636364-3">
+        <addColumn tableName="request_answer">
+            <column name="answer_cyr" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1690104636364-4">
+        <addColumn tableName="answer_to_offer">
+            <column name="answer_en" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1690104636364-5">
+        <addColumn tableName="request_answer">
+            <column name="answer_en" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1690104636364-6">
+        <addColumn tableName="portal_user_organization">
+            <column name="keywords_cyr" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1690104636364-7">
+        <addColumn tableName="research_infrastructure">
+            <column name="keywords_cyr" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1690104636364-8">
+        <addColumn tableName="ri_service">
+            <column name="keywords_cyr" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1690104636364-9">
+        <addColumn tableName="portal_user_organization">
+            <column name="keywords_en" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1690104636364-10">
+        <addColumn tableName="research_infrastructure">
+            <column name="keywords_en" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1690104636364-11">
+        <addColumn tableName="ri_service">
+            <column name="keywords_en" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>    
+</databaseChangeLog>

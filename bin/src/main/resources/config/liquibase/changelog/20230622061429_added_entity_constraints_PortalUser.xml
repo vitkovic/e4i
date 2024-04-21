@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity PortalUser.
+    -->
+    <changeSet id="20230622061429-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="researcher_id"
+                                 baseTableName="portal_user"
+                                 constraintName="fk_portal_user_researcher_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="researcher"/>
+
+        <addForeignKeyConstraint baseColumnNames="portal_user_id"
+                                 baseTableName="portal_user_portal_user_roles"
+                                 constraintName="fk_portal_user_portal_user_roles_portal_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="portal_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="portal_user_roles_id"
+                                 baseTableName="portal_user_portal_user_roles"
+                                 constraintName="fk_portal_user_portal_user_roles_portal_user_roles_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="portal_user_role"/>
+        
+        <addForeignKeyConstraint baseColumnNames="user_organization_id"
+                                 baseTableName="portal_user"
+                                 constraintName="fk_portal_user_user_organization_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="portal_user_organization"/>
+
+    </changeSet>
+</databaseChangeLog>

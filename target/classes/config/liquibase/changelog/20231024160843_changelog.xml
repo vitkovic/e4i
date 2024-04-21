@@ -1,0 +1,27 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="Dragan (generated)" id="1698163728933-2">
+        <sql dbms="postgresql"
+		      endDelimiter=";"
+		      splitStatements="true"
+		      stripComments="true">
+			create materialized view service_infrastructure_organization as select r.id as serviceId, ri.id as infrastructureId, puo.id as organizationId, to_tsvector (concat (r.name_sr, ' ' ,r.description_sr, ' ', r.keywords, ' ', r.name_sr_cyr, ' ' ,r.description_sr_cyr, ' ', r.keywords_cyr, ' ', ri.name_sr,' ', ri.description_sr, ' ', ri.keywords, ' ', ri.name_sr_cyr,' ', ri.description_sr_cyr, ' ', ri.keywords_cyr, ' ', puo.legal_name_sr, ' ', puo.legal_name_sr_cyr, ' ' , puo.keywords, ' ', puo.keywords_cyr, ' ', puo.city)) as serbian_search, to_tsvector (concat (r.name_en, ' ' ,r.description_en, ' ', r.keywords_en, ' ', ri.name_en,' ', ri.description_en, ' ', ri.keywords_en, ' ', puo.legal_name_en, ' ',  puo.keywords_en)) as english_search from ri_service r left join research_infrastructure ri on ri.id = r.research_infrastructure_id left join ri_research_organization rro on rro.id = ri.owner_id left join portal_user_organization puo on puo.id = rro.pu_organization_id 
+		</sql>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1698163728933-3">
+        <sql dbms="postgresql"
+		      endDelimiter=";"
+		      splitStatements="true"
+		      stripComments="true">
+			   create index idx_serbian_search on service_infrastructure_organization using GIN(serbian_search);
+		 </sql>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1698163728933-4">
+        <sql dbms="postgresql"
+		      endDelimiter=";"
+		      splitStatements="true"
+		      stripComments="true">
+			   create index idx_english_search on service_infrastructure_organization using GIN(english_search);
+		 </sql>
+    </changeSet>    
+</databaseChangeLog>

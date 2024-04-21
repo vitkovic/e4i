@@ -1,0 +1,32 @@
+{
+  "name": "RiAccessMode",
+  "fields": [
+    {
+      "fieldName": "mode",
+      "fieldType": "String",
+      "javadoc": "research-driven\\nmarket-driven\\nfree\\nconditionally free\\nwide"
+    },
+    {
+      "fieldName": "modeEn",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "modeCyr",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "changelogDate": "20230622062729",
+  "entityTableName": "ri_access_mode",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "searchEngine": false,
+  "databaseType": "sql"
+}

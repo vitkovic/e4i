@@ -1,0 +1,25 @@
+{
+  "riportalApp": {
+    "thread": {
+      "home": {
+        "title": "Threads",
+        "createLabel": "Kreiraj novi Thread",
+        "createOrEditLabel": "Kreirajte ili izmenite Thread",
+        "notFound": "No Threads found"
+      },
+      "created": "Kreiran je novi Thread pod nazivom {{ param }}",
+      "updated": "Thread pod nazivom {{ param }} je ažuriran",
+      "deleted": "Thread pod nazivom {{ param }} je obrisan",
+      "delete": {
+        "question": "Da li ste sigurni da želite da obrišete Thread pod nazivom {{ id }}?"
+      },
+      "detail": {
+        "title": "Thread"
+      },
+      "subject": "Subject",
+      "message": "Message",
+      "advertisement": "Advertisement",
+      "company": "Company"
+    }
+  }
+}

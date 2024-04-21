@@ -1,0 +1,14 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="Dragan (generated)" id="1694708299377-2">
+        <addColumn tableName="portal_user_organization">
+            <column name="nio_institution_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1694708299377-3">
+        <addUniqueConstraint columnNames="nio_institution_id" constraintName="UC_PORTAL_USER_ORGANIZATIONNIO_INSTITUTION_ID_COL" tableName="portal_user_organization"/>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1694708299377-4">
+        <addForeignKeyConstraint baseColumnNames="nio_institution_id" baseTableName="portal_user_organization" constraintName="FK9uns2lhmv7ahhv7lob7emam7s" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="research_institution" validate="true"/>
+    </changeSet>    
+</databaseChangeLog>

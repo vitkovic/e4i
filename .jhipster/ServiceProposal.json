@@ -1,0 +1,45 @@
+{
+  "name": "ServiceProposal",
+  "fields": [
+    {
+      "fieldName": "date",
+      "fieldType": "ZonedDateTime",
+      "javadoc": "Proposal submission date and time"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "javadoc": "Name of new service"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "javadoc": "Short description of new service"
+    },
+    {
+      "fieldName": "purpose",
+      "fieldType": "String",
+      "javadoc": "Purpose of proposed new service"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "portalUser",
+      "otherEntityRelationshipName": "serviceProposals",
+      "relationshipName": "portalUser",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20230622064029",
+  "entityTableName": "service_proposal",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

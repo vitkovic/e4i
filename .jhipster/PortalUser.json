@@ -1,0 +1,105 @@
+{
+  "name": "PortalUser",
+  "fields": [
+    {
+      "fieldName": "firstName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "familyName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "phone",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "position",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "one-to-one",
+      "otherEntityName": "researcher",
+      "otherEntityRelationshipName": "portalUser",
+      "relationshipName": "researcher",
+      "otherEntityField": "id",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "riResearchOrganization",
+      "otherEntityRelationshipName": "manager",
+      "relationshipName": "managedOrganization"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "riResearchOrganization",
+      "otherEntityRelationshipName": "contactPerson",
+      "relationshipName": "contactOrganization"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "researchInfrastructure",
+      "otherEntityRelationshipName": "manager",
+      "relationshipName": "managedInfrastructure"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "researchInfrastructure",
+      "otherEntityRelationshipName": "contactPerson",
+      "relationshipName": "contactInfrastructure"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "requestForService",
+      "otherEntityRelationshipName": "users",
+      "relationshipName": "requests"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "riCalendar",
+      "otherEntityRelationshipName": "portalUsers",
+      "relationshipName": "calendars"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "riProcurementProposal",
+      "otherEntityRelationshipName": "portalUser",
+      "relationshipName": "riProposals"
+    },
+    {
+      "relationshipType": "one-to-many",
+      "otherEntityName": "serviceProposal",
+      "otherEntityRelationshipName": "portalUser",
+      "relationshipName": "serviceProposals"
+    },
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "portalUserRole",
+      "otherEntityRelationshipName": "users",
+      "relationshipName": "portalUserRoles",
+      "otherEntityField": "id",
+      "ownerSide": true
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "portalUserOrganization",
+      "otherEntityRelationshipName": "portalUsers",
+      "relationshipName": "userOrganization",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20230622061429",
+  "entityTableName": "portal_user",
+  "dto": "no",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

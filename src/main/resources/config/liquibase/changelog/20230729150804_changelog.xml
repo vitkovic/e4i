@@ -1,0 +1,21 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="Dragan (generated)" id="1690643291875-2">
+        <createTable tableName="request_state">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="request_statePK"/>
+            </column>
+            <column name="state_sr_cyr" type="VARCHAR(255)"/>
+            <column name="state_en" type="VARCHAR(255)"/>
+            <column name="state_sr" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1690643291875-3">
+        <addColumn tableName="request_for_service">
+            <column name="state_id" type="int8"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1690643291875-4">
+        <addForeignKeyConstraint baseColumnNames="state_id" baseTableName="request_for_service" constraintName="FKtff3sa9sm2if2x1cqob6u4bkr" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="request_state" validate="true"/>
+    </changeSet>   
+</databaseChangeLog>

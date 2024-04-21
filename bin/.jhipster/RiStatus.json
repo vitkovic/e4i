@@ -1,0 +1,44 @@
+{
+  "name": "RiStatus",
+  "fields": [
+    {
+      "fieldName": "status",
+      "fieldType": "String",
+      "javadoc": "available, temporary unavailable, unavailable"
+    },
+    {
+      "fieldName": "meaning",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "statusEn",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "statusCyr",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "meaningEn",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "meaningCyr",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "changelogDate": "20230622062329",
+  "entityTableName": "ri_status",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "searchEngine": false,
+  "databaseType": "sql"
+}

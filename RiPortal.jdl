@@ -1,0 +1,399 @@
+
+entity PortalUser {
+	firstName String,
+    familyName String,
+    phone String,
+    position String
+}
+
+entity PortalUserRole {
+	role String,
+    /** PA, RPU, RPRIPO, RPRI, RPSI*/
+    abbreviation String, 
+    fullName String
+}
+
+entity PortalUserOrganization {
+	/** Legal name of PUO in Serbian */
+	legalNameSr String,
+    /** Legal name of PUO in English */
+	legalNameEn String,
+    /** Short name - abbreviation */
+    shortName String,
+    webAddress String,
+    /** Tax identification number */
+    pib String minlength (8) maxlength (8),
+    /** registration number (matični broj) assigned by Statistical Office of the Republic of Serbia*/
+    registrationNumber String maxlength(8),
+    /** Keywords related to PUO. Used for search function of the portal*/
+    keywords String,
+    /** Streat name and number of the PUO*/
+    address String,
+    postalCode String,
+    city String,
+    /** Default value Serbia*/
+    country String
+}
+
+entity PuoLegalStatus {
+	value String,
+    description String
+}
+
+entity RiResearchOrganization{
+    /** Full legal name of RIPO */
+    name String,
+    descriptionSr String maxlength(1000), 
+    decsriptionEn String maxlength(1000),
+    /** Link to te logo */
+    logo String    
+}
+
+/** 
+*Research Infrastructure Activity Status
+*/
+entity RipoActivityStatus{
+	/** Active, Temporary non-active, Closed*/
+	status String
+}
+/** Scientific domains. It is possible to select multiple domains */
+entity ScientificDomain{
+	domain String
+}
+
+entity ScientificSubdomain {
+	subdomain String
+}
+
+entity ResearchInfrastructure{
+	/** Name of research infrastructure in Serbian */
+	nameSr String,
+    /** Name of research infrastructure in English */
+    nameEn String,
+    /** Name of the unit that manage RI. Example: Laboratory for nano materials */
+    departmentName String,
+    /** URL of the RI logo */
+    riLogo String,
+    /** URL of the RI website */
+    riWebsite String,
+    /** Description of the RI including purpose in Serbian */
+    descriptionSr String,
+    /** Description of the RI including purpose in English */
+    descriptionEn String,
+    /** Technical specification of the RI in Serbian  */
+    technicalSpecificationSr String,
+    /** Technical specification of the RI in English  */
+    technicalSpecificationEn String,
+    /** Link to web page with full technical specification in Serbian */
+    technicalSpecificationLinkSr String,
+    /** Link to web page with full technical specification in English */
+    technicalSpecificationLinkEn String,
+    /** Link to the RI user manual and documentation in Serbian */
+    userManualLinkSr String,
+    /** Link to the RI user manual and documentation in English */
+    userManualLinkEn String,
+    /** keywords related to RI*/
+    keywords String,        
+}
+
+entity RiStatus {
+	/** available, temporary unavailable, unavailable*/
+    status String, 
+    meaning String
+}
+
+entity RiCategory{
+	/** Access to physical and e-infrastructure
+	* Aggregators and integrators
+	* Processing and analysis
+	* Sharing and discovery
+	* Training and support
+    */
+	category String
+}
+
+entity RiSubcategory {
+	subcategory String
+}
+
+entity RiAccessType {
+	/** physical, virtual, remote */
+	type String
+}
+
+entity RiAccessMode {
+	/** research-driven
+	* market-driven
+	* free
+	* conditionally free
+	* wide
+    */
+    mode String
+}
+
+entity RiService {
+	nameSr String,
+    nameEn String,
+    descriptionSr String,
+    descriptionEn String,
+    keywords String,
+    accreditationOrganizationName String,
+    /** Link to the Terms of use in Serbian in Policy document repository */
+    termsOfUseSr String,
+    /** Link to the Terms of use in English in Policy document repository */
+    termsOfUseEn String,
+    /** Link to the privacy policy in Serbian in Policy document repository */
+    privacyPolicySr String,
+    privacyPolicyEn String,
+    /** Link to the Access policy in Serbian in Policy document repository */
+    accessPolicySr String,
+    accessPolicyEn String,
+    /** Link to the Pricing policy in Serbian in Policy document repository */
+    pricingPolicySr String,
+    pricingPolicyEn String
+}
+
+entity ServiceType {
+	type String
+}
+
+entity ServiceSubtype {
+	subtype String
+}
+
+entity ServiceAccreditation {
+	/** accredited, non-accredited */
+	status String,
+    meaning String
+}
+
+entity ServiceAvailability {
+	/** Available, Temporary unavailable, Permanently unavailable */
+	availability String,
+    meaning String
+}
+
+
+entity RequestForService {
+	date ZonedDateTime,       
+    /** Short description of the required service including quantity*/
+    description String,
+    /** Preferred service start date and time*/
+    startTime ZonedDateTime,
+    /** Preferred service end date and time*/
+    endTime ZonedDateTime,
+    /** The latest date by which service should be completed */
+    deadline LocalDate    
+}
+
+entity RequestRespond {
+	/** Date and time of submission of respond to request for RI service */
+	date ZonedDateTime,
+     /**  service start date and time*/
+    startTime ZonedDateTime,
+    /**  service end date and time*/
+    endTime ZonedDateTime,
+    /** The price of requested service in RSD */
+    price Double,
+    /** Short description of reasons for denial or discussion */
+    message String
+}
+
+entity RequestAnswer {
+	/** Request accepted, Request denied, Request should be discussed */
+	answer String
+}
+
+entity ServiceOfferRespond {
+	/** Date and time of submission of respond to offer for RI service */
+    date ZonedDateTime,
+    /** Description of reasons for denial or discussion */
+    description String
+}
+
+entity AnswerToOffer {
+	/** Offer accepted, Offer denied, Offer should be discussed */
+    answer String
+}
+
+entity RiServiceStatus {
+	/** Performed, In progress, Planed, Cancelled */
+	status String,
+    description String
+}
+
+entity RiProcurementProposal {
+	/** Proposal submission date and time */
+    date ZonedDateTime,
+    /** Name of the RI to be procured */
+    name String,
+    /** Technical specification of the RI to be procured */
+    technicalSpecification String,
+    /** Purpose of proposed RI */
+    purpose String
+}
+
+entity ServiceProposal {
+	/** Proposal submission date and time  */
+	date ZonedDateTime,
+    /** Name of new service */
+    name String,
+    /** Short description of new service */
+    description String,
+    /** Purpose of proposed new service */
+    purpose String
+}
+
+
+entity Researcher {
+	firstName String,
+    lastName String,
+    middleName String,
+    birthDate LocalDate    
+}
+
+entity ResearchInstitution {
+	name String
+}
+
+
+entity RiCalendar {
+	/** Service start date and time */
+    startTime ZonedDateTime,
+    /** Service end date and time */
+    endTime ZonedDateTime,
+    /** Short note on service realisation  */
+    calNote String,
+    /** PU rating of service in range from 1 to 5. Only for delivered services.*/
+    calRating String,
+    /** PU comment on quality of service. Only for delivered services. */
+    calComment String    
+}
+
+entity RiServiceStatus {
+	/** Performed, In progress, Planed, Cancelled */
+    status String,
+    /** Service has been performed
+	*   Service execution is in progress
+	*   Service is planed
+	*   The planned service has been cancelled
+    */
+    description String
+}
+
+
+relationship OneToOne {
+	RiResearchOrganization {puOrganization} to PortalUserOrganization {researchOrganization},
+    RiResearchOrganization {researchInstitution} to 
+    /** ID of registered PUO in SRIP */ 
+    ResearchInstitution {ripo}
+}
+
+relationship OneToMany {
+    PortalUserOrganization {portalUsers} to PortalUser {userOrganization},    
+    ScientificDomain {subdomains} to ScientificSubdomain {domain},
+    PortalUser {managedOrganization} to RiResearchOrganization {manager},
+    PortalUser {contactOrganization} to RiResearchOrganization {contactPerson}
+}
+
+relationship ManyToOne {
+	PortalUserOrganization {legalStatus} to PuoLegalStatus,
+	RiResearchOrganization {activityStatus} to RipoActivityStatus
+}
+ 
+relationship ManyToMany {
+	PortalUser {portalUserRoles} to PortalUserRole {users},
+    RiResearchOrganization {subdomains} to ScientificSubdomain {organizations}    
+}
+
+/** ResearchInfrastructure relationships*/
+
+relationship ManyToOne {
+   ResearchInfrastructure {status} to RiStatus,
+   ResearchInfrastructure {accessMode} to RiAccessMode,
+   ResearchInfrastructure {accessType} to RiAccessType,
+   ResearchInfrastructure {category} to RiCategory     
+}
+
+relationship ManyToMany {
+    ResearchInfrastructure {subdomains} to ScientificSubdomain {infrastructures},
+    ResearchInfrastructure {subcategories} to RiSubcategory {infrastructures},
+    
+}
+
+relationship OneToMany {	
+    RiResearchOrganization {infrastructures} to ResearchInfrastructure {owner},       
+    PortalUser {managedInfrastructure} to ResearchInfrastructure {manager},
+    PortalUser {contactInfrastructure} to ResearchInfrastructure {contactPerson}
+}
+
+/** Services */
+
+relationship ManyToOne {
+    RiService {availability} to ServiceAvailability,
+    RiService {accredation} to ServiceAccreditation,    
+    RiService {subtypes} to ServiceSubtype
+}
+
+relationship ManyToMany{
+	RiService {subdomains} to ScientificSubdomain {services},
+}
+
+relationship OneToMany {	
+    ResearchInfrastructure {services} to RiService {researchInfrastructure}    
+}
+
+/** Negotiation for Realization of Service*/
+
+relationship OneToOne {
+	RequestRespond {requestForService} to RequestForService {respond}    
+}
+
+relationship OneToMany {
+	RiService {requests} to RequestForService {services},
+    PortalUser {requests} to RequestForService {users},
+    PortalUserOrganization {requests} to RequestForService {organizations},
+    RequestRespond {respondsToOffer} to ServiceOfferRespond {respondsToRequest}
+}
+
+relationship ManyToOne {
+	ServiceOfferRespond {offerAnswer} to AnswerToOffer,
+    ServiceOfferRespond {requestAnswer} to RequestAnswer, 
+}
+
+/** Calendar */
+
+relationship ManyToOne {	
+    RiCalendar {serviceStatus} to RiServiceStatus
+}
+
+relationship OneToOne {
+	RiCalendar{requestRespond} to RequestRespond {calendar}
+}
+
+relationship OneToMany {
+	PortalUser {calendars} to RiCalendar {portalUsers},
+    ResearchInfrastructure {calendars} to RiCalendar {researchInfrastructure},
+    RiService {calendars} to RiCalendar {service}
+}
+
+// Proposal for new Service 
+
+relationship OneToMany {
+	PortalUser {riProposals} to RiProcurementProposal {portalUser},
+    PortalUser {serviceProposals} to ServiceProposal {portalUser},
+}
+
+relationship ManyToMany {
+	ResearchInstitution {researchers} to Researcher {institutions}
+}
+
+relationship OneToOne {
+	PortalUser {researcher} to Researcher {portalUser}
+}
+
+paginate PortalUser, PortalUserOrganization, RiResearchOrganization with pagination
+paginate ResearchInfrastructure, RiService, RequestForService, RiCalendar with pagination
+paginate RiProcurementProposal, ServiceProposal with pagination
+// Set service options to all except few
+service PortalUser, ResearchInfrastructure, RiService, RequestForService with serviceClass

@@ -1,0 +1,32 @@
+{
+  "name": "RiCategory",
+  "fields": [
+    {
+      "fieldName": "category",
+      "fieldType": "String",
+      "javadoc": "Access to physical and e-infrastructure\\nAggregators and integrators\\nProcessing and analysis\\nSharing and discovery\\nTraining and support"
+    },
+    {
+      "fieldName": "categoryEn",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "categoryCyr",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "changelogDate": "20230622062429",
+  "entityTableName": "ri_category",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*",
+  "searchEngine": false,
+  "databaseType": "sql"
+}

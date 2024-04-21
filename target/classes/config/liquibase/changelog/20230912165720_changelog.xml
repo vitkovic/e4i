@@ -1,0 +1,20 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.9.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <changeSet author="Dragan (generated)" id="1694537846052-2">
+        <createTable tableName="service_proposals_likes">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="service_proposals_likesPK"/>
+            </column>
+            <column name="ndislike" type="INTEGER"/>
+            <column name="nlike" type="INTEGER"/>
+            <column name="portal_user_id" type="BIGINT"/>
+            <column name="proposal_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1694537846052-3">
+        <addForeignKeyConstraint baseColumnNames="proposal_id" baseTableName="service_proposals_likes" constraintName="FKdxov8aat1rqq2636nv1sapwjr" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="service_proposal" validate="true"/>
+    </changeSet>
+    <changeSet author="Dragan (generated)" id="1694537846052-4">
+        <addForeignKeyConstraint baseColumnNames="portal_user_id" baseTableName="service_proposals_likes" constraintName="FKf6rvvi37qvw25i2717dcafs38" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="portal_user" validate="true"/>
+    </changeSet>    
+</databaseChangeLog>

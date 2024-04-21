@@ -1,0 +1,22 @@
+{
+  "name": "RequestAnswer",
+  "fields": [
+    {
+      "fieldName": "answer",
+      "fieldType": "String",
+      "javadoc": "Request accepted, Request denied, Request should be discussed"
+    }
+  ],
+  "relationships": [],
+  "changelogDate": "20230622063529",
+  "entityTableName": "request_answer",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

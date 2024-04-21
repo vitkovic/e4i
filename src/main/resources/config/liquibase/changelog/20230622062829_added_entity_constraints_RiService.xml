@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity RiService.
+    -->
+    <changeSet id="20230622062829-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="availability_id"
+                                 baseTableName="ri_service"
+                                 constraintName="fk_ri_service_availability_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="service_availability"/>
+
+        <addForeignKeyConstraint baseColumnNames="accredation_id"
+                                 baseTableName="ri_service"
+                                 constraintName="fk_ri_service_accredation_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="service_accreditation"/>
+
+        <addForeignKeyConstraint baseColumnNames="subtypes_id"
+                                 baseTableName="ri_service"
+                                 constraintName="fk_ri_service_subtypes_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="service_subtype"/>
+
+        <addForeignKeyConstraint baseColumnNames="ri_service_id"
+                                 baseTableName="ri_service_subdomains"
+                                 constraintName="fk_ri_service_subdomains_ri_service_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ri_service"/>
+
+        <addForeignKeyConstraint baseColumnNames="subdomains_id"
+                                 baseTableName="ri_service_subdomains"
+                                 constraintName="fk_ri_service_subdomains_subdomains_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="scientific_subdomain"/>
+        
+        <addForeignKeyConstraint baseColumnNames="research_infrastructure_id"
+                                 baseTableName="ri_service"
+                                 constraintName="fk_ri_service_research_infrastructure_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="research_infrastructure"/>
+
+    </changeSet>
+</databaseChangeLog>

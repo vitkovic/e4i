@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity RiCalendar.
+    -->
+    <changeSet id="20230622064329-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="request_respond_id"
+                                 baseTableName="ri_calendar"
+                                 constraintName="fk_ri_calendar_request_respond_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="request_respond"/>
+
+        <addForeignKeyConstraint baseColumnNames="service_status_id"
+                                 baseTableName="ri_calendar"
+                                 constraintName="fk_ri_calendar_service_status_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ri_service_status"/>
+
+        <addForeignKeyConstraint baseColumnNames="portal_users_id"
+                                 baseTableName="ri_calendar"
+                                 constraintName="fk_ri_calendar_portal_users_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="portal_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="research_infrastructure_id"
+                                 baseTableName="ri_calendar"
+                                 constraintName="fk_ri_calendar_research_infrastructure_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="research_infrastructure"/>
+
+        <addForeignKeyConstraint baseColumnNames="service_id"
+                                 baseTableName="ri_calendar"
+                                 constraintName="fk_ri_calendar_service_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ri_service"/>
+
+    </changeSet>
+</databaseChangeLog>
