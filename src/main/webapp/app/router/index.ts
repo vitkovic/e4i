@@ -8,6 +8,7 @@ Component.registerHooks([
 import Router from 'vue-router';
 
 const Home = () => import('@/core/home/home.vue');
+const B2BHome = () => import('@/core/b2b-home/b2b-home.vue');
 const Error = () => import('@/core/error/error.vue');
 import account from '@/router/account.ts';
 import admin from '@/router/admin.ts';
@@ -24,6 +25,11 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/b2b',
+      name: 'B2BHome',
+      component: B2BHome
     },
     {
       path: '/forbidden',

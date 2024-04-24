@@ -2,13 +2,15 @@
   <div id="app">
    
     <div id="app-header" class="fixed">
-      <jhi-navbar></jhi-navbar>
+      <b2b-jhi-navbar v-if="checkB2Bdomain()"></b2b-jhi-navbar>
+      <jhi-navbar v-else></jhi-navbar>
+
     </div>
     <notifications width="300px" classes="vue-notification notification-font" position="top center"/> 
     
     <div class="container-fluid">
 		
-      <div class="card jh-card">
+      <div class="card jh-card mt-5">
         <router-view></router-view>
       </div>
       <b-modal id="login-page" hide-footer lazy>
@@ -16,7 +18,8 @@
         <login-form></login-form>
       </b-modal>
 
-      <jhi-footer></jhi-footer>
+      <b2b-jhi-footer v-if="checkB2Bdomain()"></b2b-jhi-footer>
+      <jhi-footer v-else></jhi-footer>
     </div>
     
   </div>

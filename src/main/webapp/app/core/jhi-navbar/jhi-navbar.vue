@@ -489,6 +489,11 @@
 			                        {{value.name}}
 			                    </b-dropdown-item>
 			                </b-nav-item-dropdown>
+							<b-nav-item to="/b2b" exact style="white-space: nowrap;" class="navbar-menu-item">
+								<span>
+									<span class="headerItemi">B2B</span>
+								</span>
+							</b-nav-item>
 			                <b-nav-item-dropdown
 			                    right
 			                    href="javascript:void(0);"
