@@ -8,6 +8,7 @@ import { IServiceProposal } from '@/shared/model/service-proposal.model';
 import { IPortalUserRole } from '@/shared/model/portal-user-role.model';
 import { IPortalUserOrganization } from '@/shared/model/portal-user-organization.model';
 import { IUser } from './user.model';
+import { ICompany } from '@/shared/model/company.model';
 
 export interface IPortalUser {
   id?: number;
@@ -27,6 +28,7 @@ export interface IPortalUser {
   portalUserRoles?: IPortalUserRole[];
   userOrganization?: IPortalUserOrganization;
   user?: IUser;
+  company?: ICompany;
 }
 
 export class PortalUser implements IPortalUser {
@@ -48,5 +50,6 @@ export class PortalUser implements IPortalUser {
     public portalUserRoles?: IPortalUserRole[],
     public userOrganization?: IPortalUserOrganization,
     public user?: IUser,
+    public company?: ICompany,
   ) {}
 }

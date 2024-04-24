@@ -237,4 +237,17 @@ public class PortalUserResource {
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
+    
+    @GetMapping("/portal-users/user/{id}")
+    public ResponseEntity<PortalUser> getPortalUserByUser(@PathVariable Long id) {
+        log.debug("REST request to get PortalUser by User : {}", id);
+        
+        Optional<User> userOptional = userRepository.findById(id);
+        User user = userOptional.get();
+        
+        PortalUser portalUser = portalUserRepository.findByUserId(user.getId());
+        
+//        Optional<PortalUser> portalUser = portalUserService.findOne(id);
+        return ResponseEntity.ok().body(portalUser);
+    }
 }

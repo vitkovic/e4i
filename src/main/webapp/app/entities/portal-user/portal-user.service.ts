@@ -8,6 +8,7 @@ import { IPortalUser } from '@/shared/model/portal-user.model';
 
 const baseApiUrl = 'api/portal-users';
 const baseApiUrlActivation = 'api/portal-users/for-activation';
+const userApiUrl = 'api/portal-users/user';
 
 export default class PortalUserService {
   constructor(private store: Store<any>) {}
@@ -177,5 +178,18 @@ export default class PortalUserService {
 
   public get userRoles(): any {
     return this.store.getters.roles;
+  }
+
+  public findByUserId(id: number): Promise<IPortalUser> {
+    return new Promise<IPortalUser>((resolve, reject) => {
+      axios
+        .get(`${userApiUrl}/${id}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
   }
 }
