@@ -115,6 +115,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/portal-users-pregled/**").permitAll()
             .antMatchers("/api/b2b/*").permitAll()
             .antMatchers("/api/b2b/**").permitAll()
+            .antMatchers("/api/retrieve/image/**").permitAll()  // potrebno zbog pregleda oglasa/kompanije od strane neregistrovane osobe
+            .antMatchers("/api/retrieve/document/**").permitAll()  // potrebno zbog pregleda oglasa/kompanije od strane neregistrovane osobe
+            .antMatchers("/api/advertisements/browse").permitAll()  // pretragu moze da vrsi neregistrovana osoba
+            .antMatchers(HttpMethod.GET ,"/api/advertisements/{id}").permitAll()  // pregled oglasa moze da vrsi neregistrovana osoba
+            .antMatchers(HttpMethod.GET ,"/api/companies/{id}").permitAll()  // pregled kompanije moze da vrsi neregistrovana osoba
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/info").permitAll()

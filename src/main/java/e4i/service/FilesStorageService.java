@@ -17,6 +17,7 @@ public interface FilesStorageService {
   public String saveLogo(Long researchInfrastructureId, MultipartFile file);
   
   public Resource loadImage(String filename);
+  public Resource loadDocument(String filename);
 
   public void deleteImage(String filename);
 

@@ -10,9 +10,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import e4i.service.FilesStorageService;
+import e4i.domain.DocumentType;
+import e4i.repository.DocumentRepository;
+import e4i.repository.DocumentTypeRepository;
 import e4i.domain.Company;
 import e4i.domain.Document;
 import e4i.domain.PortalUser;
@@ -24,10 +27,13 @@ import e4i.web.rest.errors.BadRequestAlertException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -53,6 +59,15 @@ public class CompanyResource {
 
     @Autowired
     PortalUserRepository portalUserRepository;
+    
+    @Autowired
+    DocumentRepository documentRepository;
+    
+    @Autowired
+    DocumentTypeRepository documentTypeRepository;
+    
+    @Autowired
+    FilesStorageService storageService;
     
     public CompanyResource(CompanyService companyService) {
         this.companyService = companyService;
@@ -143,8 +158,6 @@ public class CompanyResource {
             .body(result);
     }
 
-    
-
     /**
      * {@code GET  /companies} : get all the companies.
      *
@@ -189,5 +202,163 @@ public class CompanyResource {
         log.debug("REST request to delete Company : {}", id);
         companyService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+    
+    @PostMapping("/companies/upload-logo")                   
+    @Transactional
+    public ResponseEntity<Document> uploadCompanyLogo(@RequestParam Long id, @RequestParam("files") MultipartFile[] file) {      
+    	String message = "";      
+    	try {
+    		Optional<Company> companyOptional = companyRepository.findById(id);
+    		Company company = companyOptional.get();
+    		Document existingLogo = company.getLogo();
+    		
+    		// brisanje postojeceg loga ako postoji
+    		if(existingLogo != null) {
+    			storageService.deleteImage(existingLogo.getFilename());
+    			documentRepository.delete(existingLogo);
+    		}
+    		
+    		DocumentType documentType = documentTypeRepository.findByType("image");    
+    		Document image = new Document();		  		
+    		String logoFilename = storageService.saveCompanyLogo(id, file[0]);
+    		
+    		image.setFilename(logoFilename);
+    		image.setType(documentType);
+    		documentRepository.save(image);
+    		
+    		company.setLogo(image);
+    		companyRepository.save(company);
+  	
+    		return ResponseEntity.ok().body(image);
+    	} catch (Exception e) {
+    		throw new BadRequestAlertException("Upis nije uspeo", "", "");
+    	}
+    }
+    
+    @PostMapping("/companies/upload-images")
+    @Transactional
+    public ResponseEntity<Set<Document>> uploadImages(@RequestParam Long id, @RequestParam("files") MultipartFile[] files) {
+  		  
+  	  Optional<Company> companyOptional = companyRepository.findById(id);
+  	  Company company = companyOptional.get();
+  	
+  	  DocumentType documentType = documentTypeRepository.findByType("image");  
+  	  Set<Document> images = new HashSet<Document>();
+      	    	
+  	  Arrays.asList(files).stream().forEach(file -> {
+  		  Document image = new Document();		  
+  		  String imageName = storageService.saveInfrastructureImage(id, file);
+  		  image.setFilename(imageName);
+  		  image.setType(documentType);
+  		  images.add(image);    		
+  	  });
+
+  	  documentRepository.saveAll(images);
+  	  
+     	  Set<Document> allDocuments = images;
+     	  allDocuments.addAll(company.getDocuments());
+     	  company.setDocuments(allDocuments);
+  	  companyRepository.save(company);
+  	  
+  	  return ResponseEntity.ok().body(images);
+    }
+    
+    @PostMapping("/companies/upload-documents")
+    @Transactional
+    public ResponseEntity<Set<Document>> uploadCompanyDocuments(@RequestParam Long id, @RequestParam("files") MultipartFile[] files) {
+     	  
+     	  Optional<Company> companyOptional = companyRepository.findById(id);
+     	  Company company = companyOptional.get();
+     	
+     	  DocumentType documentType = documentTypeRepository.findByType("document");  
+     	  Set<Document> documents = new HashSet<Document>();
+         	    	
+     	  Arrays.asList(files).stream().forEach(file -> {
+     		  
+     		  String nameStart = "doc_company_" + id + "_";
+     		  Document document = new Document();		  
+     		  
+     		  String documentName = storageService.saveDocument(nameStart, file);
+     		  document.setFilename(documentName);
+     		  document.setType(documentType);
+     		  documents.add(document);    		
+     	  });
+
+     	  documentRepository.saveAll(documents);
+     	  
+     	  Set<Document> allDocuments = documents;
+     	  allDocuments.addAll(company.getDocuments());
+     	  company.setDocuments(allDocuments);	  
+     	  companyRepository.save(company);
+     	  
+     	  return ResponseEntity.ok().body(documents);        
+    }      
+
+    @DeleteMapping("/companies/delete-logo/{companyId}")
+    @Transactional
+    public ResponseEntity<Company> deleteCompanyLogo(@PathVariable Long companyId) {
+        log.debug("REST request to delete logo for company : {}", companyId);
+
+     	  Optional<Company> companyOptional = companyRepository.findById(companyId);
+     	  Company company = companyOptional.get();
+
+     	  Document existingLogo = company.getLogo();
+  	    
+     	  // brisanje postojeceg loga ako postoji
+     	  if(existingLogo != null)
+     		  storageService.deleteImage(existingLogo.getFilename());
+     	  	  documentRepository.delete(existingLogo);
+           	  
+     	  company.setLogo(null);
+     	  companyRepository.save(company);
+     	  
+        return ResponseEntity.ok().body(company);
+    }
+    
+    @DeleteMapping("/companies/delete-image/{companyId}/{imageId}")
+    @Transactional
+    public ResponseEntity<Set<Document>> deleteCompanyImage(@PathVariable Long companyId, @PathVariable Long imageId) {
+        log.debug("REST request to delete Image for company : {}", companyId);
+
+     	  Optional<Company> companyOptional = companyRepository.findById(companyId);
+     	  Company company = companyOptional.get();
+
+        Optional<Document> imgOptional = documentRepository.findById(imageId);
+        Document image = imgOptional.get();
+           	  
+        // Ovako se brisu veze iz many-to-many tabele "company-documents"
+     	  company.getDocuments().remove(image);
+     	  image.getCompanies().remove(company);
+     	  
+        documentRepository.delete(image);
+        storageService.deleteImage(image.getFilename());
+        
+        // Ovo vraca i slike i dokumenta. Izdvojiti samo slike.
+        Set<Document> images = company.getDocuments();
+        return ResponseEntity.ok().body(images);
+    }
+    
+    @DeleteMapping("/companies/delete-document/{companyId}/{documentId}")
+    @Transactional
+    public ResponseEntity<Set<Document>> deleteCompanyDocument(@PathVariable Long companyId, @PathVariable Long documentId) {
+        log.debug("REST request to delete document for company : {}", companyId);
+
+     	  Optional<Company> companyOptional = companyRepository.findById(companyId);
+     	  Company company = companyOptional.get();
+
+        Optional<Document> documentIdOptional = documentRepository.findById(documentId);
+        Document document = documentIdOptional.get();
+
+        // Ovako se brisu veze iz many-to-many tabele "company-documents"
+     	  company.getDocuments().remove(document);
+     	  document.getCompanies().remove(company);
+
+        documentRepository.delete(document);
+        storageService.deleteDocument(document);
+        
+        // Ovo vraca i slike i dokumenta. Izdvojiti samo slike.
+        Set<Document> documents = company.getDocuments();
+        return ResponseEntity.ok().body(documents);
     }
 }

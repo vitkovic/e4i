@@ -7,9 +7,12 @@ import { ICompany } from '@/shared/model/company.model';
 const baseApiUrl = 'api/companies';
 const updateCompanyCreatedApiUrl = 'api/companies/update-created';
 const updateCompanyModifiedApiUrl = 'api/companies/update-modified';
-const deleteLogoApi = 'api/company/delete-logo';
-const deleteImageApi = 'api/company/delete-image';
-const deleteDocumentApi = 'api/company/delete-document';
+const apiUploadLogo = 'api/companies/upload-logo'
+const apiUploadImages = 'api/companies/upload-images'
+const apiUploadDocuments = 'api/companies/upload-documents'
+const deleteLogoApi = 'api/companies/delete-logo';
+const deleteImageApi = 'api/companies/delete-image';
+const deleteDocumentApi = 'api/companies/delete-document';
 
 export default class CompanyService {
   public find(id: number): Promise<ICompany> {
@@ -106,7 +109,7 @@ export default class CompanyService {
   public uploadCompanyLogo(entity: FormData): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
-        .post('api/upload-company-logo', entity, {
+        .post(apiUploadLogo, entity, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -123,7 +126,7 @@ export default class CompanyService {
   public uploadImages(entity: FormData): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
-        .post('api/upload-images', entity, {
+        .post(apiUploadImages, entity, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -140,7 +143,7 @@ export default class CompanyService {
   public uploadCompanyDocuments(entity: FormData): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       axios
-        .post('api/upload-company-documents', entity, {
+        .post(apiUploadDocuments, entity, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

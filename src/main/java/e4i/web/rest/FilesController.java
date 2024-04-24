@@ -178,7 +178,27 @@ public class FilesController {
             .ok()
             .contentType(MediaType.IMAGE_JPEG)
             .body(file);
+  }
+  
+  @GetMapping("/retrieve/image/{filename}")
+  @ResponseBody
+  public ResponseEntity<Resource> retrieveImage(@PathVariable String filename) {
+    Resource file = storageService.loadImage(filename);
     
+    return ResponseEntity
+            .ok()
+            .contentType(MediaType.IMAGE_JPEG)
+            .body(file);
+  }
+  
+  @GetMapping("/retrieve/document/{filename}")
+  @ResponseBody
+  public ResponseEntity<Resource> retrieveDocument(@PathVariable String filename) {
+    Resource file = storageService.loadDocument(filename);
     
+    return ResponseEntity
+            .ok()
+            .contentType(MediaType.APPLICATION_PDF)
+            .body(file);
   }
 }
