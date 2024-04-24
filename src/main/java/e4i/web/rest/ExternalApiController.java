@@ -63,7 +63,7 @@ public class ExternalApiController {
 
   public RequestHandler jsonhandler = new RequestHandler();
 
-  @GetMapping("/companies/{from}")
+  @GetMapping("/companies__1/{from}")
   public List<Company__1>  getCompanies(@PathVariable String from) {
 	  try {
 		    jsonhandler = new RequestHandler();
