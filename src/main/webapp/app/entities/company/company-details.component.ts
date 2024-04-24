@@ -128,8 +128,6 @@ export default class CompanyDetails extends Vue {
   }
 
   public sendInquiry(): void {
-    console.log(this.inquiryDTO);
-
     if (this.inquiryDTO) {
       this.inquiryService()
         .create(this.inquiryDTO)

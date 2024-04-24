@@ -1,23 +1,9 @@
 package e4i.web.rest;
 
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
-
-import org.hibernate.Hibernate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import e4i.domain.Message;
+import e4i.domain.User;
 import e4i.domain.PortalUser;
 import e4i.domain.Thread;
-import e4i.domain.User;
 import e4i.repository.MessageRepository;
 import e4i.repository.PortalUserRepository;
 import e4i.repository.ThreadRepository;
@@ -26,6 +12,18 @@ import e4i.service.MessageService;
 import e4i.service.UserService;
 import e4i.web.rest.errors.BadRequestAlertException;
 
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -165,9 +163,16 @@ public class MessageResource {
         
         List<Message> messages = new ArrayList<>();
         if (thread.getCompanyReceiver().getId() == currentPortalUser.getCompany().getId()) {
-        	messages = messageRepository.findAllByThreadIdAndIsDeletedReceiverOrderByDatetimeAsc(threadId, false);	
+        	messages = messageRepository.findAllByThreadIdAndIsDeletedReceiverOrderByDatetimeAsc(threadId, false);
         } else if (thread.getCompanySender().getId() == currentPortalUser.getCompany().getId()) {
         	messages = messageRepository.findAllByThreadIdAndIsDeletedSenderOrderByDatetimeAsc(threadId, false);	
+        }
+        
+        for (Message message : messages) {
+        	if ((message.getPortalUserSender().getId() != currentPortalUser.getId()) && !message.isIsRead()) {
+        		message.setIsRead(true);
+        		messageRepository.save(message);
+        	}
         }
 
 //        List<Message> messages = messageRepository.findAllByThreadIdOrderByDatetimeDesc(threadId);
@@ -187,6 +192,7 @@ public class MessageResource {
     }
     
     @PostMapping("/messages/thread")
+    @Transactional
     public ResponseEntity<Message> createMessageInThread(@RequestParam String content, @RequestParam Long senderId, @RequestParam("threadId") Long threadId) throws URISyntaxException {
         log.debug("REST request to save Message in thread: {}",  threadId);
         
@@ -207,7 +213,13 @@ public class MessageResource {
         message.setIsDeletedReceiver(false);
         
         Message result = messageService.save(message);
-        messageService.sendNotificationMail(result);
+
+        try {
+        	messageService.sendNotificationMail(result);
+        } catch (Exception e) {
+        	e.printStackTrace();
+		}
+        
         return ResponseEntity.created(new URI("/api/messages/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);

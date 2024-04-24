@@ -56,5 +56,7 @@ public interface PortalUserRepository extends JpaRepository<PortalUser, Long> {
     int deleteByUserId(@Param("user") User user);
     
     List<PortalUser> findAllByCompany(Company company);
+	
+	List<PortalUser> findAllByCompanyAndDoNotify(Company company, Boolean doNotify);
     
 }

@@ -1,19 +1,5 @@
 package e4i.web.rest;
 
-import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.github.jhipster.web.util.ResponseUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import e4i.domain.Advertisement;
 import e4i.domain.Company;
 import e4i.domain.Message;
@@ -26,6 +12,18 @@ import e4i.service.ThreadService;
 import e4i.web.rest.dto.ThreadDTO;
 import e4i.web.rest.errors.BadRequestAlertException;
 
+import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -164,7 +162,7 @@ public class ThreadResource {
     	  	
     	Company company = companyRepository.getOne(companyId);
     	
-        Page<Thread> page = threadRepository.findAllByCompany(companyId, pageable);
+        Page<Thread> page = threadRepository.findAllByCompany(companyId, false, pageable);
         
         List<ThreadDTO> threaDTOList = page.getContent().stream()
                 .map(t -> convertToDTO(t, company))
@@ -176,6 +174,63 @@ public class ThreadResource {
         return ResponseEntity.ok().headers(headers).body(pageDTO.getContent());
     }
     
+    @DeleteMapping("/threads/delete-empty/{id}")
+    @Transactional
+    public ResponseEntity<Boolean> deleteThreadWithNoMessages(@PathVariable Long id) {
+        log.debug("REST request to delete Thread : {}, if there are no messages", id);
+        
+        Long messageCount = messageRepository.countByThreadId(id);
+        
+        String responseMessage = "";
+        Boolean isDeleted = false;
+        if (messageCount == 0) {
+            
+        	Thread thread = threadRepository.getOne(id);
+        	
+        	Optional<Advertisement> advertisementOptional = advertisementRepository.findOneByThreads(thread);
+        	
+        	if (advertisementOptional.isPresent()) {
+            	Advertisement advertisement = advertisementOptional.get();        	
+            	advertisement.getThreads().remove(thread);
+            	thread.getAdvertisements().remove(advertisement);        		
+        	}
+        	
+        	threadService.delete(id);
+        		
+            responseMessage = ENTITY_NAME + " with id " +  id + " has been deleted.";
+            isDeleted = true;
+        } else {
+        	responseMessage = "There are messages in " + ENTITY_NAME + " " +  id + ".";
+        	isDeleted = false;
+        }        
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert(applicationName, responseMessage, id.toString())).body(isDeleted);
+    }
+    
+    @PutMapping("/threads/hide-user-messages/{id}/{isDeletedSender}")
+    @Transactional
+    public ResponseEntity<Void> deleteMessagesInThreadForPortalUser(@PathVariable Long id, @PathVariable Boolean isDeletedSender) {
+        log.debug("REST request to hide user messages in Thread : {}", id);
+        
+        List<Message> messages = messageRepository.findAllByThreadId(id);
+        
+        for (Message message : messages) {
+            if (isDeletedSender) {
+            	message.setIsDeletedSender(true);
+            } else {
+            	message.setIsDeletedReceiver(true);
+            }
+
+            Message result = messageRepository.save(message);
+            if (result.isIsDeletedSender() == result.isIsDeletedReceiver()) {
+            messageRepository.delete(result);	
+            }
+        }
+        
+        String responseMessage = "";
+        
+        return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, responseMessage, id.toString())).build();
+    }
+    
     @GetMapping("/threads/company-sender")
     @Transactional
     public ResponseEntity<List<ThreadDTO>> getAllThreadsForCompanySender(
@@ -185,7 +240,7 @@ public class ThreadResource {
     	
     	Company company = companyRepository.getOne(companyId);
     	
-        Page<Thread> page = threadRepository.findAllByCompanySender(companyId, pageable);
+        Page<Thread> page = threadRepository.findAllByCompanySender(companyId, false, pageable);
         
         List<ThreadDTO> threaDTOList = page.getContent().stream()
                 .map(t -> convertToDTO(t, company))
@@ -206,7 +261,7 @@ public class ThreadResource {
     	
     	Company company = companyRepository.getOne(companyId);
     	
-        Page<Thread> page = threadRepository.findAllByCompanyReceiver(companyId, pageable);
+        Page<Thread> page = threadRepository.findAllByCompanyReceiver(companyId, false, pageable);
         
         List<ThreadDTO> threaDTOList = page.getContent().stream()
                 .map(t -> convertToDTO(t, company))
@@ -228,18 +283,25 @@ public class ThreadResource {
 		threadDTO.setSubject(thread.getSubject());
 		
 		Optional<Message> latestMessageOptional = Optional.empty();
+		Optional<Message> unreadMessageOptional = Optional.empty();
 		if (thread.getCompanySender().getId() == company.getId()) {
 			threadDTO.setMessageCount(messageRepository.countByThreadIdAndIsDeletedSender(id, false));
-			latestMessageOptional = messageRepository.findFirstByThreadIdAndIsDeletedSenderOrderByDatetimeDesc(id, false);	
+			latestMessageOptional = messageRepository.findFirstByThreadIdAndIsDeletedSenderOrderByDatetimeDesc(id, false);
+	        unreadMessageOptional = messageRepository
+	        		.findFirstByThreadIdAndPortalUserSenderCompanyIdNotAndIsReadAndIsDeletedSender(id, company.getId(), false, false);
 		} else if (thread.getCompanyReceiver().getId() == company.getId()) {
 			threadDTO.setMessageCount(messageRepository.countByThreadIdAndIsDeletedReceiver(id, false));
-			latestMessageOptional = messageRepository.findFirstByThreadIdAndIsDeletedReceiverOrderByDatetimeDesc(id, false);	
+			latestMessageOptional = messageRepository.findFirstByThreadIdAndIsDeletedReceiverOrderByDatetimeDesc(id, false);
+	        unreadMessageOptional = messageRepository
+	        		.findFirstByThreadIdAndPortalUserSenderCompanyIdNotAndIsReadAndIsDeletedReceiver(id, company.getId(), false, false);
 		}
         if (latestMessageOptional.isPresent()) {
             Message latestMessage = latestMessageOptional.get();
             threadDTO.setLastMessageContent(latestMessage.getContent());
             threadDTO.setLastMessageDatetime(latestMessage.getDatetime());
         }
+        
+        threadDTO.setUnreadExists(unreadMessageOptional.isPresent());
         
         Optional<Advertisement> advertisementOptional = advertisementRepository.findOneByThreads(thread);
         if (advertisementOptional.isPresent()) {

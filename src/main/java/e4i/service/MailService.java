@@ -1,8 +1,11 @@
 package e4i.service;
 
+import e4i.domain.PortalUser;
+import e4i.domain.User;
 import io.github.jhipster.config.JHipsterProperties;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Locale;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -17,8 +20,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
-
-import e4i.domain.User;
 
 /**
  * Service for sending emails.
@@ -41,6 +42,7 @@ public class MailService {
     private final MessageSource messageSource;
 
     private final SpringTemplateEngine templateEngine;
+    
 
     public MailService(JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
             MessageSource messageSource, SpringTemplateEngine templateEngine) {
@@ -102,5 +104,29 @@ public class MailService {
     public void sendPasswordResetMail(User user) {
         log.debug("Sending password reset email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "mail/passwordResetEmail", "email.reset.title");
+    }
+    
+    @Async
+    public void sendMessageNotificationMail(String content, List<PortalUser> companyPortalUsers) {
+        log.debug("Sending message notification to users from company");
+        
+        String subject = "B2B portal - Obaveštenje o novoj poruci";
+
+        // Prepare message using a Spring helper
+        for (PortalUser portalUser : companyPortalUsers) {
+        	String email = portalUser.getUser().getEmail();
+            try {
+                MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+                MimeMessageHelper emailMessage = new MimeMessageHelper(mimeMessage, false, StandardCharsets.UTF_8.name());
+                emailMessage.setTo(email);
+                emailMessage.setFrom(jHipsterProperties.getMail().getFrom());
+                emailMessage.setSubject(subject);
+                emailMessage.setText(content, true);
+                javaMailSender.send(mimeMessage);
+                log.debug("Sent email to User '{}'", email);
+            }  catch (MailException | MessagingException e) {
+                log.warn("Email could not be sent to user '{}'", email, e);
+            }	
+        }
     }
 }

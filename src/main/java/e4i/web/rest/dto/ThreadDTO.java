@@ -16,10 +16,11 @@ public class ThreadDTO {
 	private Long messageCount;
 	private Instant lastMessageDatetime;
 	private String lastMessageContent;
+	private Boolean unreadExists;
 	
 	
-	public ThreadDTO(Long id, String subject, Company companySender, Company companyReceiver,
-			Advertisement advertisement, Long messageCount, Instant lastMessageDatetime, String lastMessageContent) {
+	public ThreadDTO(Long id, String subject, Company companySender, Company companyReceiver, Advertisement advertisement,
+			Long messageCount, Instant lastMessageDatetime, String lastMessageContent, Boolean unreadExists) {
 		super();
 		this.id = id;
 		this.subject = subject;
@@ -29,6 +30,7 @@ public class ThreadDTO {
 		this.messageCount = messageCount;
 		this.lastMessageDatetime = lastMessageDatetime;
 		this.lastMessageContent = lastMessageContent;
+		this.unreadExists = unreadExists;
 	}
 	
 	public ThreadDTO() {
@@ -125,6 +127,12 @@ public class ThreadDTO {
 	public void setLastMessageContent(String lastMessageContent) {
 		this.lastMessageContent = lastMessageContent;
 	}
-	
-	
+
+	public Boolean getUnreadExists() {
+		return unreadExists;
+	}
+
+	public void setUnreadExists(Boolean unreadExists) {
+		this.unreadExists = unreadExists;
+	}
 }

@@ -21,14 +21,15 @@ enum ThreadsFilter {
 }
 
 interface IThreadDTO {
-  id: Number;
+  id: number;
   subject: string;
   companySender: ICompany;
   companyReceiver: ICompany;
   advertisement: IAdvertisement;
-  messageCount: Number;
+  messageCount: number;
   lastMessageDatetime: Date;
   lastMessageContent: string;
+  unreadExists: boolean;
 }
 
 @Component({
@@ -41,6 +42,7 @@ export default class Thread extends mixins(AlertMixin) {
   @Inject('portalUserService') private portalUserService: () => PortalUserService;
 
   private removeId: number = null;
+  private removeThreadDTO: IThreadDTO = null;
   public itemsPerPage = 20;
   public queryCount: number = null;
   public page = 1;
@@ -154,24 +156,46 @@ export default class Thread extends mixins(AlertMixin) {
     }
   }
 
-  public prepareRemove(instance: IThread): void {
-    this.removeId = instance.id;
+  public prepareRemove(thread: IThreadDTO): void {
+    this.removeThreadDTO = thread;
     if (<any>this.$refs.removeEntity) {
       (<any>this.$refs.removeEntity).show();
     }
   }
 
   public removeThread(): void {
+    if (!this.removeThreadDTO?.id) {
+      return;
+    }
+
+    const companySenderId = this.removeThreadDTO.companySender.id;
+    const companyReceiverId = this.removeThreadDTO.companyReceiver.id;
+    const portalUserCompanyId = this.portalUser.company.id;
+
+    // Odredjivanje za koga treba da se sakrije poruka.
+    let isDeletedSender = true;
+    if (portalUserCompanyId === companySenderId) {
+      isDeletedSender = true;
+    } else if (portalUserCompanyId === companyReceiverId) {
+      isDeletedSender = false;
+    }
+
     this.threadService()
-      .delete(this.removeId)
+      .hideUserMessages(this.removeThreadDTO.id, isDeletedSender)
       .then(() => {
-        const message = this.$t('riportalApp.thread.deleted', { param: this.removeId });
-        this.alertService().showAlert(message, 'danger');
-        this.getAlertFromStore();
-        this.removeId = null;
-        this.retrieveThreads();
-        this.closeDialog();
+        const notificatonMessage = 'Konverzacija je obrisana!';
+        this.$notify({
+          text: notificatonMessage,
+        });
+        this.threadService()
+          .deleteIfEmpty(this.removeThreadDTO.id)
+          .then(res => {
+            this.retrieveThreads();
+            // Ukoliko thread nije obrisan, osvezi poruke u threadu
+          });
       });
+
+    this.closeDialog();
   }
 
   public sort(): Array<any> {
@@ -240,6 +264,17 @@ export default class Thread extends mixins(AlertMixin) {
     }
   }
 
+  public showMessages(thread: IThreadDTO) {
+    if (thread?.id) {
+      this.messageService()
+        .getAllByThreadId(thread.id)
+        .then(res => {
+          this.retrieveThreads();
+          this.messages = res;
+        });
+    }
+  }
+
   public buildThreadDisplayString(thread: IThreadDTO): String {
     const CHAR_LIMIT = 70;
     const subjectLength = thread.subject.length;
@@ -279,40 +314,57 @@ export default class Thread extends mixins(AlertMixin) {
       return;
     }
 
-    const companySenderId = thread.companySender.id;
-    const companyReceiverId = thread.companyReceiver.id;
-    const portalUserCompanyId = this.portalUser.company.id;
+    // Prvo se povlaci aktuelno stanje poruke u bazi
+    // za slucaj da je u browser-u ucitana stara verzija.
+    // Ovo resava problem ukoliko jedan korisnik obrise poruku,
+    // a drugi korisnik nije osvezio poruku pre brisanja na svom kraju.
+    this.messageService()
+      .find(message.id)
+      .then(res => {
+        // Aktuelno stanje poruke u bazi
+        const messageFromDB = res;
 
-    // Odredjivanje za koga treba da se sakrije poruka.
-    if (portalUserCompanyId === companySenderId) {
-      message.isDeletedSender = true;
-    } else if (portalUserCompanyId === companyReceiverId) {
-      message.isDeletedReceiver = true;
-    }
+        const companySenderId = thread.companySender.id;
+        const companyReceiverId = thread.companyReceiver.id;
+        const portalUserCompanyId = this.portalUser.company.id;
 
-    if (message.isDeletedSender === message.isDeletedReceiver) {
-      this.messageService()
-        .delete(message.id)
-        .then(res => {
-          const notificatonMessage = 'Poruka je obrisana!';
-          this.$notify({
-            text: notificatonMessage,
-          });
-          this.retrieveThreads();
-          this.getMessages(thread);
-          console.log(this.messages);
-        });
-    } else {
-      this.messageService()
-        .update(message)
-        .then(res => {
-          const notificatonMessage = 'Poruka je obrisana!';
-          this.$notify({
-            text: notificatonMessage,
-          });
-          this.retrieveThreads();
-          this.getMessages(thread);
-        });
-    }
+        // Odredjivanje za koga treba da se sakrije poruka.
+        if (portalUserCompanyId === companySenderId) {
+          messageFromDB.isDeletedSender = true;
+        } else if (portalUserCompanyId === companyReceiverId) {
+          messageFromDB.isDeletedReceiver = true;
+        }
+
+        if (messageFromDB.isDeletedSender === messageFromDB.isDeletedReceiver) {
+          this.messageService()
+            .delete(messageFromDB.id)
+            .then(res => {
+              const notificatonMessage = 'Poruka je obrisana!';
+              this.$notify({
+                text: notificatonMessage,
+              });
+              this.threadService()
+                .deleteIfEmpty(thread.id)
+                .then(res => {
+                  this.retrieveThreads();
+                  // Ukoliko thread nije obrisan, osvezi poruke u threadu
+                  if (res.data === false) {
+                    this.getMessages(thread);
+                  }
+                });
+            });
+        } else {
+          this.messageService()
+            .update(messageFromDB)
+            .then(res => {
+              const notificatonMessage = 'Poruka je obrisana!';
+              this.$notify({
+                text: notificatonMessage,
+              });
+              this.retrieveThreads();
+              this.getMessages(thread);
+            });
+        }
+      });
   }
 }

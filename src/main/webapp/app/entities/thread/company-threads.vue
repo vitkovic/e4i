@@ -20,10 +20,11 @@
         </div>
         <br/>
         <div class="alert alert-warning" v-if="!isFetching && threadsDTO && threadsDTO.length === 0">
-            <span v-text="$t('riportalApp.thread.home.notFound')">No threads found</span>
+            <span v-text="$t('b2BportalApp.thread.home.notFound')">No threads found</span>
         </div>
         <div class="ml-3 mb-3" style="display: flex; align-items: center;">
-            <h3 v-text="'Poruke'" class="mr-3">Poruke</h3>
+            <h3 v-if="threadsDTO" v-text=" threadsDTO.some(t => t.unreadExists) ? 'Poruke (' + + threadsDTO.filter(t => t.unreadExists ).length + ')' : 'Poruke'" class="mr-3">Poruke</h3>
+            <h3 v-else v-text="'Poruke'"></h3>
             <div>
                 <b-button :variant="filterAllButtonVariant" v-text="'Svi upiti'" v-on:click="showAllThreads()">Cancel</b-button>
                 <b-button :variant="filterReceiverButtonVariant" v-text="'Primljeni upiti'" v-on:click="showReceiverThreads()">Cancel</b-button>
@@ -33,7 +34,7 @@
         <div class="table-responsive" v-if="threadsDTO && threadsDTO.length > 0" style="font-size: 0.9rem;">
                 <!-- <thead>
                 <tr>
-                    <th v-on:click="changeOrder('subject')"><span v-text="$t('riportalApp.thread.subject')">Subject</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'subject'"></jhi-sort-indicator></th>
+                    <th v-on:click="changeOrder('subject')"><span v-text="$t('b2BportalApp.thread.subject')">Subject</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'subject'"></jhi-sort-indicator></th>
                     <th v-on:click="changeOrder('companyReceiver.id')"><span v-text="'Company Receiver'">Company Receiver</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'companyReceiver.id'"></jhi-sort-indicator></th>
                     <th v-on:click="changeOrder('companySender.id')"><span v-text="'Company Sender'">Company Sender</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'companySender.id'"></jhi-sort-indicator></th>
                     <th></th>
@@ -42,7 +43,7 @@
                 <b-row class="table-header mt-4 bg-red ml-2 mb-2 mr-2 pt-2 font-weight-bold border-top">
                     <b-col sm="5"></b-col>
                     <b-col></b-col>
-                    <!-- <b-col v-on:click="changeOrder('subject')"><span v-text="$t('riportalApp.thread.subject')">Subject</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'subject'"></jhi-sort-indicator></b-col>
+                    <!-- <b-col v-on:click="changeOrder('subject')"><span v-text="$t('b2BportalApp.thread.subject')">Subject</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'subject'"></jhi-sort-indicator></b-col>
                     <b-col v-on:click="changeOrder('datetime')"><span v-text="'Datetime'">Datetime</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'datetime'"></jhi-sort-indicator></b-col> -->
                     <b-col><span v-text="'Company Receiver'">Company Receiver</span></b-col>
                     <b-col><span v-text="'Company Sender'">Company Sender</span></b-col>
@@ -51,7 +52,7 @@
                 </b-row>
                 <div class="accordion" v-for="(thread, index) in threadsDTO" :key="thread.id">
                     <!-- <b-row :class="{'gray-light': index%2 == 0, 'gray-dark': index%2 != 0 }"> -->
-                    <b-row class="bg-light ml-2 mr-2 border-top border-bottom" v-on:click="getMessages(thread)" v-b-toggle="'collapse-' + index">
+                    <b-row :class="{ 'unreadMessages': thread.unreadExists }" class="bg-light ml-2 mr-2 border-top border-bottom" v-on:click="showMessages(thread)" v-b-toggle="'collapse-' + index">
                     <b-col class="pt-2" sm="5">
                         <b>{{ thread.subject }}</b>
                         <span>{{' (' + thread.messageCount + ')'}}</span>
@@ -95,7 +96,7 @@
                                     <p>
                                         <b>Pošiljalac: </b>
                                         <span>{{ message.portalUserSender.company.name }}</span> 
-                                        <span>{{ ' - ' + message.portalUserSender.firstname + ' ' + message.portalUserSender.lastname }}</span>
+                                        <span>{{ ' - ' + message.portalUserSender.user.firstName + ' ' + message.portalUserSender.user.lastName }}</span>
                                     </p>
                                     <!-- <p>Primalac: {{ message.portalUserReceiver.firstname + ' ' + message.portalUserReceiver.lastname }}</p> -->
                                     <p style="white-space: pre-line;">{{ message.content }}</p>
@@ -119,9 +120,9 @@
                 </div>
         </div>
         <b-modal ref="removeEntity" id="removeEntity" >
-            <span slot="modal-title"><span id="riportalApp.thread.delete.question" v-text="$t('entity.delete.title')">Confirm delete operation</span></span>
+            <span slot="modal-title"><span id="b2BportalApp.thread.delete.question" v-text="$t('entity.delete.title')">Confirm delete operation</span></span>
             <div class="modal-body">
-                <p id="jhi-delete-thread-heading" v-text="$t('riportalApp.thread.delete.question', {'id': removeId})">Are you sure you want to delete this Thread?</p>
+                <p v-if="removeThreadDTO" id="jhi-delete-thread-heading" v-text="$t('b2BportalApp.thread.delete.question', {'id': removeThreadDTO.subject})">Are you sure you want to delete this Thread?</p>
             </div>
             <div slot="modal-footer">
                 <button type="button" class="btn btn-secondary" v-text="$t('entity.action.cancel')" v-on:click="closeDialog()">Cancel</button>
@@ -138,6 +139,15 @@
         </div>
     </div>
 </template>
+
+<style>
+
+.unreadMessages {
+    /* background-color: #eff5f1 !important; */
+    box-shadow: inset 0 0 0 2px #98a7ab;
+}
+
+</style>
 
 <script lang="ts" src="./company-threads.component.ts">
 </script>

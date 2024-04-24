@@ -8,6 +8,8 @@ const baseApiUrl = 'api/threads';
 const apiGetThreadsByCompany = 'api/threads/company';
 const apiGetThreadsByCompanySender = 'api/threads/company-sender';
 const apiGetThreadsByCompanyReceiver = 'api/threads/company-receiver';
+const apiDeleteIfEmpty = 'api/threads/delete-empty';
+const apiHideUserMessages = 'api/threads/hide-user-messages';
 
 export default class ThreadService {
   public find(id: number): Promise<IThread> {
@@ -79,6 +81,32 @@ export default class ThreadService {
     return new Promise<any>((resolve, reject) => {
       axios
         .delete(`${baseApiUrl}/${id}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public deleteIfEmpty(id: number): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .delete(`${apiDeleteIfEmpty}/${id}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public hideUserMessages(id: number, isDeletedSender: boolean): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .put(`${apiHideUserMessages}/${id}/${isDeletedSender}`)
         .then(res => {
           resolve(res);
         })

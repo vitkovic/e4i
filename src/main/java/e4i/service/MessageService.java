@@ -1,5 +1,16 @@
 package e4i.service;
 
+import e4i.domain.Advertisement;
+import e4i.domain.Company;
+import e4i.domain.Message;
+import e4i.domain.PortalUser;
+import e4i.domain.Thread;
+import e4i.repository.AdvertisementRepository;
+import e4i.repository.CompanyRepository;
+import e4i.repository.MessageRepository;
+import e4i.repository.PortalUserRepository;
+import e4i.repository.ThreadRepository;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,16 +18,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import e4i.domain.Company;
-import e4i.domain.Message;
-import e4i.domain.PortalUser;
-import e4i.domain.Thread;
-import e4i.repository.CompanyRepository;
-import e4i.repository.MessageRepository;
-import e4i.repository.PortalUserRepository;
-import e4i.repository.ThreadRepository;
-
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +45,9 @@ public class MessageService {
     
     @Autowired
     CompanyRepository companyRepository;
+    
+    @Autowired
+    AdvertisementRepository advertisementRepository;
     
     @Autowired
     MailService mailService;
@@ -93,7 +102,7 @@ public class MessageService {
         messageRepository.deleteById(id);
     }
     
-    @Transactional(readOnly = true)
+    @Transactional
     public void sendNotificationMail(Message message) {
     	
     	// Videti kako ovo bolje uraditi!!!
@@ -108,8 +117,46 @@ public class MessageService {
         	company = companyReceiver;
         }
         
-        List<PortalUser> companyPortalUsers = portalUserRepository.findAllByCompany(company);
-
-//        mailService.sendMessageNotificationMail(message, thread, company, companyPortalUsers);
+        List<PortalUser> companyPortalUsers = portalUserRepository.findAllByCompanyAndDoNotify(company, true);
+		 
+        String messageNotificationContent = prepareMessageNotificationContent(message, thread, company);
+        
+		mailService.sendMessageNotificationMail(messageNotificationContent, companyPortalUsers);
+    }
+    
+    public String prepareMessageNotificationContent(Message message, Thread thread, Company company) {
+    	
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        ZonedDateTime zonedDateTime = message.getDatetime().atZone(ZoneId.systemDefault());
+        
+        String advertisementString = "";
+        Optional<Advertisement> advertisementOptional = advertisementRepository.findOneByThreads(thread);        
+        if (advertisementOptional.isPresent()) {
+        	Advertisement advertisement = advertisementOptional.get();
+        	advertisementString = "<p><b>Oglas: </b><span>" + advertisement.getTitle() + "</span></p>";
+        }
+    	
+        String senderString = message.getPortalUserSender().getCompany().getName()
+        		+ " - " + message.getPortalUserSender().getUser().getFirstName()
+        		+ " " + message.getPortalUserSender().getUser().getLastName();
+        
+        String homeURL = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
+        String companyMessagesLink = homeURL + "/b2b/company/" + company.getId() + "/threads";
+        
+        String content = "<div>"
+        		+ "<p>Imate novu poruku na B2B portalu za kompaniju " + company.getName() + ".</p>"
+        		+ "<br>"
+        		+ "<p><b>Vreme: </b><span>" + dateTimeFormatter.format(zonedDateTime) + "</span></p>"
+        		+ "<p><b>Pоšiljalac: </b><span>" + senderString + "</span></p>"
+        		+ advertisementString
+        		+ "<p><b>Upit: </b><span>" + thread.getSubject() + "</span></p>"
+        		+ "<hr>"
+        		+ "<p style='white-space: pre-line;'>" + message.getContent() + "</p>"
+        		+ "<hr>"
+        		+ "<p>Na poruku možete odgovoriti sa "
+        		+ "<a href='" + companyMessagesLink + "'>profila Vaše kompanije<a>.</p>"
+        		+ "<p>Ovo je automatski poslata poruka, ne odgovarati na ovaj mail.</p>";
+             
+    	return content;
     }
 }

@@ -1,12 +1,12 @@
 package e4i.repository;
 
+import e4i.domain.Thread;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import e4i.domain.Thread;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,19 +21,31 @@ public interface ThreadRepository extends JpaRepository<Thread, Long> {
         countQuery = "select count(distinct thread) from Thread thread")
     Page<Thread> findAllWithEagerRelationships(Pageable pageable);
     
-    @Query(value = "select distinct thread from Thread thread "
-    		+ "where thread.companySender.id = :companyId "
-    		+ "or thread.companyReceiver.id = :companyId",
-            countQuery = "select count(distinct thread) from Thread thread")
-        Page<Thread> findAllByCompany(@Param("companyId") Long companyId, Pageable pageable);
+    @Query("SELECT thread FROM Thread thread " +
+            "JOIN thread.messages message " +
+            "WHERE (thread.companySender.id = :companyId " +
+            "AND EXISTS (SELECT 1 FROM thread.messages m WHERE m = message and message.isDeletedSender = :isDeleted)) " +
+            "OR (thread.companyReceiver.id = :companyId " +
+            "AND EXISTS (SELECT 1 FROM thread.messages m WHERE m = message and message.isDeletedReceiver = :isDeleted)) " +
+    		"GROUP BY thread " +
+            "ORDER BY max(message.datetime) DESC")
+    Page<Thread> findAllByCompany(@Param("companyId") Long companyId, @Param("isDeleted") Boolean isDeleted, Pageable pageable);
     
-    @Query(value = "select distinct thread from Thread thread where thread.companySender.id = :companyId",
-            countQuery = "select count(distinct thread) from Thread thread")
-        Page<Thread> findAllByCompanySender(@Param("companyId") Long companyId, Pageable pageable);
+    @Query("SELECT thread FROM Thread thread " +
+            "JOIN thread.messages message " +
+            "WHERE thread.companySender.id = :companyId " +
+            "AND EXISTS (SELECT 1 FROM thread.messages m WHERE m = message and message.isDeletedSender = :isDeletedSender) " +
+    		"GROUP BY thread " +
+            "ORDER BY max(message.datetime) DESC")
+    Page<Thread> findAllByCompanySender(@Param("companyId") Long companyId, @Param("isDeletedSender") Boolean isDeletedSender, Pageable pageable);
     
-    @Query(value = "select distinct thread from Thread thread where thread.companyReceiver.id = :companyId",
-            countQuery = "select count(distinct thread) from Thread thread")
-        Page<Thread> findAllByCompanyReceiver(@Param("companyId") Long companyId, Pageable pageable);
+    @Query("SELECT thread FROM Thread thread " +
+            "JOIN thread.messages message " +
+            "WHERE thread.companyReceiver.id = :companyId " +
+            "AND EXISTS (SELECT 1 FROM thread.messages m WHERE m = message and m.isDeletedReceiver = :isDeletedReceiver) " +
+    		"GROUP BY thread " +
+            "ORDER BY max(message.datetime) DESC")
+    Page<Thread> findAllByCompanyReceiver(@Param("companyId") Long companyId, @Param("isDeletedReceiver") Boolean isDeletedReceiver, Pageable pageable);
 
     @Query("select distinct thread from Thread thread left join fetch thread.advertisements")
     List<Thread> findAllWithEagerRelationships();
