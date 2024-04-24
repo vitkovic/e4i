@@ -108,6 +108,10 @@ public class AccountResource {
         PortalUser portalUser = new PortalUser(managedUserVM, user);
         portalUser.setUserOrganization(puoResult);
         portalUser.setResearcher(managedUserVM.getResearcher());
+        
+        // Temporary quick fix to bypass eId field in PortalUser which is annotated as "not null".
+        portalUser.setEidId(9999L);
+        
         PortalUser result = portalUserRepository.save(portalUser);
         mailService.sendActivationEmail(user);
     }
