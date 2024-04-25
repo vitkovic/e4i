@@ -35,6 +35,16 @@ export default class CompanyDetails extends Vue {
   public company: ICompany = {};
   public inquiryDTO: InquiryDTO | null = null;
 
+  public isModalFormIsValid: boolean = true;
+  public inputSubject = {
+    value: '',
+    isValid: true,
+  };
+  public textareaContent = {
+    value: '',
+    isValid: true,
+  };
+
   private viewerOptions: any = {
     movable: false,
     toolbar: {
@@ -127,7 +137,35 @@ export default class CompanyDetails extends Vue {
     (<any>this.$refs.adInquiry).hide();
   }
 
+  public validateModalForm() {
+    this.isModalFormIsValid = true;
+    if (this.inputSubject.value === '') {
+      this.inputSubject.isValid = false;
+      this.isModalFormIsValid = false;
+    }
+
+    if (this.textareaContent.value === '') {
+      this.textareaContent.isValid = false;
+      this.isModalFormIsValid = false;
+    }
+  }
+
+  public clearValidity(input) {
+    this[input].isValid = true;
+  }
+
   public sendInquiry(): void {
+    console.log(this.inquiryDTO);
+
+    this.validateModalForm();
+
+    if (!this.isModalFormIsValid) {
+      return;
+    }
+
+    this.inquiryDTO.subject = this.inputSubject.value;
+    this.inquiryDTO.content = this.textareaContent.value;
+
     if (this.inquiryDTO) {
       this.inquiryService()
         .create(this.inquiryDTO)

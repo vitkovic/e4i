@@ -154,10 +154,12 @@
                         <p v-if="advertisement.company" id="jhi-delete-advertisement-heading"><b>Kompanija: </b>{{ advertisement.company.name }}</p>
                         <br>
                         <label name="inquiry-subject">Naziv poruke:</label>
-                        <b-input v-model="inquiryDTO.subject"></b-input>
+                        <b-input v-model.trim="inputSubject.value" @blur="clearValidity('inputSubject')" ></b-input>
+                        <p v-if="!inputSubject.isValid" class="text-danger small">Naziv poruke ne može biti prazan.</p>
                         <br>
                         <label name="inquiry-content">Sadržaj poruke:</label>
-                        <b-textarea v-model="inquiryDTO.content"></b-textarea>
+                        <b-textarea v-model.trim="textareaContent.value" @blur="clearValidity('textareaContent')"></b-textarea>
+                        <p v-if="!textareaContent.isValid" class="text-danger small">Sadržaj poruke ne može biti prazan.</p>
                     </div>
                     <div slot="modal-footer">
                         <button type="button" class="btn btn-secondary" v-text="'Otkaži'" v-on:click="closeAdInquiry()">Otkaži</button>

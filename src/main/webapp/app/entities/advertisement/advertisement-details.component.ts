@@ -33,6 +33,16 @@ export default class AdvertisementDetails extends Vue {
   public advertisement: IAdvertisement = {};
   public inquiryDTO: InquiryDTO | null = null;
 
+  public isModalFormIsValid: boolean = true;
+  public inputSubject = {
+    value: '',
+    isValid: true,
+  };
+  public textareaContent = {
+    value: '',
+    isValid: true,
+  };
+
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (to.params.advertisementId) {
@@ -108,8 +118,34 @@ export default class AdvertisementDetails extends Vue {
     (<any>this.$refs.adInquiry).hide();
   }
 
+  public validateModalForm() {
+    this.isModalFormIsValid = true;
+    if (this.inputSubject.value === '') {
+      this.inputSubject.isValid = false;
+      this.isModalFormIsValid = false;
+    }
+
+    if (this.textareaContent.value === '') {
+      this.textareaContent.isValid = false;
+      this.isModalFormIsValid = false;
+    }
+  }
+
+  public clearValidity(input) {
+    this[input].isValid = true;
+  }
+
   public sendInquiry(): void {
     console.log(this.inquiryDTO);
+
+    this.validateModalForm();
+
+    if (!this.isModalFormIsValid) {
+      return;
+    }
+
+    this.inquiryDTO.subject = this.inputSubject.value;
+    this.inquiryDTO.content = this.textareaContent.value;
 
     if (this.inquiryDTO) {
       this.inquiryService()
