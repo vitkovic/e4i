@@ -303,7 +303,7 @@
             <div class="form-group">
               <label class="form-control-label position-relative" v-text="'Upload images'"></label>
               <b-form-file
-                style="margin-bottom: 30px;"
+                style="margin-bottom: 5px;"
                 v-model="formImages"
                 @input="appendImageFiles()"
                 :state="Boolean(formImages)"
@@ -313,8 +313,17 @@
                 :browstext="browseText"
                 accept=".jpg, .jpeg, .png, .svg"
                 :file-name-formatter="formatNames"
+                :disabled="isUploadImageFilesDisabled"
               >
               </b-form-file>
+              <div>
+                <p v-if="isUploadImageFilesDisabled" class="text-danger small mb-2">
+                  Dostignut je maksimalan broj slika (15). Molim Vas uklonite pojedine slike, kako biste mogli da dodate nove.
+                </p>
+                <p v-else class="small mb-0 text-info">* Broj slika koji možete dodati je: {{ availableNumberOfImagesToAdd }}.</p>
+                <p class="small mb-0 text-info">* Dozvoljena maksimalna veličina slike je 2 mb.</p>
+                <!-- <p class="small mb-0 text-info">* Dozvoljene dimenzije slike su 50 x 50.</p> -->
+              </div>
               <ol class="p-0">
                 <p class="font-weight-bold">Current images:</p>
                 <div v-for="document in advertisement.documents">
@@ -355,7 +364,7 @@
             <div class="form-group">
               <label class="form-control-label position-relative" v-text="'Upload documents'"></label>
               <b-form-file
-                style="margin-bottom: 30px;"
+                style="margin-bottom: 5px;"
                 v-model="formDocuments"
                 @input="appendDocumentFiles()"
                 :state="Boolean(formDocuments)"
@@ -365,8 +374,16 @@
                 :browstext="browseText"
                 accept="application/pdf"
                 :file-name-formatter="formatNames"
+                :disabled="isUploadDocumentFilesDisabled"
               >
               </b-form-file>
+              <div>
+                <p v-if="isUploadDocumentFilesDisabled" class="text-danger small mb-2">
+                  Dostignut je maksimalan broj dokumenata (15). Molim Vas uklonite pojedine dokumente, kako biste mogli da dodate nove.
+                </p>
+                <p v-else class="small mb-0 text-info">* Broj dokumenata koji možete dodati je: {{ availableNumberOfDocumentsToAdd }}.</p>
+                <p class="small mb-0 text-info">* Dozvoljena maksimalna veličina dokumenta je 2 mb.</p>
+              </div>
               <ol class="p-0">
                 <p class="font-weight-bold">Current documents:</p>
                 <div v-for="document in advertisement.documents">

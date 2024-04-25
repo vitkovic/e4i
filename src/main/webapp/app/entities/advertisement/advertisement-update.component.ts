@@ -150,6 +150,8 @@ export default class AdvertisementUpdate extends Vue {
   public browseText = '';
   public showDocumentsSection = false;
   public selectedImageId: number | null = null;
+  public showImageSizeError: { number: number; state: boolean } = { number: 0, state: false };
+  public showImageLimitError: { number: number; state: boolean } = { number: 0, state: false };
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -412,17 +414,99 @@ export default class AdvertisementUpdate extends Vue {
   }
 
   public appendImageFiles(): void {
+    console.log(this.advertisement.documents);
+    const newImagesArray: ImageBlob[] = [];
+    let numberOfBigImages: number = 0;
+    let numberOfLimitImages: number = 0;
+
     for (const formImage of this.formImages) {
-      if (this.imageFiles.filter(image => image.name === formImage.name).length === 0) {
+      if (formImage.size > 2 * 1024 * 1024) {
+        numberOfBigImages++;
+      }
+      if (formImage.size <= 2 * 1024 * 1024 && this.imageFiles.filter(image => image.name === formImage.name).length === 0) {
+        newImagesArray.push(formImage);
+      }
+    }
+
+    if (this.advertisement.documents.filter(doc => doc.type.type === 'image').length + this.imageFiles.length + newImagesArray.length > 15) {
+      const imagesToAdd = 15 - this.imageFiles.length - this.advertisement.documents.filter(doc => doc.type.type === 'image').length;
+      const imagesToAddArray = newImagesArray.slice(0, imagesToAdd);
+      numberOfLimitImages = newImagesArray.length - imagesToAddArray.length;
+      this.imageFiles.push(...imagesToAddArray);
+
+      if(numberOfLimitImages > 0 && numberOfBigImages > 0) {
+        this.$notify({
+          text: `Broj slika koji ne može biti dodat je ${numberOfLimitImages + numberOfBigImages}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj slika (15).</li><li>veličina slike (2mb).</li></ul>`,
+          type: 'error',
+          duration: 8000 // Duration of the notification
+        });
+      } else if(numberOfLimitImages > 0) {
+        this.$notify({
+          text: `Broj slika koji ne može biti dodat je ${numberOfLimitImages}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj slika (15).</li></ul>`,
+          type: 'error',
+          duration: 8000 // Duration of the notification
+        });
+      }
+    } else {
+      for (const formImage of newImagesArray) {
         this.imageFiles.push(formImage);
+      }
+
+      if (numberOfBigImages > 0) {
+        this.$notify({
+          text: `Broj slika koji ne može biti dodat je ${numberOfBigImages}.<br>Prekoračena ograničenja:<br><ul><li>veličina slike (2mb).</li></ul>`,
+          type: 'error',
+          duration: 8000
+        });
       }
     }
   }
 
   public appendDocumentFiles(): void {
+
+    const newDocumentsArray: DocumentBlob[] = [];
+    let numberOfBigDocuments: number = 0;
+    let numberOfLimitDocuments: number = 0;
+
     for (const formDocument of this.formDocuments) {
-      if (this.documentFiles.filter(document => document.name === formDocument.name).length === 0) {
+      if (formDocument.size > 2 * 1024 * 1024) {
+        numberOfBigDocuments++;
+      }
+      if (formDocument.size <= 2 * 1024 * 1024 && this.documentFiles.filter(document => document.name === formDocument.name).length === 0) {
+        newDocumentsArray.push(formDocument);
+      }
+    }
+
+    if (this.advertisement.documents.filter(doc => doc.type.type === 'document').length + this.documentFiles.length + newDocumentsArray.length > 15) {
+      const documentsToAdd = 15 - this.documentFiles.length - this.advertisement.documents.filter(doc => doc.type.type === 'document').length;
+      const documentsToAddArray = newDocumentsArray.slice(0, documentsToAdd);
+      numberOfLimitDocuments = newDocumentsArray.length - documentsToAddArray.length;
+      this.documentFiles.push(...documentsToAddArray);
+
+      if(numberOfLimitDocuments > 0 && numberOfBigDocuments > 0) {
+        this.$notify({
+          text: `Broj dokumenata koji ne može biti dodat je ${numberOfLimitDocuments + numberOfBigDocuments}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj dokumenata (15).</li><li>veličina dokumenta (2mb).</li></ul>`,
+          type: 'error',
+          duration: 8000 // Duration of the notification
+        });
+      } else if(numberOfLimitDocuments > 0) {
+        this.$notify({
+          text: `Broj dokumenata koji ne može biti dodat je ${numberOfLimitDocuments}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj dokumenata (15).</li></ul>`,
+          type: 'error',
+          duration: 8000 // Duration of the notification
+        });
+      }
+    } else {
+      for (const formDocument of newDocumentsArray) {
         this.documentFiles.push(formDocument);
+      }
+
+      if (numberOfBigDocuments > 0) {
+        this.$notify({
+          text: `Broj dokumenata koji ne može biti dodat je ${numberOfBigDocuments}.<br>Prekoračena ograničenja:<br><ul><li>veličina dokumenta (2mb).</li></ul>`,
+          type: 'error',
+          duration: 8000 // Duration of the notification
+        });
       }
     }
   }
@@ -479,5 +563,23 @@ export default class AdvertisementUpdate extends Vue {
   public closeDeleteImageDialog(): void {
     this.selectedImageId = null;
     (this.$refs.deleteImageModal as any).hide();
+  }
+
+  get availableNumberOfImagesToAdd(): number {
+    return 15 - this.advertisement.documents.filter(doc => doc.type.type === 'image').length;
+  }
+
+  get isUploadImageFilesDisabled(): boolean {
+    const totalImages: number = this.advertisement.documents.filter(doc => doc.type.type === 'image').length + this.imageFiles.length;
+    return totalImages === 15;
+  }
+
+  get availableNumberOfDocumentsToAdd(): number {
+    return 15 - this.advertisement.documents.filter(doc => doc.type.type === 'document').length;
+  }
+
+  get isUploadDocumentFilesDisabled(): boolean {
+    const totalDocuments: number = this.advertisement.documents.filter(doc => doc.type.type === 'document').length + this.documentFiles.length;
+    return totalDocuments === 15;
   }
 }
