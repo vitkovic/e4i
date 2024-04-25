@@ -1,6 +1,0 @@
-REST servis eNaukaProjektniSoftverApi je dostupan na produkcionom okruženju.
-Javna adresa opisa servisa (swagger): https://prod.admin.enauka.gov.rs/eNaukaProjektniSoftverApi/swagger/index.html 
-Kredencijali:
-
-korisničko ime: projektni@softver.prod
-lozinka: vW^5GjtT
