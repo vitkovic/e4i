@@ -2,13 +2,15 @@
 	<div class="ceoHeader">
 		<div class="navZero">
 			<div class="logoiZalet">
-				<a href="/b2b">
-					<img src="/content/images/b2b1.png" alt="" class="divZaLogo">
-				</a>
-				<span class="zalet">Залет иновација</span>
+					<b-link to="/b2b">
+						<img src="/content/images/b2b1.png" alt="" class="divZaLogo">
+					</b-link>
+					<span class="zalet">Залет иновација</span>
 			</div>
 
 			<div class="navItems">
+
+
 				<b-nav-item to="/" exact style="white-space: nowrap;" class="navbar-menu-item highlight-option">
 					<span>
 						<span class="headerItemi">ОИИ</span>
@@ -40,7 +42,7 @@
 
 				<b-nav-item-dropdown right id="cms-admin-menu" v-if="hasAnyAuthority('ROLE_ADMIN') && authenticated"
 					:class="{ 'router-link-active': subIsActive('/admin') }" active-class="active" class="pointer">
-					<span slot="button-content" class="navbar-dropdown-menu">
+					<span slot="button-content" class="navbar-dropdown-menu headerItemi">
 						<font-awesome-icon icon="cogs" />
 						<span v-text="'CMS'">CMS</span>
 					</span>
@@ -70,132 +72,120 @@
 
 				<b-nav-item-dropdown right id="entity-menu" v-if="hasAnyAuthority('ROLE_ADMIN') &&
 					authenticated" active-class="active" class="pointer">
-					<span slot="button-content" class="navbar-dropdown-menu">
+					<span slot="button-content" class="navbar-dropdown-menu headerItemi">
 						<font-awesome-icon icon="th-list" />
 						<span v-text="$t('global.menu.entities.main')">Entities</span>
 					</span>
-					<b-dropdown-item to="/advertisement">
+					<b-dropdown-item to="/b2b/advertisement">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.advertisement')">Advertisement</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/company">
+					<b-dropdown-item to="/b2b/company">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.company')">Company</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/message">
+					<b-dropdown-item to="/b2b/message">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.message')">Message</span>
-					</b-dropdown-item>
-					<b-dropdown-item to="/portal-user">
-						<font-awesome-icon icon="asterisk" />
-						<span v-text="$t('global.menu.entities.portalUser')">PortalUser</span>
-					</b-dropdown-item>
-					<b-dropdown-item to="/portal-user-status">
-						<font-awesome-icon icon="asterisk" />
-						<span v-text="$t('global.menu.entities.portalUserStatus')">PortalUserStatus</span>
-					</b-dropdown-item>
-					<b-dropdown-item to="/portal-user-role">
-						<font-awesome-icon icon="asterisk" />
-						<span v-text="$t('global.menu.entities.portalUserRole')">PortalUserRole</span>
-					</b-dropdown-item>
-					<b-dropdown-item to="/badge">
+					</b-dropdown-item>					
+					<b-dropdown-item to="/b2b/badge">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.badge')">Badge</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/advertisement-supporter">
+					<b-dropdown-item to="/b2b/advertisement-supporter">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.advertisementSupporter')">AdvertisementSupporter</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/advertisement-status">
+					<b-dropdown-item to="/b2b/advertisement-status">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.advertisementStatus')">AdvertisementStatus</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/advertisement-duration">
+					<b-dropdown-item to="/b2b/advertisement-duration">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.advertisementDuration')">AdvertisementDuration</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/advertisement-type">
+					<b-dropdown-item to="/b2b/advertisement-type">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.advertisementType')">AdvertisementType</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/advertisement-kind">
+					<b-dropdown-item to="/b2b/advertisement-kind">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.advertisementKind')">AdvertisementKind</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/advertisement-category">
+					<b-dropdown-item to="/b2b/advertisement-category">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.advertisementCategory')">AdvertisementCategory</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/advertisement-subcategory">
+					<b-dropdown-item to="/b2b/advertisement-subcategory">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.advertisementSubcategory')">AdvertisementSubcategory</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/advertisement-subsubcategory">
+					<b-dropdown-item to="/b2b/advertisement-subsubcategory">
 						<font-awesome-icon icon="asterisk" />
 						<span
 							v-text="$t('global.menu.entities.advertisementSubsubcategory')">AdvertisementSubsubcategory</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/collaboration">
+					<b-dropdown-item to="/b2b/collaboration">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.collaboration')">Collaboration</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/collaboration-rating">
+					<b-dropdown-item to="/b2b/collaboration-rating">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.collaborationRating')">CollaborationRating</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/thread">
+					<b-dropdown-item to="/b2b/thread">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.thread')">Thread</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/meeting">
+					<b-dropdown-item to="/b2b/meeting">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.meeting')">Meeting</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/meeting-participant">
+					<b-dropdown-item to="/b2b/meeting-participant">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.meetingParticipant')">MeetingParticipant</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/meeting-type">
+					<b-dropdown-item to="/b2b/meeting-type">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.meetingType')">MeetingType</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/cms-page">
+					<b-dropdown-item to="/b2b/cms-page">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.cmsPage')">CmsPage</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/cms-page-type">
+					<b-dropdown-item to="/b2b/cms-page-type">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.cmsPageType')">CmsPageType</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/cms-testimonials">
+					<b-dropdown-item to="/b2b/cms-testimonials">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.cmsTestimonials')">CmsTestimonials</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/cms-question">
+					<b-dropdown-item to="/b2b/cms-question">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.cmsQuestion')">CmsQuestion</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/cms-slider">
+					<b-dropdown-item to="/b2b/cms-slider">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.cmsSlider')">CmsSlider</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/cms-carousel">
+					<b-dropdown-item to="/b2b/cms-carousel">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.cmsCarousel')">CmsCarousel</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/cms-advertisement-category">
+					<b-dropdown-item to="/b2b/cms-advertisement-category">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.cmsAdvertisementCategory')">CmsAdvertisementCategory</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/document">
+					<b-dropdown-item to="/b2b/document">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.document')">Document</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/document-type">
+					<b-dropdown-item to="/b2b/document-type">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.documentType')">DocumentType</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/document-kind">
+					<b-dropdown-item to="/b2b/document-kind">
 						<font-awesome-icon icon="asterisk" />
 						<span v-text="$t('global.menu.entities.documentKind')">DocumentKind</span>
 					</b-dropdown-item>
@@ -203,7 +193,7 @@
 				</b-nav-item-dropdown>
 				<b-nav-item-dropdown right id="admin-menu" v-if="hasAnyAuthority('ROLE_ADMIN') && authenticated"
 					:class="{ 'router-link-active': subIsActive('/admin') }" active-class="active" class="pointer">
-					<span slot="button-content" class="navbar-dropdown-menu">
+					<span slot="button-content" class="navbar-dropdown-menu headerItemi">
 						<font-awesome-icon icon="cogs" />
 						<span v-text="$t('global.menu.admin.main')">Administration</span>
 					</span>
@@ -567,6 +557,10 @@
 	border: 2px solid rgb(229, 55, 55);
 	border-radius: 10px;
 	margin: 10px;
+}
+
+.highlight-option:hover {
+	background-color: rgb(233, 233, 233);
 }
 
 #account-menu {
