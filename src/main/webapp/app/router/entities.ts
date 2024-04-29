@@ -293,6 +293,8 @@ const CollaborationUpdate = () => import('@/entities/collaboration/collaboration
 // prettier-ignore
 const CollaborationDetails = () => import('@/entities/collaboration/collaboration-details.vue');
 // prettier-ignore
+const CompanyCollaborations = () => import('@/entities/collaboration/company-collaborations.vue');
+// prettier-ignore
 const CollaborationRating = () => import('@/entities/collaboration-rating/collaboration-rating.vue');
 // prettier-ignore
 const CollaborationRatingUpdate = () => import('@/entities/collaboration-rating/collaboration-rating-update.vue');
@@ -1568,6 +1570,12 @@ export default [
     path: '/b2b/collaboration/:collaborationId/view',
     name: 'CollaborationView',
     component: CollaborationDetails,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/b2b/company/:companyId/collaborations',
+    name: 'CompanyCollaborations',
+    component: CompanyCollaborations,
     meta: { authorities: [Authority.USER] },
   },
   {

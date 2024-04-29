@@ -5,14 +5,15 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import e4i.domain.Collaboration;
+import e4i.repository.CollaborationRepository;
 import e4i.service.CollaborationService;
 import e4i.web.rest.errors.BadRequestAlertException;
 
@@ -40,6 +41,9 @@ public class CollaborationResource {
     private String applicationName;
 
     private final CollaborationService collaborationService;
+    
+    @Autowired
+    CollaborationRepository collaborationRepository;
 
     public CollaborationResource(CollaborationService collaborationService) {
         this.collaborationService = collaborationService;
@@ -123,5 +127,41 @@ public class CollaborationResource {
         log.debug("REST request to delete Collaboration : {}", id);
         collaborationService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+    
+    @GetMapping("/collaborations/company")
+    public ResponseEntity<List<Collaboration>> getAllCollaborationsForCompany(
+    		Pageable pageable,
+    		@RequestParam Long companyId) {
+        log.debug("REST request to get a page of Collaborations for company");
+        
+        Page<Collaboration> page = collaborationRepository.findAllByCompany(companyId, pageable);
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+    
+    @GetMapping("/collaborations/company-offer")
+    public ResponseEntity<List<Collaboration>> getAllCollaborationsForCompanyOffer(
+    		Pageable pageable,
+    		@RequestParam Long companyId) {
+        log.debug("REST request to get a page of Collaborations for company offer");
+        
+        Page<Collaboration> page = collaborationRepository.findAllByCompanyOffer(companyId, pageable);
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+    
+    @GetMapping("/collaborations/company-request")
+    public ResponseEntity<List<Collaboration>> getAllCollaborationsForCompanyRequest(
+    		Pageable pageable,
+    		@RequestParam Long companyId) {
+        log.debug("REST request to get a page of Collaborations for company request");
+        
+        Page<Collaboration> page = collaborationRepository.findAllByCompanyRequest(companyId, pageable);
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

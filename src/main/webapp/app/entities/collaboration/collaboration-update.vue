@@ -40,21 +40,21 @@
                         <label class="form-control-label" v-text="$t('riportalApp.collaboration.companyOffer')" for="collaboration-companyOffer">Company Offer</label>
                         <select class="form-control" id="collaboration-companyOffer" name="companyOffer" v-model="collaboration.companyOffer">
                             <option v-bind:value="null"></option>
-                            <option v-bind:value="collaboration.companyOffer && companyOption.id === collaboration.companyOffer.id ? collaboration.companyOffer : companyOption" v-for="companyOption in companies" :key="companyOption.id">{{companyOption.id}}</option>
+                            <option v-bind:value="collaboration.companyOffer && companyOption.id === collaboration.companyOffer.id ? collaboration.companyOffer : companyOption" v-for="companyOption in companies" :key="companyOption.id">{{companyOption.name}}</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="form-control-label" v-text="$t('riportalApp.collaboration.companyRequest')" for="collaboration-companyRequest">Company Request</label>
                         <select class="form-control" id="collaboration-companyRequest" name="companyRequest" v-model="collaboration.companyRequest">
                             <option v-bind:value="null"></option>
-                            <option v-bind:value="collaboration.companyRequest && companyOption.id === collaboration.companyRequest.id ? collaboration.companyRequest : companyOption" v-for="companyOption in companies" :key="companyOption.id">{{companyOption.id}}</option>
+                            <option v-bind:value="collaboration.companyRequest && companyOption.id === collaboration.companyRequest.id ? collaboration.companyRequest : companyOption" v-for="companyOption in companies" :key="companyOption.id">{{companyOption.name}}</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="form-control-label" v-text="$t('riportalApp.collaboration.advertisement')" for="collaboration-advertisement">Advertisement</label>
                         <select class="form-control" id="collaboration-advertisement" name="advertisement" v-model="collaboration.advertisement">
                             <option v-bind:value="null"></option>
-                            <option v-bind:value="collaboration.advertisement && advertisementOption.id === collaboration.advertisement.id ? collaboration.advertisement : advertisementOption" v-for="advertisementOption in advertisements" :key="advertisementOption.id">{{advertisementOption.id}}</option>
+                            <option v-bind:value="collaboration.advertisement && advertisementOption.id === collaboration.advertisement.id ? collaboration.advertisement : advertisementOption" v-for="advertisementOption in advertisements" :key="advertisementOption.id">{{advertisementOption.title}}</option>
                         </select>
                     </div>
                     <div class="form-group">

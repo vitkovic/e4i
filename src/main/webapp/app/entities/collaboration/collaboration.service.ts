@@ -5,6 +5,9 @@ import buildPaginationQueryOpts from '@/shared/sort/sorts';
 import { ICollaboration } from '@/shared/model/collaboration.model';
 
 const baseApiUrl = 'api/collaborations';
+const apiGetCollaborationsByCompany = 'api/collaborations/company';
+const apiGetCollaborationsByCompanyOffer = 'api/collaborations/company-offer';
+const apiGetCollaborationsByCompanyRequest = 'api/collaborations/company-request';
 
 export default class CollaborationService {
   public find(id: number): Promise<ICollaboration> {
@@ -65,6 +68,45 @@ export default class CollaborationService {
         .put(`${baseApiUrl}`, entity)
         .then(res => {
           resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public retrieveByCompany(companyId: number, paginationQuery?: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(apiGetCollaborationsByCompany + `?companyId=${companyId}` + `&` + `${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public retrieveByCompanyOffer(companyId: number, paginationQuery?: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(apiGetCollaborationsByCompanyOffer + `?companyId=${companyId}` + `&` + `${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public retrieveByCompanyRequest(companyId: number, paginationQuery?: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(apiGetCollaborationsByCompanyRequest + `?companyId=${companyId}` + `&` + `${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
+          resolve(res);
         })
         .catch(err => {
           reject(err);
