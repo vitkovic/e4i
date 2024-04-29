@@ -18,6 +18,7 @@ import e4i.service.CollaborationService;
 import e4i.web.rest.errors.BadRequestAlertException;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

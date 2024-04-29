@@ -1,10 +1,12 @@
 import { ICompany } from '@/shared/model/company.model';
 import { IAdvertisement } from '@/shared/model/advertisement.model';
 import { ICollaborationRating } from '@/shared/model/collaboration-rating.model';
+import { IThread } from '@/shared/model/thread.model';
 
 export interface ICollaboration {
   id?: number;
   datetime?: Date;
+  isAccepted?: boolean;
   commentOffer?: string;
   commentRequest?: string;
   companyOffer?: ICompany;
@@ -12,18 +14,21 @@ export interface ICollaboration {
   advertisement?: IAdvertisement;
   ratingOffer?: ICollaborationRating;
   ratingRequest?: ICollaborationRating;
+  threads?: IThread[];
 }
 
 export class Collaboration implements ICollaboration {
   constructor(
     public id?: number,
     public datetime?: Date,
+    public isAccepted?: boolean,
     public commentOffer?: string,
     public commentRequest?: string,
     public companyOffer?: ICompany,
     public companyRequest?: ICompany,
     public advertisement?: IAdvertisement,
     public ratingOffer?: ICollaborationRating,
-    public ratingRequest?: ICollaborationRating
+    public ratingRequest?: ICollaborationRating,
+    public threads?: IThread[]
   ) {}
 }

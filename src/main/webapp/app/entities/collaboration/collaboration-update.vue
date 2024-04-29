@@ -27,6 +27,11 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="form-control-label" v-text="'Is Accepted'" for="collaboration-isAccepted">Is Accepted</label>
+                        <input type="checkbox" class="form-check" name="isAccepted" id="collaboration-isAccepted"
+                            :class="{'valid': !$v.collaboration.isAccepted.$invalid, 'invalid': $v.collaboration.isAccepted.$invalid }" v-model="$v.collaboration.isAccepted.$model" />
+                    </div>
+                    <div class="form-group">
                         <label class="form-control-label" v-text="$t('riportalApp.collaboration.commentOffer')" for="collaboration-commentOffer">Comment Offer</label>
                         <input type="text" class="form-control" name="commentOffer" id="collaboration-commentOffer"
                             :class="{'valid': !$v.collaboration.commentOffer.$invalid, 'invalid': $v.collaboration.commentOffer.$invalid }" v-model="$v.collaboration.commentOffer.$model" />

@@ -1,6 +1,8 @@
 package e4i.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -9,6 +11,8 @@ import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A Collaboration.
@@ -28,6 +32,9 @@ public class Collaboration implements Serializable {
     @NotNull
     @Column(name = "datetime", nullable = false)
     private Instant datetime;
+    
+    @Column(name = "is_accepted")
+    private Boolean isAccepted;
 
     @Column(name = "comment_offer")
     private String commentOffer;
@@ -54,6 +61,11 @@ public class Collaboration implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = "collaborationRequests", allowSetters = true)
     private CollaborationRating ratingRequest;
+    
+    @ManyToMany(mappedBy = "collaborations")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JsonIgnore
+    private Set<Thread> threads = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -77,7 +89,15 @@ public class Collaboration implements Serializable {
         this.datetime = datetime;
     }
 
-    public String getCommentOffer() {
+    public Boolean getIsAccepted() {
+		return isAccepted;
+	}
+
+	public void setIsAccepted(Boolean isAccepted) {
+		this.isAccepted = isAccepted;
+	}
+
+	public String getCommentOffer() {
         return commentOffer;
     }
 
@@ -167,6 +187,31 @@ public class Collaboration implements Serializable {
     public void setRatingRequest(CollaborationRating collaborationRating) {
         this.ratingRequest = collaborationRating;
     }
+    
+    public Set<Thread> getThreads() {
+        return threads;
+    }
+
+    public Collaboration threads(Set<Thread> threads) {
+        this.threads = threads;
+        return this;
+    }
+
+    public Collaboration addThread(Thread thread) {
+        this.threads.add(thread);
+        thread.getCollaborations().add(this);
+        return this;
+    }
+
+    public Collaboration removeThread(Thread thread) {
+        this.threads.remove(thread);
+        thread.getCollaborations().remove(this);
+        return this;
+    }
+
+    public void setThreads(Set<Thread> threads) {
+        this.threads = threads;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -191,6 +236,7 @@ public class Collaboration implements Serializable {
         return "Collaboration{" +
             "id=" + getId() +
             ", datetime='" + getDatetime() + "'" +
+            ", isAccepted='" + getIsAccepted() + "'" +
             ", commentOffer='" + getCommentOffer() + "'" +
             ", commentRequest='" + getCommentRequest() + "'" +
             "}";

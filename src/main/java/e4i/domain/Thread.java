@@ -41,6 +41,13 @@ public class Thread implements Serializable {
                inverseJoinColumns = @JoinColumn(name = "advertisement_id", referencedColumnName = "id"))
     private Set<Advertisement> advertisements = new HashSet<>();
 
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @JoinTable(name = "thread_collaboration",
+               joinColumns = @JoinColumn(name = "thread_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "collaboration_id", referencedColumnName = "id"))
+    private Set<Collaboration> collaborations = new HashSet<>();
+    
     @ManyToOne
     @JsonIgnoreProperties(value = "threadsSenders", allowSetters = true)
     private Company companySender;
@@ -119,6 +126,31 @@ public class Thread implements Serializable {
 
     public void setAdvertisements(Set<Advertisement> advertisements) {
         this.advertisements = advertisements;
+    }
+    
+    public Set<Collaboration> getCollaborations() {
+        return collaborations;
+    }
+
+    public Thread collaborations(Set<Collaboration> collaborations) {
+        this.collaborations = collaborations;
+        return this;
+    }
+
+    public Thread addCollaboration(Collaboration collaboration) {
+        this.collaborations.add(collaboration);
+        collaboration.getThreads().add(this);
+        return this;
+    }
+
+    public Thread removeCollaboration(Collaboration collaboration) {
+        this.collaborations.remove(collaboration);
+        collaboration.getThreads().remove(this);
+        return this;
+    }
+
+    public void setCollaborations(Set<Collaboration> collaborations) {
+        this.collaborations = collaborations;
     }
 
     public Company getCompanySender() {

@@ -24,6 +24,7 @@ const validations: any = {
     datetime: {
       required,
     },
+    isAccepted: {},
     commentOffer: {},
     commentRequest: {},
   },

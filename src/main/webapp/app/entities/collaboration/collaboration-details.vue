@@ -11,6 +11,12 @@
                         <span v-if="collaboration.datetime">{{$d(Date.parse(collaboration.datetime), 'long') }}</span>
                     </dd>
                     <dt>
+                        <span v-text="'Is Accepted'">Is Accepted</span>
+                    </dt>
+                    <dd>
+                        <span>{{collaboration.isAccepted}}</span>
+                    </dd>
+                    <dt>
                         <span v-text="$t('riportalApp.collaboration.commentOffer')">Comment Offer</span>
                     </dt>
                     <dd>
@@ -27,7 +33,7 @@
                     </dt>
                     <dd>
                         <div v-if="collaboration.companyOffer">
-                            <router-link :to="{name: 'CompanyView', params: {companyId: collaboration.companyOffer.id}}">{{collaboration.companyOffer.id}}</router-link>
+                            <router-link :to="{name: 'CompanyView', params: {companyId: collaboration.companyOffer.id}}">{{collaboration.companyOffer.name}}</router-link>
                         </div>
                     </dd>
                     <dt>
@@ -35,7 +41,7 @@
                     </dt>
                     <dd>
                         <div v-if="collaboration.companyRequest">
-                            <router-link :to="{name: 'CompanyView', params: {companyId: collaboration.companyRequest.id}}">{{collaboration.companyRequest.id}}</router-link>
+                            <router-link :to="{name: 'CompanyView', params: {companyId: collaboration.companyRequest.id}}">{{collaboration.companyRequest.name}}</router-link>
                         </div>
                     </dd>
                     <dt>
@@ -43,7 +49,7 @@
                     </dt>
                     <dd>
                         <div v-if="collaboration.advertisement">
-                            <router-link :to="{name: 'AdvertisementView', params: {advertisementId: collaboration.advertisement.id}}">{{collaboration.advertisement.id}}</router-link>
+                            <router-link :to="{name: 'AdvertisementView', params: {advertisementId: collaboration.advertisement.id}}">{{collaboration.advertisement.title}}</router-link>
                         </div>
                     </dd>
                     <dt>
