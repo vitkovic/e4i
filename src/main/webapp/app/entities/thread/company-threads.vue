@@ -79,10 +79,10 @@
                     <b-col class="text-right">
                         <div class="btn-group">
                             <b-button v-if="thread.collaboration && !thread.collaboration.isAccepted && (thread.collaboration.companyOffer.id === company.id)" 
-                                    v-on:click="ConfirmCollaboration(thread.collaboration)"
+                                    v-on:click="prepareConfirmCollaboration(thread.collaboration)"
                                     variant="success"
                                     class="btn btn-sm m-1"
-                                    v-b-modal.removeEntity>
+                                    v-b-modal.confirmCollaboration>
                                 <span class="d-none d-md-inline" v-text="'Potvrdi saradnju'">Potvrdi saradnju</span>
                             </b-button>
 
@@ -127,6 +127,18 @@
                     </b-collapse>
                 </div>
         </div>
+        <b-modal v-if="collaboration" ref="confirmCollaboration" id="confirmCollaboration" >
+                    <span slot="modal-title"><span id="riportalApp.advertisement.delete.question">Da li želite da potvrdite zahtev za saradnju?</span></span>
+                    <div class="modal-body">
+                        <p id="jhi-delete-advertisement-heading"><b>Oglas: </b>{{ collaboration.advertisement.title }}</p>
+                        <p id="jhi-delete-advertisement-heading"><b>Kompanija tražilac saradnje: </b>{{ collaboration.companyRequest.name }}</p>
+                        <br>
+                    </div>
+                    <div slot="modal-footer">
+                        <button type="button" class="btn btn-danger" v-text="'Otkaži'" v-on:click="closeConfirmCollaboration()">Otkaži</button>
+                        <button type="button" class="btn btn-success" id="jhi-confirm-delete-advertisement" v-on:click="confirmCollaboration()">Potvrdi</button>
+                    </div>
+                </b-modal>
         <b-modal ref="removeEntity" id="removeEntity" >
             <span slot="modal-title"><span id="b2BportalApp.thread.delete.question" v-text="$t('entity.delete.title')">Confirm delete operation</span></span>
             <div class="modal-body">

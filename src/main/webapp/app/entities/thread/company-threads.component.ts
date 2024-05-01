@@ -13,6 +13,7 @@ import { IPortalUser } from '@/shared/model/portal-user.model';
 import ThreadService from './thread.service';
 import CompanyService from '@/entities/company.service';
 import MessageService from '@/entities/message.service';
+import CollaborationService from '@/entities/collaboration.service';
 import PortalUserService from '../../entities/portal-user/portal-user.service';
 
 enum ThreadsFilter {
@@ -41,6 +42,7 @@ export default class Thread extends mixins(AlertMixin) {
   @Inject('threadService') private threadService: () => ThreadService;
   @Inject('companyService') private companyService: () => CompanyService;
   @Inject('messageService') private messageService: () => MessageService;
+  @Inject('collaborationService') private collaborationService: () => CollaborationService;
   @Inject('portalUserService') private portalUserService: () => PortalUserService;
 
   private removeId: number = null;
@@ -57,6 +59,7 @@ export default class Thread extends mixins(AlertMixin) {
   private portalUser: IPortalUser = null;
   public threads: IThread[] = [];
   public threadsDTO: IThreadDTO[] = [];
+  public collaboration: ICollaboration | null = null;
   public company: ICompany = null;
   public messages: IMessage[] = [];
   public newMessage: IMessage = new Message();
@@ -368,5 +371,40 @@ export default class Thread extends mixins(AlertMixin) {
             });
         }
       });
+  }
+
+  public prepareConfirmCollaboration(instance: ICollaboration): void {
+
+    this.collaboration = instance;
+    console.log("POPUP!!!")
+
+    if (<any>this.$refs.confirmCollaboration) {
+      (<any>this.$refs.confirmCollaboration).show();
+    }
+  }
+
+  public closeConfirmCollaboration(): void {
+    this.collaboration = null;
+    (<any>this.$refs.confirmCollaboration).hide();
+  }
+
+  public confirmCollaboration(): void {
+    console.log("START!!!")
+
+    if (!this.collaboration) {
+      this.closeConfirmCollaboration();
+      return    
+    }
+
+    this.collaborationService()
+    .confirmCollaboration(this.collaboration.id)
+    .then(res => {
+      const message = 'Potvrdili ste zahtev za saradnju za oglas "' + this.collaboration.advertisement.title + '".';
+      this.$notify({
+        text: message,
+      });
+      this.retrieveThreads();
+      this.closeConfirmCollaboration();
+      })
   }
 }

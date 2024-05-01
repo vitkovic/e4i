@@ -1,5 +1,6 @@
 package e4i.repository;
 
+import e4i.domain.Collaboration;
 import e4i.domain.Thread;
 
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Spring Data  repository for the Thread entity.
@@ -52,4 +54,6 @@ public interface ThreadRepository extends JpaRepository<Thread, Long> {
 
     @Query("select thread from Thread thread left join fetch thread.advertisements where thread.id =:id")
     Optional<Thread> findOneWithEagerRelationships(@Param("id") Long id);
+    
+    Set<Thread> findAllByCollaborations(Collaboration collaboration);
 }

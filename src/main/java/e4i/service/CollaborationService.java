@@ -17,6 +17,8 @@ import e4i.repository.PortalUserRepository;
 import java.time.Instant;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 /**
  * Service Implementation for managing {@link Collaboration}.
  */
@@ -101,4 +103,23 @@ public class CollaborationService {
         
         return result; 
     };
+    
+    @Transactional
+    public Collaboration confirmCollaboration(Long id) {
+    	Optional<Collaboration> collaborationOptional = collaborationRepository.findById(id);
+        
+    	if (collaborationOptional.isEmpty()) {
+    		String errorMessage = String.format("Collaboration with id={} could not be found", id);
+        	throw new EntityNotFoundException(errorMessage);
+        }
+    	
+    	Collaboration collaboration = collaborationOptional.get();
+    	collaboration.setIsAccepted(true);
+    	collaboration.setDatetime(Instant.now());
+    	
+    	Collaboration result = collaborationRepository.save(collaboration);
+    	
+    	return result;
+    }
+    
 }

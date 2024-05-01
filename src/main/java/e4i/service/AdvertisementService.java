@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import e4i.domain.Advertisement;
+import e4i.domain.AdvertisementStatus;
+import e4i.domain.Collaboration;
 import e4i.domain.Company;
 import e4i.domain.PortalUser;
 import e4i.domain.User;
@@ -37,6 +39,9 @@ public class AdvertisementService {
     
     @Autowired
     PortalUserRepository portalUserRepository;
+    
+    @Autowired
+    AdvertisementStatusService advertisementStatusService; 
 
     public AdvertisementService(AdvertisementRepository advertisementRepository) {
         this.advertisementRepository = advertisementRepository;
@@ -130,15 +135,42 @@ public class AdvertisementService {
     }
     
     @Transactional
-    public Advertisement findOneByIdFromOptional(long id) {
+    public Advertisement findOneByIdFromOptional(Long id) {
     	Optional<Advertisement> advertisementOptional = this.findOne(id);
         if (advertisementOptional.isEmpty()) {
-    		String errorMessage = String.format("Advertisement wiht id={} could not be found", id);
+    		String errorMessage = String.format("Advertisement with id={} could not be found", id);
         	throw new EntityNotFoundException(errorMessage);
         }
         
         Advertisement advertisement = advertisementOptional.get();
         
         return advertisement;
+    }
+    
+    @Transactional
+    public Advertisement findOneByCollaboration(Collaboration collaboration) {
+        Advertisement advertisement = collaboration.getAdvertisement();
+        if (advertisement != null) {
+        	return advertisement;
+    	} else {
+    		String errorMessage = String.format("Advertisement for collaboration with id={} could not be found.", collaboration.getId());
+        	throw new EntityNotFoundException(errorMessage);
+    	}
+    }
+    
+    @Transactional
+    public Advertisement changeStatus(Advertisement advertisement, String status) {
+    	Optional<AdvertisementStatus> advertisementStatusOptional = advertisementStatusService.findOneByStatus(status);
+        if (advertisementStatusOptional.isEmpty()) {
+    		String errorMessage = String.format("AdvertisementStatus with status={} could not be found", status);
+        	throw new EntityNotFoundException(errorMessage);
+        }
+        
+        AdvertisementStatus advertisementStatus = advertisementStatusOptional.get();
+        advertisement.setStatus(advertisementStatus);
+        
+        Advertisement result = this.save(advertisement);
+        
+        return result;
     }
 }

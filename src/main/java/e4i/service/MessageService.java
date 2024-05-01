@@ -149,6 +149,26 @@ public class MessageService {
     	return result;
     }
     
+    @Transactional
+    public Message createConfirmMessageInThreadCollaboration(Thread thread, Collaboration collaboration, PortalUser portalUser) {
+    	
+    	String content = "Kompanija '" + thread.getCompanyReceiver().getName() + "' "
+    			+ "je u potvrdila zahtev za saradnju za oglas '" + collaboration.getAdvertisement().getTitle() + "'. ";
+    	
+    	Message message = new Message();
+        message.setThread(thread);
+        message.setPortalUserSender(portalUser);
+        message.setContent(content);
+        message.setDatetime(Instant.now());
+        message.setIsRead(false);
+        message.setIsDeletedSender(false);
+        message.setIsDeletedReceiver(false);
+    	
+    	Message result = this.save(message);
+    	
+    	return result;
+    }
+    
     public String prepareMessageNotificationContent(Message message, Thread thread, Company company) {
     	
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");

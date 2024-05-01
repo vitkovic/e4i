@@ -63,7 +63,7 @@ public class CollaborationResource {
     ThreadService threadService;
     
     @Autowired
-    MessageService MessageService;
+    MessageService messageService;
      
     public CollaborationResource(CollaborationService collaborationService) {
         this.collaborationService = collaborationService;
@@ -185,7 +185,7 @@ public class CollaborationResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
     
-    @PostMapping("/collaborations/advertisement/{advertisementId}")
+    @PostMapping("/collaborations/request/{advertisementId}")
     public ResponseEntity<Collaboration> createCollaborationForAdvertisement(@PathVariable Long advertisementId) {
         log.debug("REST request to create Collaboration for advertisement : {}", advertisementId);
         
@@ -194,9 +194,39 @@ public class CollaborationResource {
             Advertisement advertisement = advertisementService.findOneByIdFromOptional(advertisementId);
         	Collaboration collaboration = collaborationService.createCollaborationForAdvertisementAndPortalUserCompany(advertisement, portalUser);
         	Thread thread = threadService.createThreadForCollaboration(collaboration);
-        	Message message = MessageService.createFirstMessageInThreadCollaboration(thread, collaboration, portalUser);
+        	Message message = messageService.createFirstMessageInThreadCollaboration(thread, collaboration, portalUser);
             
         	return ResponseEntity.created(new URI("/api/collaborations/advertisement/" + advertisementId))
+                    .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, collaboration.getId().toString()))
+                    .body(collaboration);
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	return ResponseEntity.noContent().build();
+        }    
+    }
+    
+    @PutMapping("/collaborations/confirm/{collaborationId}")
+    public ResponseEntity<Collaboration> confirmCollaborationForAdvertisement(@PathVariable Long collaborationId) {
+        log.debug("REST request to confirm Collaboration: {}", collaborationId);
+
+        final String ADVERTISEMENT_STATUS = "Неактиван";
+        
+        try {
+        	// confirm collaboration
+        	Collaboration collaboration = collaborationService.confirmCollaboration(collaborationId);
+        	
+        	// make ad inactive
+        	Advertisement advertisement = advertisementService.findOneByCollaboration(collaboration);
+        	advertisement = advertisementService.changeStatus(advertisement, ADVERTISEMENT_STATUS);
+        	
+        	// send message in thread
+        	PortalUser portalUser = portalUserService.findCurrentPortalUser();
+            Thread thread = threadService.getThreadForCollaboration(collaboration);
+        	Message message = messageService.createConfirmMessageInThreadCollaboration(thread, collaboration, portalUser);
+
+        	// send email notification
+
+        	return ResponseEntity.created(new URI("/api/collaborations/advertisement/" + collaborationId))
                     .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, collaboration.getId().toString()))
                     .body(collaboration);
         } catch (Exception e) {

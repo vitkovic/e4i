@@ -71,4 +71,10 @@ public class AdvertisementStatusService {
         log.debug("Request to delete AdvertisementStatus : {}", id);
         advertisementStatusRepository.deleteById(id);
     }
+    
+    @Transactional(readOnly = true)
+    public Optional<AdvertisementStatus> findOneByStatus(String status) {
+        log.debug("Request to get AdvertisementStatus by status: {}", status);
+        return advertisementStatusRepository.findByStatus(status);
+    }
 }

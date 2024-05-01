@@ -13,6 +13,7 @@ import e4i.domain.Thread;
 import e4i.repository.ThreadRepository;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Service Implementation for managing {@link Thread}.
@@ -97,5 +98,20 @@ public class ThreadService {
     	Thread result = this.save(thread);
     	
     	return result;
+    }
+    
+    @Transactional
+    public Thread getThreadForCollaboration(Collaboration collaboration) {
+    	
+    	Set<Thread> threads = threadRepository.findAllByCollaborations(collaboration);
+    	
+    	if (threads.size() != 1) {
+    		String errorMessage = String.format("Collaboration with id={} has no thread, or more than one threads.", collaboration.getId());
+    		throw new IllegalStateException(errorMessage);
+    	}
+    	
+    	Thread thread = threads.iterator().next();
+    	
+    	return thread;
     }
 }
