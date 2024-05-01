@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 /**
  * Service Implementation for managing {@link PortalUser}.
  */
@@ -219,6 +221,20 @@ public class PortalUserService {
     	
     		
     	return out;
+    }
+    
+    @Transactional
+    public PortalUser findCurrentPortalUser() {
+        Optional<User> currentUserOptional = userService.getUserWithAuthorities();
+        if (currentUserOptional.isEmpty()) {
+        	throw new EntityNotFoundException("Current user could not be retrieved");
+        }
+        User currentUser = currentUserOptional.get();
+
+        // Preraditi metodu "findByUserId" da vraca Optional
+        PortalUser currentPortalUser= portalUserRepository.findByUserId(currentUser.getId());
+
+        return currentPortalUser;
     }
     
 }

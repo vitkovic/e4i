@@ -7,6 +7,7 @@ import { ICompany } from '@/shared/model/company.model';
 import InquiryService from './inquiry.service';
 import AccountService from '@/account/account.service';
 import AdvertisementService from './advertisement.service';
+import CollaborationService from '../../entities/collaboration/collaboration.service';
 import PortalUserService from '../../entities/portal-user/portal-user.service';
 
 interface InquiryDTO {
@@ -23,6 +24,7 @@ interface InquiryDTO {
 export default class AdvertisementDetails extends Vue {
   @Inject('advertisementService') private advertisementService: () => AdvertisementService;
   @Inject('accountService') private accountService: () => AccountService;
+  @Inject('collaborationService') private collaborationService: () => CollaborationService;
   @Inject('portalUserService') private portalUserService: () => PortalUserService;
   @Inject('inquiryService') private inquiryService: () => InquiryService;
 
@@ -116,6 +118,34 @@ export default class AdvertisementDetails extends Vue {
 
   public closeAdInquiry(): void {
     (<any>this.$refs.adInquiry).hide();
+  }
+
+  public prepareAdCollaboration(instance: IAdvertisement): void {
+
+    console.log("POPUP!!!")
+
+    if (<any>this.$refs.adCollaboration) {
+      (<any>this.$refs.adCollaboration).show();
+    }
+  }
+
+  public closeAdCollaboration(): void {
+    (<any>this.$refs.adCollaboration).hide();
+  }
+
+  public startAdCollaboration(): void {
+    console.log("START!!!")
+
+    this.collaborationService()
+    .createCollaborationForAdvertisement(this.advertisement.id)
+    .then(res => {
+      const message = 'Vaš zahtev za saradnju za oglas "' + this.advertisement.title + '" je poslat.';
+      this.$notify({
+        text: message,
+      });
+      })
+
+    this.closeAdCollaboration();
   }
 
   public validateModalForm() {

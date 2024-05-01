@@ -19,6 +19,8 @@ import e4i.security.SecurityUtils;
 
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 /**
  * Service Implementation for managing {@link Advertisement}.
  */
@@ -125,5 +127,18 @@ public class AdvertisementService {
     public void delete(Long id) {
         log.debug("Request to delete Advertisement : {}", id);
         advertisementRepository.deleteById(id);
+    }
+    
+    @Transactional
+    public Advertisement findOneByIdFromOptional(long id) {
+    	Optional<Advertisement> advertisementOptional = this.findOne(id);
+        if (advertisementOptional.isEmpty()) {
+    		String errorMessage = String.format("Advertisement wiht id={} could not be found", id);
+        	throw new EntityNotFoundException(errorMessage);
+        }
+        
+        Advertisement advertisement = advertisementOptional.get();
+        
+        return advertisement;
     }
 }

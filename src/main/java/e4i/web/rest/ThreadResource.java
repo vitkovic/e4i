@@ -1,10 +1,12 @@
 package e4i.web.rest;
 
 import e4i.domain.Advertisement;
+import e4i.domain.Collaboration;
 import e4i.domain.Company;
 import e4i.domain.Message;
 import e4i.domain.Thread;
 import e4i.repository.AdvertisementRepository;
+import e4i.repository.CollaborationRepository;
 import e4i.repository.CompanyRepository;
 import e4i.repository.MessageRepository;
 import e4i.repository.ThreadRepository;
@@ -62,6 +64,9 @@ public class ThreadResource {
     
     @Autowired
     CompanyRepository companyRepository;
+    
+    @Autowired
+    CollaborationRepository collaborationRepository;
     
     public ThreadResource(ThreadService threadService) {
         this.threadService = threadService;
@@ -307,6 +312,13 @@ public class ThreadResource {
         if (advertisementOptional.isPresent()) {
         	Advertisement advertisement = advertisementOptional.get();
         	threadDTO.setAdvertisement(advertisement);        	
+        }
+        
+        Optional<Collaboration> collaborationOptional = collaborationRepository.findOneByThreads(thread);
+        if (collaborationOptional.isPresent()) {
+        	Collaboration collaboration = collaborationOptional.get();
+        	threadDTO.setCollaboration(collaboration);
+        	threadDTO.setAdvertisement(collaboration.getAdvertisement());
         }
 		
 		return threadDTO;

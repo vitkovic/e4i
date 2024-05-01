@@ -2,15 +2,19 @@ package e4i.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import e4i.domain.Advertisement;
 import e4i.domain.Collaboration;
+import e4i.domain.PortalUser;
 import e4i.repository.CollaborationRepository;
+import e4i.repository.PortalUserRepository;
 
+import java.time.Instant;
 import java.util.Optional;
 
 /**
@@ -23,6 +27,15 @@ public class CollaborationService {
     private final Logger log = LoggerFactory.getLogger(CollaborationService.class);
 
     private final CollaborationRepository collaborationRepository;
+    
+    @Autowired
+    AdvertisementService advertisementService;
+    
+    @Autowired
+    PortalUserRepository portalUserRepository;
+    
+    @Autowired
+    PortalUserService portalUserService;
 
     public CollaborationService(CollaborationRepository collaborationRepository) {
         this.collaborationRepository = collaborationRepository;
@@ -73,4 +86,19 @@ public class CollaborationService {
         log.debug("Request to delete Collaboration : {}", id);
         collaborationRepository.deleteById(id);
     }
+    
+    @Transactional
+    public Collaboration createCollaborationForAdvertisementAndPortalUserCompany(Advertisement advertisement, PortalUser portalUser) {
+             
+        Collaboration collaboration = new Collaboration();
+        collaboration.setAdvertisement(advertisement);
+        collaboration.setCompanyOffer(advertisement.getCompany());
+        collaboration.setCompanyRequest(portalUser.getCompany());
+        collaboration.setDatetime(Instant.now());
+        collaboration.setIsAccepted(false);
+        
+        Collaboration result = this.save(collaboration);
+        
+        return result; 
+    };
 }

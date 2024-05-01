@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import e4i.domain.Collaboration;
 import e4i.domain.Thread;
 import e4i.repository.ThreadRepository;
 
@@ -81,5 +82,20 @@ public class ThreadService {
     public void delete(Long id) {
         log.debug("Request to delete Thread : {}", id);
         threadRepository.deleteById(id);
+    }
+    
+    @Transactional
+    public Thread createThreadForCollaboration(Collaboration collaboration) {
+    	String subject = "Poziv za saradnju za oglas '" + collaboration.getAdvertisement().getTitle();
+    	
+    	Thread thread = new Thread();
+    	thread.setSubject(subject);
+    	thread.setCompanySender(collaboration.getCompanyRequest());
+    	thread.setCompanyReceiver(collaboration.getCompanyOffer());
+    	thread.addCollaboration(collaboration);
+    	
+    	Thread result = this.save(thread);
+    	
+    	return result;
     }
 }

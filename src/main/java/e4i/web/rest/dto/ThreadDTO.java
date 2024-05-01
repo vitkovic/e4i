@@ -3,6 +3,7 @@ package e4i.web.rest.dto;
 import java.time.Instant;
 
 import e4i.domain.Advertisement;
+import e4i.domain.Collaboration;
 import e4i.domain.Company;
 import e4i.domain.Thread;
 
@@ -13,13 +14,14 @@ public class ThreadDTO {
 	private Company companySender;
 	private Company companyReceiver;
 	private Advertisement advertisement;
+	private Collaboration collaboration;
 	private Long messageCount;
 	private Instant lastMessageDatetime;
 	private String lastMessageContent;
 	private Boolean unreadExists;
 	
 	
-	public ThreadDTO(Long id, String subject, Company companySender, Company companyReceiver, Advertisement advertisement,
+	public ThreadDTO(Long id, String subject, Company companySender, Company companyReceiver, Advertisement advertisement, Collaboration collaboration,
 			Long messageCount, Instant lastMessageDatetime, String lastMessageContent, Boolean unreadExists) {
 		super();
 		this.id = id;
@@ -27,6 +29,7 @@ public class ThreadDTO {
 		this.companySender = companySender;
 		this.companyReceiver = companyReceiver;
 		this.advertisement = advertisement;
+		this.collaboration = collaboration;
 		this.messageCount = messageCount;
 		this.lastMessageDatetime = lastMessageDatetime;
 		this.lastMessageContent = lastMessageContent;
@@ -98,6 +101,14 @@ public class ThreadDTO {
 		this.advertisement = advertisement;
 	}
 
+
+	public Collaboration getCollaboration() {
+		return collaboration;
+	}
+
+	public void setCollaboration(Collaboration collaboration) {
+		this.collaboration = collaboration;
+	}
 
 	public Long getMessageCount() {
 		return messageCount;

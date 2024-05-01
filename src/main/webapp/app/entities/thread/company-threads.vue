@@ -47,7 +47,7 @@
                     <b-col v-on:click="changeOrder('datetime')"><span v-text="'Datetime'">Datetime</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'datetime'"></jhi-sort-indicator></b-col> -->
                     <b-col><span v-text="'Company Receiver'">Company Receiver</span></b-col>
                     <b-col><span v-text="'Company Sender'">Company Sender</span></b-col>
-                    <b-col sm="2"><span v-text="'Advertisement'">Advertisement</span></b-col>
+                    <b-col><span v-text="'Advertisement'">Advertisement</span></b-col>
                     <b-col></b-col>
                 </b-row>
                 <div class="accordion" v-for="(thread, index) in threadsDTO" :key="thread.id">
@@ -71,17 +71,25 @@
                             <router-link :to="{name: 'CompanyView', params: {companyId: thread.companySender.id}}">{{thread.companySender.name}}</router-link>
                         </div>
                     </b-col>
-                    <b-col class="pt-2" sm="2">
+                    <b-col class="pt-2">
                         <div v-if="thread.advertisement">
                             <router-link :to="{name: 'AdvertisementView', params: {advertisementId: thread.advertisement.id}}">{{thread.advertisement.title}}</router-link>
                         </div>
                     </b-col>
                     <b-col class="text-right">
                         <div class="btn-group">
+                            <b-button v-if="thread.collaboration && !thread.collaboration.isAccepted && (thread.collaboration.companyOffer.id === company.id)" 
+                                    v-on:click="ConfirmCollaboration(thread.collaboration)"
+                                    variant="success"
+                                    class="btn btn-sm m-1"
+                                    v-b-modal.removeEntity>
+                                <span class="d-none d-md-inline" v-text="'Potvrdi saradnju'">Potvrdi saradnju</span>
+                            </b-button>
+
                             <b-button v-on:click="prepareRemove(thread)"
-                                   variant="danger"
-                                   class="btn btn-sm m-1"
-                                   v-b-modal.removeEntity>
+                                    variant="danger"
+                                    class="btn btn-sm m-1"
+                                    v-b-modal.removeEntity>
                                 <font-awesome-icon icon="times"></font-awesome-icon>
                                 <span class="d-none d-md-inline" v-text="'Obriši upit'">Obriši upit</span>
                             </b-button>

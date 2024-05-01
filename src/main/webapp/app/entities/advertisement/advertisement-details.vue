@@ -136,9 +136,9 @@
                 <router-link v-if="advertisement.id && authenticated && (hasAnyAuthority('ROLE_ADMIN') || !isCompanyOwner())" :to="'#'" tag="button" class="btn btn-primary">
                     <span v-text="'Zakaži sastanak'"> Zakaži sastanak</span>
                 </router-link>
-                <router-link v-if="advertisement.id && authenticated && (hasAnyAuthority('ROLE_ADMIN') || !isCompanyOwner())" :to="'#'" tag="button" class="btn btn-primary">
+                <b-button v-if="advertisement.id && authenticated && (hasAnyAuthority('ROLE_ADMIN') || !isCompanyOwner())" v-on:click="prepareAdCollaboration(advertisement)" class="btn btn-primary" v-b-modal.adCollaboration>
                     <span v-text="'Pokreni saradnju'"> Pokreni saradnju</span>
-                </router-link>
+                </b-button>
                 
 
                 
@@ -164,6 +164,19 @@
                     <div slot="modal-footer">
                         <button type="button" class="btn btn-secondary" v-text="'Otkaži'" v-on:click="closeAdInquiry()">Otkaži</button>
                         <button type="button" class="btn btn-primary" id="jhi-confirm-delete-advertisement" v-on:click="sendInquiry()">Pošalji</button>
+                    </div>
+                </b-modal>
+
+                <b-modal ref="adCollaboration" id="adCollaboration" >
+                    <span slot="modal-title"><span id="riportalApp.advertisement.delete.question">Potvrdite pokretanje saradnje</span></span>
+                    <div class="modal-body">
+                        <p id="jhi-delete-advertisement-heading"><b>Oglas: </b>{{ advertisement.title }}</p>
+                        <p v-if="advertisement.company" id="jhi-delete-advertisement-heading"><b>Kompanija: </b>{{ advertisement.company.name }}</p>
+                        <br>
+                    </div>
+                    <div slot="modal-footer">
+                        <button type="button" class="btn btn-danger" v-text="'Otkaži'" v-on:click="closeAdCollaboration()">Otkaži</button>
+                        <button type="button" class="btn btn-success" id="jhi-confirm-delete-advertisement" v-on:click="startAdCollaboration()">Pokreni</button>
                     </div>
                 </b-modal>
 

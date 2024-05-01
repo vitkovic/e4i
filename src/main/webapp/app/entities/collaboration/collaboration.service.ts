@@ -5,6 +5,7 @@ import buildPaginationQueryOpts from '@/shared/sort/sorts';
 import { ICollaboration } from '@/shared/model/collaboration.model';
 
 const baseApiUrl = 'api/collaborations';
+const baseApiCreateCollaborationForAdvertisement = 'api/collaborations/advertisement';
 const apiGetCollaborationsByCompany = 'api/collaborations/company';
 const apiGetCollaborationsByCompanyOffer = 'api/collaborations/company-offer';
 const apiGetCollaborationsByCompanyRequest = 'api/collaborations/company-request';
@@ -105,6 +106,19 @@ export default class CollaborationService {
     return new Promise<any>((resolve, reject) => {
       axios
         .get(apiGetCollaborationsByCompanyRequest + `?companyId=${companyId}` + `&` + `${buildPaginationQueryOpts(paginationQuery)}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public createCollaborationForAdvertisement(advertisementId: number): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .post(`${baseApiCreateCollaborationForAdvertisement}/${advertisementId}`)
         .then(res => {
           resolve(res);
         })

@@ -12,13 +12,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import e4i.domain.Advertisement;
 import e4i.domain.Collaboration;
+import e4i.domain.Message;
+import e4i.domain.PortalUser;
+import e4i.domain.Thread;
 import e4i.repository.CollaborationRepository;
+import e4i.service.AdvertisementService;
 import e4i.service.CollaborationService;
+import e4i.service.MessageService;
+import e4i.service.PortalUserService;
+import e4i.service.ThreadService;
 import e4i.web.rest.errors.BadRequestAlertException;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -45,7 +52,19 @@ public class CollaborationResource {
     
     @Autowired
     CollaborationRepository collaborationRepository;
+    
+    @Autowired
+    PortalUserService portalUserService;
 
+    @Autowired
+    AdvertisementService advertisementService;
+    
+    @Autowired
+    ThreadService threadService;
+    
+    @Autowired
+    MessageService MessageService;
+     
     public CollaborationResource(CollaborationService collaborationService) {
         this.collaborationService = collaborationService;
     }
@@ -164,5 +183,25 @@ public class CollaborationResource {
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+    
+    @PostMapping("/collaborations/advertisement/{advertisementId}")
+    public ResponseEntity<Collaboration> createCollaborationForAdvertisement(@PathVariable Long advertisementId) {
+        log.debug("REST request to create Collaboration for advertisement : {}", advertisementId);
+        
+        try {
+        	PortalUser portalUser = portalUserService.findCurrentPortalUser();
+            Advertisement advertisement = advertisementService.findOneByIdFromOptional(advertisementId);
+        	Collaboration collaboration = collaborationService.createCollaborationForAdvertisementAndPortalUserCompany(advertisement, portalUser);
+        	Thread thread = threadService.createThreadForCollaboration(collaboration);
+        	Message message = MessageService.createFirstMessageInThreadCollaboration(thread, collaboration, portalUser);
+            
+        	return ResponseEntity.created(new URI("/api/collaborations/advertisement/" + advertisementId))
+                    .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, collaboration.getId().toString()))
+                    .body(collaboration);
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	return ResponseEntity.noContent().build();
+        }    
     }
 }

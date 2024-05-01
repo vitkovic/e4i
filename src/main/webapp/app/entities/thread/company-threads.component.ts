@@ -7,6 +7,7 @@ import { IThread } from '@/shared/model/thread.model';
 import { IMessage, Message } from '@/shared/model/message.model';
 import { ICompany } from '@/shared/model/company.model';
 import { IAdvertisement } from '@/shared/model/advertisement.model';
+import { ICollaboration } from '@/shared/model/collaboration.model';
 import { IPortalUser } from '@/shared/model/portal-user.model';
 
 import ThreadService from './thread.service';
@@ -26,6 +27,7 @@ interface IThreadDTO {
   companySender: ICompany;
   companyReceiver: ICompany;
   advertisement: IAdvertisement;
+  collaboration: ICollaboration;
   messageCount: number;
   lastMessageDatetime: Date;
   lastMessageContent: string;

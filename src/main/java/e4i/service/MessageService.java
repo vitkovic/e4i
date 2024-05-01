@@ -1,6 +1,7 @@
 package e4i.service;
 
 import e4i.domain.Advertisement;
+import e4i.domain.Collaboration;
 import e4i.domain.Company;
 import e4i.domain.Message;
 import e4i.domain.PortalUser;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -122,6 +124,29 @@ public class MessageService {
         String messageNotificationContent = prepareMessageNotificationContent(message, thread, company);
         
 		mailService.sendMessageNotificationMail(messageNotificationContent, companyPortalUsers);
+    }
+    
+    @Transactional
+    public Message createFirstMessageInThreadCollaboration(Thread thread, Collaboration collaboration, PortalUser portalUser) {
+    	
+    	String content = "Kompanija '" + thread.getCompanySender().getName() + "' "
+    			+ "Vam je u uputila zahtev za saradnju za oglas '" + collaboration.getAdvertisement().getTitle() + "'. "
+    			+ "Saradnju možete potvrditi klikom na opciju 'Potvrdi saradnju' u zaglavlju ove poruke.";
+//    			+ "Ovo je automatski generisana poruka. "
+//    			+ "Odgovor na ovu poruku biće poslat kompaniji koja je uputila zahtev za saradnju.";
+    	
+    	Message message = new Message();
+        message.setThread(thread);
+        message.setPortalUserSender(portalUser);
+        message.setContent(content);
+        message.setDatetime(Instant.now());
+        message.setIsRead(false);
+        message.setIsDeletedSender(false);
+        message.setIsDeletedReceiver(false);
+    	
+    	Message result = this.save(message);
+    	
+    	return result;
     }
     
     public String prepareMessageNotificationContent(Message message, Thread thread, Company company) {
