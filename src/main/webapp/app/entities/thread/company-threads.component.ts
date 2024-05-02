@@ -376,7 +376,6 @@ export default class Thread extends mixins(AlertMixin) {
   public prepareConfirmCollaboration(instance: ICollaboration): void {
 
     this.collaboration = instance;
-    console.log("POPUP!!!")
 
     if (<any>this.$refs.confirmCollaboration) {
       (<any>this.$refs.confirmCollaboration).show();
@@ -389,7 +388,7 @@ export default class Thread extends mixins(AlertMixin) {
   }
 
   public confirmCollaboration(): void {
-    console.log("START!!!")
+    const ADVERTISEMENT_TITLE = this.collaboration.advertisement.title;
 
     if (!this.collaboration) {
       this.closeConfirmCollaboration();
@@ -399,12 +398,13 @@ export default class Thread extends mixins(AlertMixin) {
     this.collaborationService()
     .confirmCollaboration(this.collaboration.id)
     .then(res => {
-      const message = 'Potvrdili ste zahtev za saradnju za oglas "' + this.collaboration.advertisement.title + '".';
+      const message = 'Potvrdili ste zahtev za saradnju za oglas "' + ADVERTISEMENT_TITLE + '".';
       this.$notify({
         text: message,
       });
       this.retrieveThreads();
-      this.closeConfirmCollaboration();
-      })
+      });
+      
+    this.closeConfirmCollaboration();  
   }
 }

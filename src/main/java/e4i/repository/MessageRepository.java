@@ -1,10 +1,14 @@
 package e4i.repository;
 
 import e4i.domain.Message;
+import e4i.domain.Thread;
+import e4i.domain.PortalUser;
+
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -50,4 +54,10 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 	Optional<Message> findFirstByThreadIdAndPortalUserSenderCompanyIdNotAndIsReadAndIsDeletedReceiver(
 			Long threadId, Long companyId, Boolean isRead, Boolean isDeletedReceiver
 			);
+	
+	@Query("SELECT m.portalUserSender FROM Message m WHERE m.id = :messageId")
+	Optional<PortalUser> findPortalUserSenderByMessageId(@Param("messageId") Long messageId);
+	
+	@Query("SELECT m.thread FROM Message m WHERE m.id = :messageId")
+	Optional<Thread> findThreadByMessageId(@Param("messageId") Long messageId);
 }

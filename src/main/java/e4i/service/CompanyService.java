@@ -9,9 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import e4i.domain.Company;
+import e4i.domain.PortalUser;
+import e4i.domain.Thread;
 import e4i.repository.CompanyRepository;
 
 import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 /**
  * Service Implementation for managing {@link Company}.
@@ -81,5 +85,38 @@ public class CompanyService {
     public void delete(Long id) {
         log.debug("Request to delete Company : {}", id);
         companyRepository.deleteById(id);
+    }
+    
+    @Transactional
+    public Company findOneByPortalUser(PortalUser portalUser) {
+    	Company company = portalUser.getCompany();
+        if (company != null) {
+        	return company;
+    	} else {
+    		String errorMessage = String.format("Company for PortalUser with id={} could not be found.", portalUser.getId());
+        	throw new EntityNotFoundException(errorMessage);
+    	}
+    }
+    
+    @Transactional
+    public Company findOneByThreadSender(Thread thread) {
+    	Company company = thread.getCompanySender();
+        if (company != null) {
+        	return company;
+    	} else {
+    		String errorMessage = String.format("Company sender for Thread with id={} could not be found.", thread.getId());
+        	throw new EntityNotFoundException(errorMessage);
+    	}
+    }
+    
+    @Transactional
+    public Company findOneByThreadReceiver(Thread thread) {
+    	Company company = thread.getCompanyReceiver();
+        if (company != null) {
+        	return company;
+    	} else {
+    		String errorMessage = String.format("Company receiver for Thread with id={} could not be found.", thread.getId());
+        	throw new EntityNotFoundException(errorMessage);
+    	}
     }
 }

@@ -1,13 +1,9 @@
 package e4i.service;
 
-import e4i.domain.Advertisement;
 import e4i.domain.Collaboration;
-import e4i.domain.Company;
 import e4i.domain.Message;
 import e4i.domain.PortalUser;
 import e4i.domain.Thread;
-import e4i.repository.AdvertisementRepository;
-import e4i.repository.CompanyRepository;
 import e4i.repository.MessageRepository;
 import e4i.repository.PortalUserRepository;
 import e4i.repository.ThreadRepository;
@@ -19,14 +15,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.time.Instant;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 /**
  * Service Implementation for managing {@link Message}.
@@ -45,15 +37,6 @@ public class MessageService {
     @Autowired
     ThreadRepository threadRepository;
     
-    @Autowired
-    CompanyRepository companyRepository;
-    
-    @Autowired
-    AdvertisementRepository advertisementRepository;
-    
-    @Autowired
-    MailService mailService;
-
     public MessageService(MessageRepository messageRepository) {
         this.messageRepository = messageRepository;
     }
@@ -105,27 +88,24 @@ public class MessageService {
     }
     
     @Transactional
-    public void sendNotificationMail(Message message) {
-    	
-    	// Videti kako ovo bolje uraditi!!!
-    	Thread thread = threadRepository.getOne(message.getThread().getId());
-        PortalUser portalUserSender = portalUserRepository.getOne(message.getPortalUserSender().getId());
-        Company portalUserSenderCompany = companyRepository.getOne(portalUserSender.getCompany().getId());
-        Company companySender = companyRepository.getOne(thread.getCompanySender().getId()); 
-        Company companyReceiver = companyRepository.getOne(thread.getCompanyReceiver().getId());
-    	
-        Company company = companySender;
-        if (portalUserSenderCompany.getId() == companySender.getId()) {
-        	company = companyReceiver;
-        }
+    public Message createNewMessageInThread(String content, Long threadId, Long portalUserSenderId) {
+        Thread thread = threadRepository.getOne(threadId);
+        PortalUser portalUserSender = portalUserRepository.getOne(portalUserSenderId);
         
-        List<PortalUser> companyPortalUsers = portalUserRepository.findAllByCompanyAndDoNotify(company, true);
-		 
-        String messageNotificationContent = prepareMessageNotificationContent(message, thread, company);
+        Message message = new Message();        
+        message.setThread(thread);
+        message.setPortalUserSender(portalUserSender);
+        message.setContent(content);
+        message.setDatetime(Instant.now());
+        message.setIsRead(false);
+        message.setIsDeletedSender(false);
+        message.setIsDeletedReceiver(false);
         
-		mailService.sendMessageNotificationMail(messageNotificationContent, companyPortalUsers);
+        Message result = this.save(message);
+        
+        return result;
     }
-    
+        
     @Transactional
     public Message createFirstMessageInThreadCollaboration(Thread thread, Collaboration collaboration, PortalUser portalUser) {
     	
@@ -169,39 +149,29 @@ public class MessageService {
     	return result;
     }
     
-    public String prepareMessageNotificationContent(Message message, Thread thread, Company company) {
+    @Transactional
+    public PortalUser findPortalUserSenderByMessage(Message message) {
+    	Optional<PortalUser> portalUserOptional = messageRepository.findPortalUserSenderByMessageId(message.getId());
+    	if (portalUserOptional.isEmpty()) {
+    		String errorMessage = String.format("PortalUser sender for Message with id={} could not be found.", message.getId());
+        	throw new EntityNotFoundException(errorMessage);
+    	}
     	
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-        ZonedDateTime zonedDateTime = message.getDatetime().atZone(ZoneId.systemDefault());
-        
-        String advertisementString = "";
-        Optional<Advertisement> advertisementOptional = advertisementRepository.findOneByThreads(thread);        
-        if (advertisementOptional.isPresent()) {
-        	Advertisement advertisement = advertisementOptional.get();
-        	advertisementString = "<p><b>Oglas: </b><span>" + advertisement.getTitle() + "</span></p>";
-        }
+    	PortalUser portalUser = portalUserOptional.get();
     	
-        String senderString = message.getPortalUserSender().getCompany().getName()
-        		+ " - " + message.getPortalUserSender().getUser().getFirstName()
-        		+ " " + message.getPortalUserSender().getUser().getLastName();
-        
-        String homeURL = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
-        String companyMessagesLink = homeURL + "/b2b/company/" + company.getId() + "/threads";
-        
-        String content = "<div>"
-        		+ "<p>Imate novu poruku na B2B portalu za kompaniju " + company.getName() + ".</p>"
-        		+ "<br>"
-        		+ "<p><b>Vreme: </b><span>" + dateTimeFormatter.format(zonedDateTime) + "</span></p>"
-        		+ "<p><b>Pоšiljalac: </b><span>" + senderString + "</span></p>"
-        		+ advertisementString
-        		+ "<p><b>Upit: </b><span>" + thread.getSubject() + "</span></p>"
-        		+ "<hr>"
-        		+ "<p style='white-space: pre-line;'>" + message.getContent() + "</p>"
-        		+ "<hr>"
-        		+ "<p>Na poruku možete odgovoriti sa "
-        		+ "<a href='" + companyMessagesLink + "'>profila Vaše kompanije<a>.</p>"
-        		+ "<p>Ovo je automatski poslata poruka, ne odgovarati na ovaj mail.</p>";
-             
-    	return content;
+    	return portalUser;
+    }
+    
+    @Transactional
+    public Thread findThreadByMessage(Message message) {
+    	Optional<Thread> threadOptional = messageRepository.findThreadByMessageId(message.getId());
+    	if (threadOptional.isEmpty()) {
+    		String errorMessage = String.format("Thread for Message with id={} could not be found.", message.getId());
+        	throw new EntityNotFoundException(errorMessage);
+    	}
+    	
+    	Thread thread = threadOptional.get();
+    	
+    	return thread;
     }
 }

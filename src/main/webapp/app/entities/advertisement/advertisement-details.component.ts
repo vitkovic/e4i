@@ -122,8 +122,6 @@ export default class AdvertisementDetails extends Vue {
 
   public prepareAdCollaboration(instance: IAdvertisement): void {
 
-    console.log("POPUP!!!")
-
     if (<any>this.$refs.adCollaboration) {
       (<any>this.$refs.adCollaboration).show();
     }
@@ -134,8 +132,6 @@ export default class AdvertisementDetails extends Vue {
   }
 
   public startAdCollaboration(): void {
-    console.log("START!!!")
-
     this.collaborationService()
     .createCollaborationForAdvertisement(this.advertisement.id)
     .then(res => {
@@ -166,8 +162,6 @@ export default class AdvertisementDetails extends Vue {
   }
 
   public sendInquiry(): void {
-    console.log(this.inquiryDTO);
-
     this.validateModalForm();
 
     if (!this.isModalFormIsValid) {

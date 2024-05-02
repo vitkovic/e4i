@@ -2,12 +2,13 @@ package e4i.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import e4i.domain.Company;
 import e4i.domain.PortalUser;
 import e4i.domain.PortalUserOrganization;
 import e4i.domain.PortalUserRole;
@@ -41,19 +42,22 @@ public class PortalUserService {
     private final PortalUserRepository portalUserRepository;
     private final UserService userService;
     private final PortalUserOrganizationRepository portalUserOrganizationRepository;
-    private final MailService mailService;
     private final UserRepository userRepository;
 
+    // Na ovaj nacin se izbegava cyclic dependency
+//    @Autowired
+    private final MailService mailService;
+    
 	
 
 	public PortalUserService(PortalUserRepository portalUserRepository, UserService userService,
-			PortalUserOrganizationRepository portalUserOrganizationRepository, MailService mailService,
-			UserRepository userRepository) {
+			PortalUserOrganizationRepository portalUserOrganizationRepository,
+			UserRepository userRepository, MailService mailService) {
 		this.portalUserRepository = portalUserRepository;
 		this.userService = userService;
 		this.portalUserOrganizationRepository = portalUserOrganizationRepository;
-		this.mailService = mailService;
 		this.userRepository = userRepository;
+		this.mailService = mailService;
 	}
 
 	/**
@@ -237,4 +241,16 @@ public class PortalUserService {
         return currentPortalUser;
     }
     
+    @Transactional
+    public Company findCompanyByPortalUser(PortalUser portalUser) {
+    	Optional<Company> companyOptional = portalUserRepository.findCompanyByPortalUserId(portalUser.getId());
+    	if (companyOptional.isEmpty()) {
+    		String errorMessage = String.format("Company for PortalUser with id={} could not be found.", portalUser.getId());
+        	throw new EntityNotFoundException(errorMessage);
+    	}
+    	
+    	Company company = companyOptional.get();
+    	
+    	return company;
+    }
 }

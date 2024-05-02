@@ -9,11 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import e4i.domain.Collaboration;
+import e4i.domain.Company;
 import e4i.domain.Thread;
 import e4i.repository.ThreadRepository;
 
 import java.util.Optional;
 import java.util.Set;
+
+import javax.persistence.EntityNotFoundException;
 
 /**
  * Service Implementation for managing {@link Thread}.
@@ -87,7 +90,7 @@ public class ThreadService {
     
     @Transactional
     public Thread createThreadForCollaboration(Collaboration collaboration) {
-    	String subject = "Poziv za saradnju za oglas '" + collaboration.getAdvertisement().getTitle();
+    	String subject = "Poziv za saradnju za oglas '" + collaboration.getAdvertisement().getTitle() + "'.";
     	
     	Thread thread = new Thread();
     	thread.setSubject(subject);
@@ -102,7 +105,6 @@ public class ThreadService {
     
     @Transactional
     public Thread getThreadForCollaboration(Collaboration collaboration) {
-    	
     	Set<Thread> threads = threadRepository.findAllByCollaborations(collaboration);
     	
     	if (threads.size() != 1) {
@@ -114,4 +116,31 @@ public class ThreadService {
     	
     	return thread;
     }
+    
+    @Transactional
+    public Company findCompanySenderByThread(Thread thread) {
+    	Optional<Company> companyOptional = threadRepository.findCompanySenderByThreadId(thread.getId());
+    	if (companyOptional.isEmpty()) {
+    		String errorMessage = String.format("Company sender for Thread with id={} could not be found.", thread.getId());
+        	throw new EntityNotFoundException(errorMessage);
+    	}
+    	
+    	Company company = companyOptional.get();
+    	
+    	return company;
+    }
+    
+    @Transactional
+    public Company findCompanyReceiverByThread(Thread thread) {
+    	Optional<Company> companyOptional = threadRepository.findCompanyReceiverByThreadId(thread.getId());
+    	if (companyOptional.isEmpty()) {
+    		String errorMessage = String.format("Company sender for Thread with id={} could not be found.", thread.getId());
+        	throw new EntityNotFoundException(errorMessage);
+    	}
+    	
+    	Company company = companyOptional.get();
+    	
+    	return company;
+    }
+    
 }

@@ -1,6 +1,7 @@
 package e4i.repository;
 
 import e4i.domain.Collaboration;
+import e4i.domain.Company;
 import e4i.domain.Thread;
 
 import org.springframework.data.domain.Page;
@@ -56,4 +57,10 @@ public interface ThreadRepository extends JpaRepository<Thread, Long> {
     Optional<Thread> findOneWithEagerRelationships(@Param("id") Long id);
     
     Set<Thread> findAllByCollaborations(Collaboration collaboration);
+    
+	@Query("SELECT t.companySender FROM Thread t WHERE t.id = :threadId")
+    Optional<Company> findCompanySenderByThreadId(@Param("threadId") Long threadId);
+	
+	@Query("SELECT t.companyReceiver FROM Thread t WHERE t.id = :threadId")
+    Optional<Company> findCompanyReceiverByThreadId(@Param("threadId") Long threadId);
 }

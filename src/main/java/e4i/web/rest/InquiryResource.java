@@ -16,6 +16,7 @@ import e4i.domain.Message;
 import e4i.domain.Thread;
 import e4i.repository.MessageRepository;
 import e4i.repository.ThreadRepository;
+import e4i.service.MailService;
 import e4i.service.MessageService;
 import e4i.web.rest.dto.InquiryDTO;
 import io.github.jhipster.web.util.HeaderUtil;
@@ -38,6 +39,9 @@ public class InquiryResource {
     
     @Autowired
     MessageService messageService;
+    
+    @Autowired
+    MailService mailService;
     
     
     @PostMapping("/inquiry")
@@ -71,7 +75,7 @@ public class InquiryResource {
         String param = newThread.getId().toString() + "/" + newMessage.getId().toString();
         
         try {
-        	messageService.sendNotificationMail(newMessage);
+        	mailService.createNotificationMailDTOForNewMessage(newMessage);
         } catch (Exception e) {
         	e.printStackTrace();
 		}

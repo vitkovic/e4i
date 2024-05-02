@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import e4i.config.Constants;
 import e4i.domain.Authority;
+import e4i.domain.PortalUser;
 import e4i.domain.User;
 import e4i.repository.AuthorityRepository;
 import e4i.repository.PortalUserRepository;
@@ -376,6 +377,13 @@ public class UserService {
     	return userRepository.save(user);
     	
     	
-    }    
+    }
+    
+    @Transactional
+    public String getEmailByPortalUser(PortalUser portalUser) {
+    	String email = userRepository.getEmailByPortalUserId(portalUser.getId());
+    	
+    	return email;
+    }
     
 }

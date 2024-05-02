@@ -20,9 +20,11 @@ import e4i.domain.Thread;
 import e4i.repository.CollaborationRepository;
 import e4i.service.AdvertisementService;
 import e4i.service.CollaborationService;
+import e4i.service.MailService;
 import e4i.service.MessageService;
 import e4i.service.PortalUserService;
 import e4i.service.ThreadService;
+import e4i.web.rest.dto.NotificationMailDTO;
 import e4i.web.rest.errors.BadRequestAlertException;
 
 import org.springframework.http.ResponseEntity;
@@ -48,6 +50,7 @@ public class CollaborationResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+//    @Autowired
     private final CollaborationService collaborationService;
     
     @Autowired
@@ -64,9 +67,13 @@ public class CollaborationResource {
     
     @Autowired
     MessageService messageService;
+    
+//    @Autowired
+    private final MailService mailService;
      
-    public CollaborationResource(CollaborationService collaborationService) {
-        this.collaborationService = collaborationService;
+    public CollaborationResource(MailService mailService, CollaborationService collaborationService) {
+		this.collaborationService = collaborationService;
+		this.mailService = mailService;
     }
 
     /**
@@ -195,6 +202,12 @@ public class CollaborationResource {
         	Collaboration collaboration = collaborationService.createCollaborationForAdvertisementAndPortalUserCompany(advertisement, portalUser);
         	Thread thread = threadService.createThreadForCollaboration(collaboration);
         	Message message = messageService.createFirstMessageInThreadCollaboration(thread, collaboration, portalUser);
+        	
+        	NotificationMailDTO mailDTO = mailService.createNotificationMailDTOForCollaborationRequest(message, collaboration);
+        	
+        	if (!mailDTO.getEmails().isEmpty()) {
+        		mailService.sendNotificationMail(mailDTO);
+        	}
             
         	return ResponseEntity.created(new URI("/api/collaborations/advertisement/" + advertisementId))
                     .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, collaboration.getId().toString()))
@@ -214,7 +227,7 @@ public class CollaborationResource {
         try {
         	// confirm collaboration
         	Collaboration collaboration = collaborationService.confirmCollaboration(collaborationId);
-        	
+
         	// make ad inactive
         	Advertisement advertisement = advertisementService.findOneByCollaboration(collaboration);
         	advertisement = advertisementService.changeStatus(advertisement, ADVERTISEMENT_STATUS);
@@ -225,6 +238,11 @@ public class CollaborationResource {
         	Message message = messageService.createConfirmMessageInThreadCollaboration(thread, collaboration, portalUser);
 
         	// send email notification
+        	NotificationMailDTO mailDTO = mailService.createNotificationMailDTOForCollaborationConfirm(message, collaboration);
+        	
+        	if (!mailDTO.getEmails().isEmpty()) {
+        		mailService.sendNotificationMail(mailDTO);
+        	}
 
         	return ResponseEntity.created(new URI("/api/collaborations/advertisement/" + collaborationId))
                     .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, collaboration.getId().toString()))

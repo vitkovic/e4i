@@ -54,6 +54,13 @@
                     <!-- <b-row :class="{'gray-light': index%2 == 0, 'gray-dark': index%2 != 0 }"> -->
                     <b-row :class="{ 'unreadMessages': thread.unreadExists }" class="bg-light ml-2 mr-2 border-top border-bottom" v-on:click="showMessages(thread)" v-b-toggle="'collapse-' + index">
                     <b-col class="pt-2" sm="5">
+                        <b-button v-if="thread.collaboration && thread.collaboration.isAccepted && (thread.collaboration.companyOffer.id === company.id)" 
+                                variant="outline-primary"
+                                pill
+                                disabled 
+                                class="btn btn-sm m-1">
+                            <span class="d-none d-md-inline" v-text="'Saradnja ostvarena'">Saradnja ostvarena</span>
+                        </b-button>
                         <b>{{ thread.subject }}</b>
                         <span>{{' (' + thread.messageCount + ')'}}</span>
                         <span>{{ buildThreadDisplayString(thread) }}</span>
@@ -85,6 +92,8 @@
                                     v-b-modal.confirmCollaboration>
                                 <span class="d-none d-md-inline" v-text="'Potvrdi saradnju'">Potvrdi saradnju</span>
                             </b-button>
+
+
 
                             <b-button v-on:click="prepareRemove(thread)"
                                     variant="danger"

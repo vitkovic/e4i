@@ -59,4 +59,6 @@ public interface PortalUserRepository extends JpaRepository<PortalUser, Long> {
 	
 	List<PortalUser> findAllByCompanyAndDoNotify(Company company, Boolean doNotify);
     
+	@Query("SELECT pu.company FROM PortalUser pu WHERE pu.id = :portalUserId")
+	Optional<Company> findCompanyByPortalUserId(@Param("portalUserId") Long portalUserId);
 }

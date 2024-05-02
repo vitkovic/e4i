@@ -10,6 +10,7 @@ import e4i.repository.ThreadRepository;
 import e4i.service.MailService;
 import e4i.service.MessageService;
 import e4i.service.UserService;
+import e4i.web.rest.dto.NotificationMailDTO;
 import e4i.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -31,7 +32,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +50,7 @@ public class MessageResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+//    @Autowired
     private final MessageService messageService;
     
     @Autowired
@@ -64,11 +65,13 @@ public class MessageResource {
     @Autowired
     UserService userService;
     
-    @Autowired
-    MailService mailService;
+//    @Autowired
+    private final MailService mailService;
 
-    public MessageResource(MessageService messageService) {
-        this.messageService = messageService;
+    public MessageResource(MessageService messageService, MailService mailService) {
+		this.messageService = messageService;
+//        this.messageService = messageService;
+		this.mailService = mailService;
     }
 
     /**
@@ -192,36 +195,31 @@ public class MessageResource {
     }
     
     @PostMapping("/messages/thread")
-    @Transactional
-    public ResponseEntity<Message> createMessageInThread(@RequestParam String content, @RequestParam Long senderId, @RequestParam("threadId") Long threadId) throws URISyntaxException {
-        log.debug("REST request to save Message in thread: {}",  threadId);
-        
-//        if (message.getId() != null) {
-//            throw new BadRequestAlertException("A new message cannot already have an ID", ENTITY_NAME, "idexists");
-//        }
-        
-        Thread thread = threadRepository.getOne(threadId);
-        PortalUser portalUserSender = portalUserRepository.getOne(senderId);
-        
-        Message message = new Message();        
-        message.setThread(thread);
-        message.setPortalUserSender(portalUserSender);
-        message.setContent(content);
-        message.setDatetime(Instant.now());
-        message.setIsRead(false);
-        message.setIsDeletedSender(false);
-        message.setIsDeletedReceiver(false);
-        
-        Message result = messageService.save(message);
-
+    public ResponseEntity<Message> createMessageInThread(
+		@RequestParam String content, 
+		@RequestParam Long senderId, 
+		@RequestParam("threadId") Long threadId
+    ) throws URISyntaxException {
+        log.debug("REST request to create Message in thread: {}",  threadId);
+          
         try {
-        	messageService.sendNotificationMail(result);
+            Message message = messageService.createNewMessageInThread(content, threadId, senderId);
+        	
+        	NotificationMailDTO mailDTO = mailService.createNotificationMailDTOForNewMessage(message);
+        	
+        	if (!mailDTO.getEmails().isEmpty()) {
+        		mailService.sendNotificationMail(mailDTO);
+        	}
+        	
+            return ResponseEntity.created(new URI("/api/messages/" + message.getId()))
+                    .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, message.getId().toString()))
+                    .body(message);
+        	
         } catch (Exception e) {
         	e.printStackTrace();
+        	return ResponseEntity.noContent().build();
 		}
         
-        return ResponseEntity.created(new URI("/api/messages/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
-            .body(result);
+
     }
 }
