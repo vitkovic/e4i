@@ -19,17 +19,20 @@ import e4i.domain.Thread;
 public interface CollaborationRepository extends JpaRepository<Collaboration, Long> {
 	
 	@Query("SELECT collaboration FROM Collaboration collaboration " +
-	        "WHERE (collaboration.companyOffer.id = :companyId " +
-	        "OR (collaboration.companyRequest.id = :companyId)) ")
-	Page<Collaboration> findAllByCompany(@Param("companyId") Long companyId, Pageable pageable);
+	        "WHERE ((collaboration.companyOffer.id = :companyId " +
+	        "OR (collaboration.companyRequest.id = :companyId)) " + 
+	        "AND (collaboration.isAccepted = :isAccepted))")
+	Page<Collaboration> findAllByCompanyAndIsAccepted(@Param("companyId") Long companyId, @Param("isAccepted") Boolean isAccepted, Pageable pageable);
     
     @Query("SELECT collaboration FROM Collaboration collaboration " +
-            "WHERE (collaboration.companyOffer.id = :companyId) ")
-	Page<Collaboration> findAllByCompanyOffer(@Param("companyId") Long companyId, Pageable pageable);
+            "WHERE ((collaboration.companyOffer.id = :companyId) " +
+			"AND (collaboration.isAccepted = :isAccepted))")
+	Page<Collaboration> findAllByCompanyOfferAndIsAccepted(@Param("companyId") Long companyId, @Param("isAccepted") Boolean isAccepted, Pageable pageable);
     
     @Query("SELECT collaboration FROM Collaboration collaboration " +
-            "WHERE (collaboration.companyRequest.id = :companyId) ")
-	Page<Collaboration> findAllByCompanyRequest(@Param("companyId") Long companyId, Pageable pageable);
+            "WHERE ((collaboration.companyRequest.id = :companyId) " +
+			"AND (collaboration.isAccepted = :isAccepted))")
+	Page<Collaboration> findAllByCompanyRequestAndIsAccepted(@Param("companyId") Long companyId, @Param("isAccepted") Boolean isAccepted, Pageable pageable);
 
     Optional<Collaboration> findOneByThreads(Thread thread);
 }

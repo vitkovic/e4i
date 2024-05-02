@@ -54,7 +54,7 @@
                     <!-- <b-row :class="{'gray-light': index%2 == 0, 'gray-dark': index%2 != 0 }"> -->
                     <b-row :class="{ 'unreadMessages': thread.unreadExists }" class="bg-light ml-2 mr-2 border-top border-bottom" v-on:click="showMessages(thread)" v-b-toggle="'collapse-' + index">
                     <b-col class="pt-2" sm="5">
-                        <b-button v-if="thread.collaboration && thread.collaboration.isAccepted && (thread.collaboration.companyOffer.id === company.id)" 
+                        <b-button v-if="thread.collaboration && thread.collaboration.isAccepted" 
                                 variant="outline-primary"
                                 pill
                                 disabled 

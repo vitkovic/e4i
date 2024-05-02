@@ -162,7 +162,7 @@ public class CollaborationResource {
     		@RequestParam Long companyId) {
         log.debug("REST request to get a page of Collaborations for company");
         
-        Page<Collaboration> page = collaborationRepository.findAllByCompany(companyId, pageable);
+        Page<Collaboration> page = collaborationRepository.findAllByCompanyAndIsAccepted(companyId, true, pageable);
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -174,7 +174,7 @@ public class CollaborationResource {
     		@RequestParam Long companyId) {
         log.debug("REST request to get a page of Collaborations for company offer");
         
-        Page<Collaboration> page = collaborationRepository.findAllByCompanyOffer(companyId, pageable);
+        Page<Collaboration> page = collaborationRepository.findAllByCompanyOfferAndIsAccepted(companyId, true, pageable);
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -186,7 +186,7 @@ public class CollaborationResource {
     		@RequestParam Long companyId) {
         log.debug("REST request to get a page of Collaborations for company request");
         
-        Page<Collaboration> page = collaborationRepository.findAllByCompanyRequest(companyId, pageable);
+        Page<Collaboration> page = collaborationRepository.findAllByCompanyRequestAndIsAccepted(companyId, true, pageable);
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
