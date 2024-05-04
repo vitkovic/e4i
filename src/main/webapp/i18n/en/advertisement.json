@@ -57,9 +57,13 @@
         "newImg": "New images:",
         "currentDoc": "Current documents:",
         "newDoc": "New documents:",
-        "delete": {
+        "deleteImage": {
           "question": "Are you sure you want to delete the image?",
           "title": "Please confirm the deletion of the image"
+        },
+        "deleteDocument": {
+          "question": "Are you sure you want to delete the document?",
+          "title": "Please confirm the deletion of the document"
         }
       },
       "error": {

@@ -57,9 +57,13 @@
         "newImg": "Nove slike:",
         "currentDoc": "Sačuvani dokumenti:",
         "newDoc": "Novi dokumenti:",
-        "delete": {
+        "deleteImage": {
           "question": "Da li ste sigurni da želite da obrišete sliku?",
           "title": "Potvrdite brisanje slike"
+        },
+        "deleteDocument": {
+          "question": "Da li ste sigurni da želite da obrišete dokument?",
+          "title": "Potvrdite brisanje dokumenta"
         }
       },
       "error": {
