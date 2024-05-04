@@ -4,9 +4,11 @@ import { Component, Vue, Inject } from 'vue-property-decorator';
 import Vue2Filters from 'vue2-filters';
 
 import { ICollaboration } from '@/shared/model/collaboration.model';
+import { ICollaborationRating } from '@/shared/model/collaboration-rating.model';
 import { ICompany } from '@/shared/model/company.model';
 
 import CollaborationService from './collaboration.service';
+import CollaborationRatingService from '@/entities/collabooration-rating.service';
 import CompanyService from '@/entities/company.service';
 
 enum CollaborationsFilter {
@@ -20,6 +22,7 @@ enum CollaborationsFilter {
 })
 export default class Collaboration extends mixins(AlertMixin) {
   @Inject('collaborationService') private collaborationService: () => CollaborationService;
+  @Inject('collaborationRatingService') private collaborationRatingService: () => CollaborationRatingService;
   @Inject('companyService') private companyService: () => CompanyService;
 
 
@@ -33,7 +36,11 @@ export default class Collaboration extends mixins(AlertMixin) {
   public totalItems = 0;
 
   public collaborations: ICollaboration[] = [];
+  public collaborationRatings: ICollaborationRating[] = [];
+  public selectedRating: ICollaborationRating | null = null;
   public company: ICompany = null;
+  public collaborationToRate: ICollaboration | null = null;
+  public ratingComment = "";
 
   public isFetching = false;
   public activeCollaborationsFilter = CollaborationsFilter.ALL;
@@ -168,7 +175,69 @@ export default class Collaboration extends mixins(AlertMixin) {
     (<any>this.$refs.removeEntity).hide();
   }
 
-  
+  public prepareRating(instance: ICollaboration): void {
+    this.collaborationToRate = instance;
+
+    if (this.collaborationRatings.length == 0) {
+      this.collaborationRatingService()
+      .retrieve()
+      .then(res => {
+        this.collaborationRatings = res.data;
+        console.log(this.collaborationRatings);
+      });
+    }
+
+    if (<any>this.$refs.ratingEntity) {
+      (<any>this.$refs.ratingEntity).show();
+    }
+  }
+
+  public selectRating(rating: ICollaborationRating) {
+    this.selectedRating = rating;
+  }
+
+  public rateCollaboration() {
+    let formData = new FormData();
+    formData.append('collaborationId', '' + this.collaborationToRate.id);
+    formData.append('ratingId', '' + this.selectedRating.id);
+    formData.append('comment', '' + this.ratingComment);
+
+    if (this.company.id === this.collaborationToRate.companyOffer.id) {
+      const companyName = this.collaborationToRate.companyRequest.name;
+
+      this.collaborationService()
+      .rateCollaborationForCompanyOffer(formData)
+      .then(res => {
+        this.retrieveAllCollaborations();
+        const notificatonMessage = 'Ocenili ste saradnju sa kompanijom ' + companyName;
+        this.$notify({
+          text: notificatonMessage,
+        });
+      });
+    } else if (this.company.id === this.collaborationToRate.companyRequest.id) {
+      const companyName = this.collaborationToRate.companyOffer.name;
+
+      this.collaborationService()
+      .rateCollaborationForCompanyRequest(formData)
+      .then(res => {
+        this.retrieveAllCollaborations();
+        const notificatonMessage = 'Ocenili ste saradnju sa kompanijom ' + companyName;
+        this.$notify({
+          text: notificatonMessage,
+        });
+      });
+    }
+
+    this.closeRatingDialog();
+  }
+
+  public closeRatingDialog(): void {
+    this.collaborationToRate = null;
+    this.selectedRating = null;
+    this.ratingComment = "";
+    (<any>this.$refs.ratingEntity).hide();
+  }
+
   public showAllCollaborations(): void {
     this.activeCollaborationsFilter = CollaborationsFilter.ALL;
     this.retrieveAllCollaborations();
@@ -194,5 +263,12 @@ export default class Collaboration extends mixins(AlertMixin) {
     this.filterAllButtonVariant = 'outline-secondary';
     this.filterOfferButtonVariant = 'outline-secondary';
     this.filterRequestButtonVariant = 'secondary';
+  }
+
+  public ratingExists(collaboration: ICollaboration): boolean {
+    return (collaboration.companyOffer.id === this.company.id 
+      && collaboration.ratingOffer) 
+      || (collaboration.companyRequest.id === this.company.id 
+      && collaboration.ratingRequest);
   }
 }

@@ -43,8 +43,8 @@
                     <th v-on:click="changeOrder('advertisement.kind.kind')"><span v-text="'Kind'">Advertisement</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'advertisement.kind.kind'"></jhi-sort-indicator></th>
                     <th v-on:click="changeOrder('advertisement.budget')"><span v-text="'Budget'">Advertisement</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'advertisement.budget'"></jhi-sort-indicator></th>
                     <th v-on:click="changeOrder('advertisement.duration.duration')"><span v-text="'Duration'">Advertisement</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'advertisement.duration.duration'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('ratingOffer.id')"><span v-text="$t('riportalApp.collaboration.ratingOffer')">Rating Offer</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'ratingOffer.id'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('ratingRequest.id')"><span v-text="$t('riportalApp.collaboration.ratingRequest')">Rating Request</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'ratingRequest.id'"></jhi-sort-indicator></th>
+                    <th v-on:click="changeOrder('ratingOffer.id')"><span v-text="$t('riportalApp.collaboration.ratingOffer')">Rating Offer</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'ratingOffer.number'"></jhi-sort-indicator></th>
+                    <th v-on:click="changeOrder('ratingRequest.id')"><span v-text="$t('riportalApp.collaboration.ratingRequest')">Rating Request</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'ratingRequest.number'"></jhi-sort-indicator></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -78,25 +78,41 @@
                     <td>{{collaboration.advertisement.duration.duration}}</td>
                     <td>
                         <div v-if="collaboration.ratingOffer">
-                            <router-link :to="{name: 'CollaborationRatingView', params: {collaborationRatingId: collaboration.ratingOffer.id}}">{{collaboration.ratingOffer.id}}</router-link>
+                            <b-form-rating 
+                                disabled
+                                :value="collaboration.ratingOffer.number"                 
+                                stars="4" 
+                                inline
+                                size="sm">
+                            </b-form-rating>
                         </div>
                     </td>
                     <td>
                         <div v-if="collaboration.ratingRequest">
-                            <router-link :to="{name: 'CollaborationRatingView', params: {collaborationRatingId: collaboration.ratingRequest.id}}">{{collaboration.ratingRequest.id}}</router-link>
+                            <b-form-rating 
+                                disabled
+                                :value="collaboration.ratingRequest.number"                 
+                                stars="4" 
+                                inline
+                                size="sm">
+                            </b-form-rating>
                         </div>
                     </td>
                     <td class="text-right">
                         <div class="btn-group">
-                            <router-link :to="{name: 'CollaborationView', params: {collaborationId: collaboration.id}}" tag="button" class="btn btn-info btn-sm details">
-                                <font-awesome-icon icon="eye"></font-awesome-icon>
-                                <span class="d-none d-md-inline" v-text="$t('entity.action.view')">View</span>
-                            </router-link>
-                            <router-link :to="{name: 'CollaborationEdit', params: {collaborationId: collaboration.id}}"  tag="button" class="btn btn-primary btn-sm edit">
-                                <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
-                                <span class="d-none d-md-inline" v-text="$t('entity.action.edit')">Edit</span>
-                            </router-link>
-                            <b-button v-on:click="prepareRemove(collaboration)"
+                            <b-button v-if="!ratingExists(collaboration)"  v-on:click="prepareRating(collaboration)"
+                                   variant="primary"
+                                   class="btn btn-sm mr-1"
+                                   v-b-modal.ratingEntity>
+                                <span class="d-none d-md-inline" v-text="'Oceni'">Oceni</span>
+                            </b-button>
+                            <b-button v-on:click="prepareRenewAd(collaboration)"
+                                   variant="primary"
+                                   class="btn btn-sm mr-1"
+                                   v-b-modal.renewAdEntity>
+                                <span class="d-none d-md-inline" v-text="'Pokreni ponovo'">Pokreni ponovo</span>
+                            </b-button>
+                            <b-button v-if="ratingExists(collaboration) && company.id === collaboration.advertisement.company.id" v-on:click="prepareRemove(collaboration)"
                                    variant="danger"
                                    class="btn btn-sm"
                                    v-b-modal.removeEntity>
@@ -109,6 +125,51 @@
                 </tbody>
             </table>
         </div>
+        <b-modal v-if="collaborationToRate" ref="ratingEntity" id="ratingEntity" >
+            <span slot="modal-title"><span v-text="'Ocenite saradnju'">Ocenite saradnju</span></span>
+            <div class="modal-body">       
+                <p v-if="company.id != collaborationToRate.companyOffer.id"><b>Oglašivač: </b>{{ collaborationToRate.companyOffer.name }}</p>
+                <p v-if="company.id != collaborationToRate.companyRequest.id"><b>Tražilac: </b>{{ collaborationToRate.companyRequest.name }}</p>
+                <p><b>Oglas: </b>{{ collaborationToRate.advertisement.title }}</p>
+                <div>
+                <b-dropdown text="Izaberite ocenu" class="mb-3">
+                    <b-dropdown-item v-for="rating in collaborationRatings" :key="rating.id" @click="selectRating(rating)">
+                        <b-form-rating
+                            disabled
+                            :value="rating.number"                 
+                            stars="4" 
+                            inline
+                            size="sm">
+                        </b-form-rating>
+                        <span class="ml-2">{{ rating.description }}</span>
+                    </b-dropdown-item>
+                </b-dropdown>
+                <div v-if="selectedRating" class="mb-3">
+                    <b-form-rating
+                            disabled
+                            :value="selectedRating.number"                 
+                            stars="4" 
+                            inline
+                            size="sm">
+                        </b-form-rating>
+                        <span class="ml-2">{{ selectedRating.description }}</span>
+                </div>
+                <div v-else class="mb-3">
+                    <span style="color: red;">Ocena nije izabrana</span>
+                </div>
+                </div>
+                <b-form-textarea
+                    id="textarea"
+                    v-model="ratingComment"
+                    placeholder="Komentar saradnje...">
+                </b-form-textarea>
+            </div>
+            <div slot="modal-footer">
+                <button type="button" class="btn btn-secondary" v-text="'Oceni'" v-on:click="rateCollaboration()">Oceni</button>
+                <button type="button" class="btn btn-primary" id="jhi-confirm-delete-collaboration" v-text="'Otkaži'" v-on:click="closeRatingDialog()">Otkaži</button>
+            </div>
+        </b-modal>
+
         <b-modal ref="removeEntity" id="removeEntity" >
             <span slot="modal-title"><span id="riportalApp.collaboration.delete.question" v-text="$t('entity.delete.title')">Confirm delete operation</span></span>
             <div class="modal-body">
@@ -132,3 +193,9 @@
 
 <script lang="ts" src="./company-collaborations.component.ts">
 </script>
+
+<style scoped>
+.b-rating.disabled {
+  color: rgb(40, 40, 56);
+}
+</style>

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import e4i.domain.Advertisement;
 import e4i.domain.Collaboration;
+import e4i.domain.CollaborationRating;
 import e4i.domain.PortalUser;
 import e4i.repository.CollaborationRepository;
 import java.time.Instant;
@@ -104,6 +105,42 @@ public class CollaborationService {
     	Collaboration collaboration = collaborationOptional.get();
     	collaboration.setIsAccepted(true);
     	collaboration.setDatetime(Instant.now());
+    	
+    	Collaboration result = collaborationRepository.save(collaboration);
+    	
+    	return result;
+    }
+    
+    @Transactional
+    public Collaboration updateCollaborationRatingForCompanyOffer(Long collaborationId, CollaborationRating rating, String comment) {
+    	Optional<Collaboration> collaborationOptional = collaborationRepository.findById(collaborationId);
+        
+    	if (collaborationOptional.isEmpty()) {
+    		String errorMessage = String.format("Collaboration with id={} could not be found", collaborationId);
+        	throw new EntityNotFoundException(errorMessage);
+        }
+    	
+    	Collaboration collaboration = collaborationOptional.get();
+    	collaboration.setRatingOffer(rating);
+    	collaboration.setCommentOffer(comment);
+    	
+    	Collaboration result = collaborationRepository.save(collaboration);
+    	
+    	return result;
+    }
+    
+    @Transactional
+    public Collaboration updateCollaborationRatingForCompanyRequest(Long collaborationId, CollaborationRating rating, String comment) {
+    	Optional<Collaboration> collaborationOptional = collaborationRepository.findById(collaborationId);
+        
+    	if (collaborationOptional.isEmpty()) {
+    		String errorMessage = String.format("Collaboration with id={} could not be found", collaborationId);
+        	throw new EntityNotFoundException(errorMessage);
+        }
+    	
+    	Collaboration collaboration = collaborationOptional.get();
+    	collaboration.setRatingRequest(rating);
+    	collaboration.setCommentRequest(comment);
     	
     	Collaboration result = collaborationRepository.save(collaboration);
     	

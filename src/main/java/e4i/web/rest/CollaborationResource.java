@@ -14,11 +14,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import e4i.domain.Advertisement;
 import e4i.domain.Collaboration;
+import e4i.domain.CollaborationRating;
 import e4i.domain.Message;
 import e4i.domain.PortalUser;
 import e4i.domain.Thread;
 import e4i.repository.CollaborationRepository;
 import e4i.service.AdvertisementService;
+import e4i.service.CollaborationRatingService;
 import e4i.service.CollaborationService;
 import e4i.service.MailService;
 import e4i.service.MessageService;
@@ -67,6 +69,9 @@ public class CollaborationResource {
     
     @Autowired
     MessageService messageService;
+    
+    @Autowired
+    CollaborationRatingService collaborationRatingService;
     
 //    @Autowired
     private final MailService mailService;
@@ -245,7 +250,63 @@ public class CollaborationResource {
         	}
 
         	return ResponseEntity.created(new URI("/api/collaborations/advertisement/" + collaborationId))
-                    .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, collaboration.getId().toString()))
+                    .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, collaboration.getId().toString()))
+                    .body(collaboration);
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	return ResponseEntity.noContent().build();
+        }    
+    }
+    
+    @PutMapping("/collaborations/rate-offer")
+    public ResponseEntity<Collaboration> rateCollaborationForCompanyOffer(
+    		@RequestParam Long collaborationId,
+    		@RequestParam Long ratingId,
+    		@RequestParam String comment
+    ) throws URISyntaxException  {
+        log.debug("REST request to rate copmanyOffer for Collaboration: {} with rating: {}", collaborationId, ratingId);
+        
+        try {
+        	CollaborationRating rating = collaborationRatingService.findOneById(ratingId);
+        	Collaboration collaboration = collaborationService.updateCollaborationRatingForCompanyOffer(collaborationId, rating, comment);
+        	
+        	// send email notification
+//        	NotificationMailDTO mailDTO = mailService.createNotificationMailDTOForCollaborationConfirm(message, collaboration);
+        	
+//        	if (!mailDTO.getEmails().isEmpty()) {
+//        		mailService.sendNotificationMail(mailDTO);
+//        	}
+
+        	return ResponseEntity.created(new URI("/api/collaborations/rate-offer"))
+                    .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, collaboration.getId().toString()))
+                    .body(collaboration);
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	return ResponseEntity.noContent().build();
+        }    
+    }
+    
+    @PutMapping("/collaborations/rate-request")
+    public ResponseEntity<Collaboration> rateCollaborationForCompanyRequest(
+    		@RequestParam Long collaborationId,
+    		@RequestParam Long ratingId,
+    		@RequestParam String comment
+	) throws URISyntaxException  {
+        log.debug("REST request to rate copmanyRequest for Collaboration: {} with rating: {}", collaborationId, ratingId);
+        
+        try {
+        	CollaborationRating rating = collaborationRatingService.findOneById(ratingId);
+        	Collaboration collaboration = collaborationService.updateCollaborationRatingForCompanyRequest(collaborationId, rating, comment);
+        	
+        	// send email notification
+//        	NotificationMailDTO mailDTO = mailService.createNotificationMailDTOForCollaborationConfirm(message, collaboration);
+        	
+//        	if (!mailDTO.getEmails().isEmpty()) {
+//        		mailService.sendNotificationMail(mailDTO);
+//        	}
+
+        	return ResponseEntity.created(new URI("/api/collaborations/rate-request"))
+                    .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, collaboration.getId().toString()))
                     .body(collaboration);
         } catch (Exception e) {
         	e.printStackTrace();

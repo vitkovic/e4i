@@ -12,6 +12,8 @@ import e4i.repository.CollaborationRatingRepository;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 /**
  * Service Implementation for managing {@link CollaborationRating}.
  */
@@ -70,5 +72,21 @@ public class CollaborationRatingService {
     public void delete(Long id) {
         log.debug("Request to delete CollaborationRating : {}", id);
         collaborationRatingRepository.deleteById(id);
+    }
+    
+    @Transactional(readOnly = true)
+    public CollaborationRating findOneById(Long id) {
+        log.debug("Request to get CollaborationRating : {}", id);
+        
+        Optional<CollaborationRating> collaborationRatingOptional = collaborationRatingRepository.findById(id);
+        
+    	if (collaborationRatingOptional.isEmpty()) {
+    		String errorMessage = String.format("CollaborationRating with id={} could not be found", id);
+        	throw new EntityNotFoundException(errorMessage);
+        }
+    	
+    	CollaborationRating collaborationRating = collaborationRatingOptional.get();
+        
+        return collaborationRating;
     }
 }

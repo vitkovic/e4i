@@ -10,6 +10,8 @@ const baseApiConfirmCollaboration = 'api/collaborations/confirm';
 const apiGetCollaborationsByCompany = 'api/collaborations/company';
 const apiGetCollaborationsByCompanyOffer = 'api/collaborations/company-offer';
 const apiGetCollaborationsByCompanyRequest = 'api/collaborations/company-request';
+const apiRateCollaborationForCompanyOffer = 'api/collaborations/rate-offer';
+const apiRateCollaborationForCompanyRequest = 'api/collaborations/rate-request';
 
 export default class CollaborationService {
   public find(id: number): Promise<ICollaboration> {
@@ -135,6 +137,40 @@ export default class CollaborationService {
         .put(`${baseApiConfirmCollaboration}/${collaborationId}`)
         .then(res => {
           resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public rateCollaborationForCompanyOffer(formData: FormData): Promise<ICollaboration> {
+    return new Promise<ICollaboration>((resolve, reject) => {
+      axios
+        .put(apiRateCollaborationForCompanyOffer, formData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public rateCollaborationForCompanyRequest(formData: FormData): Promise<ICollaboration> {
+    return new Promise<ICollaboration>((resolve, reject) => {
+      axios
+        .put(apiRateCollaborationForCompanyRequest, formData, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(res => {
+          resolve(res.data);
         })
         .catch(err => {
           reject(err);
