@@ -4,7 +4,7 @@
       "home": {
         "title": "Companies",
         "createLabel": "Kreiraj novi Company",
-        "createOrEditLabel": "Kreirajte ili izmenite Company",
+        "createOrEditLabel": "Kreirajte ili izmenite компанију",
         "notFound": "No Companies found"
       },
       "created": "Kreiran je novi Company pod nazivom {{ param }}",
@@ -24,6 +24,26 @@
         "category": "Категорија",
         "badges": "Беџеви"
       },
+
+      "createdAt": "Креирано",
+      "modifiedAt": "Измењено",
+      "rsnisId": "Рснис ИД",
+      "aprId": "Апр ИД",
+      "name": "Назив",
+      "about": "Опис",
+      "fields": "Гране",
+      "portalUser": "Portal User",
+      "advertisement": "Advertisement",
+      "collaborationOffer": "Collaboration Offer",
+      "collaborationRequest": "Collaboration Request",
+      "advertisementSupporter": "Advertisement Supporter",
+      "thread": "Thread",
+      "badge": "Badge",
+      "document": "Document",
+      "createdBy": "Креирао",
+      "modifiedBy": "Изменио",
+      "logo": "Logo",
+
       "title": "Title",
       "content": "Content",
       "note": "Note",

@@ -4,7 +4,7 @@
       "home": {
         "title": "Companies",
         "createLabel": "Kreiraj novi Company",
-        "createOrEditLabel": "Kreirajte ili izmenite Company",
+        "createOrEditLabel": "Kreirajte ili izmenite kompaniju",
         "notFound": "No Companies found"
       },
       "created": "Kreiran je novi Company pod nazivom {{ param }}",
@@ -24,13 +24,13 @@
         "category": "Kategorija",
         "badges": "Bedževi"
       },
-      "createdAt": "Created At",
-      "modifiedAt": "Modified At",
-      "rsnisId": "Rsnis Id",
-      "aprId": "Apr Id",
-      "name": "Name",
-      "about": "About",
-      "fields": "Fields",
+      "createdAt": "Kreirano",
+      "modifiedAt": "Izmenjeno",
+      "rsnisId": "Rsnis ID",
+      "aprId": "Apr ID",
+      "name": "Naziv",
+      "about": "Opis",
+      "fields": "Grane",
       "portalUser": "Portal User",
       "advertisement": "Advertisement",
       "collaborationOffer": "Collaboration Offer",
@@ -39,8 +39,8 @@
       "thread": "Thread",
       "badge": "Badge",
       "document": "Document",
-      "createdBy": "Created By",
-      "modifiedBy": "Modified By",
+      "createdBy": "Kreirao",
+      "modifiedBy": "Izmenio",
       "logo": "Logo"
     }
   }

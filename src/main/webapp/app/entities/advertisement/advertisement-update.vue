@@ -296,6 +296,7 @@
             </div>
           </div>
         </div>
+        <hr />
         <div class="row mt-4 justify-content-between">
           <div class="col-5">
             <div class="form-group">
@@ -329,7 +330,7 @@
                 <!-- <p class="small mb-0 text-info">* Dozvoljene dimenzije slike su 50 x 50.</p> -->
               </div>
               <ol class="p-0">
-                <p class="font-weight-bold" v-text="$t('riportalApp.advertisement.upload.currentImg')">Current images:</p>
+                <p class="font-weight-bold mt-3" v-text="$t('riportalApp.advertisement.upload.currentImg')">Current images:</p>
                 <div v-for="document in advertisement.documents">
                   <li v-if="document.type.type == 'image'" class="ml-4 mb-3 pl-2">
                     <img :src="advertisementService().retrieveImage(document.filename)" width="50" />
@@ -346,7 +347,7 @@
                 </div>
               </ol>
               <ol class="p-0">
-                <p v-if="imageFiles.length > 0" class="font-weight-bold" v-text="$t('riportalApp.advertisement.upload.newImg')">
+                <p v-if="imageFiles.length > 0" class="font-weight-bold mt-3" v-text="$t('riportalApp.advertisement.upload.newImg')">
                   New images:
                 </p>
                 <li v-for="image in imageFiles" class="ml-4 mb-3">
@@ -397,7 +398,7 @@
                 <p class="small mb-0 text-info" v-text="$t('riportalApp.advertisement.upload.documentInfo.documentSize')"></p>
               </div>
               <ol class="p-0">
-                <p class="font-weight-bold" v-text="$t('riportalApp.advertisement.upload.currentDoc')">Current documents:</p>
+                <p class="font-weight-bold mt-3" v-text="$t('riportalApp.advertisement.upload.currentDoc')">Current documents:</p>
                 <div v-for="document in advertisement.documents">
                   <li v-if="document.type.type == 'document'" class="ml-4 mb-3">
                     <a
@@ -419,7 +420,7 @@
                 </div>
               </ol>
               <ol class="p-0">
-                <p v-if="documentFiles.length > 0" class="font-weight-bold" v-text="$t('riportalApp.advertisement.upload.newDoc')">
+                <p v-if="documentFiles.length > 0" class="font-weight-bold mt-3" v-text="$t('riportalApp.advertisement.upload.newDoc')">
                   New documents:
                 </p>
                 <li v-for="document in documentFiles" class="ml-4 mb-3">
@@ -451,6 +452,7 @@
                         </select>
                     </div> -->
         </div>
+        <hr />
         <div class="mt-4">
           <button type="button" id="cancel-save" class="btn btn-secondary" v-on:click="previousState()">
             <font-awesome-icon icon="ban"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.cancel')">Cancel</span>

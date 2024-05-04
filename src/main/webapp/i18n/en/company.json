@@ -4,7 +4,7 @@
       "home": {
         "title": "Companies",
         "createLabel": "Create a new Company",
-        "createOrEditLabel": "Create or edit a Company",
+        "createOrEditLabel": "Create or edit a company",
         "notFound": "No Companies found"
       },
       "created": "A new Company is created with identifier {{ param }}",
@@ -26,10 +26,10 @@
         "badges": "Badges"
       },
 
-      "createdAt": "Created At",
-      "modifiedAt": "Modified At",
-      "rsnisId": "Rsnis Id",
-      "aprId": "Apr Id",
+      "createdAt": "Created at",
+      "modifiedAt": "Modified at",
+      "rsnisId": "Rsnis ID",
+      "aprId": "Apr ID",
       "name": "Name",
       "about": "About",
       "fields": "Fields",
@@ -41,8 +41,8 @@
       "thread": "Thread",
       "badge": "Badge",
       "document": "Document",
-      "createdBy": "Created By",
-      "modifiedBy": "Modified By",
+      "createdBy": "Created by",
+      "modifiedBy": "Modified by",
       "logo": "Logo"
     }
   }
