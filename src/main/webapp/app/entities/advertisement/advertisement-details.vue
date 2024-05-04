@@ -62,7 +62,7 @@
                         <span v-if="advertisement.activationDatetime">{{$d(Date.parse(advertisement.activationDatetime), 'short') }}</span>
                     </dd>
                     <dt>
-                        <span v-text="'Expiration Datetime'">Expiration Datetime</span>
+                        <span v-text="$t('riportalApp.advertisement.expirationDatetime')">Expiration Datetime</span>
                     </dt>
                     <dd>
                         <div v-if="advertisement.duration && advertisement.activationDatetime">
@@ -94,7 +94,7 @@
                 <br>
 
                 <section>
-                    <h4 v-text="'Dokumenti'">Dokumenti</h4>
+                    <h4 v-text="$t('riportalApp.advertisement.documents')">Dokumenti</h4>
                     <div v-for="document in advertisement.documents">
                         <li v-if="document.type.type == 'document'" style="list-style-type: none;">
                             <a class="text-info" 
@@ -109,7 +109,7 @@
 
                 
                 <dl class="row jh-entity-details" style="justify-items: left; margin: 0;">
-                    <h4 v-text="'Oglašivač'">Oglašivač</h4>
+                    <h4 v-text="$t('riportalApp.advertisement.advertiser')">Oglašivač</h4>
                     <br>
                         <div class="d-flex" v-if="advertisement.company">
                             <img v-if="advertisement.company.logo" :src="advertisementService().retrieveImage(advertisement.company.logo.filename)"
@@ -131,13 +131,13 @@
                         variant="info"
                         class="btn btn-primary"
                         v-b-modal.adInquiry>
-                    <span class="d-none d-md-inline" v-text="'Pošalji upit'">Pošalji upit</span>
+                    <span class="d-none d-md-inline" v-text="$t('riportalApp.advertisement.interactionButtons.question')">Pošalji upit</span>
                 </b-button>
                 <router-link v-if="advertisement.id && authenticated && (hasAnyAuthority('ROLE_ADMIN') || !isCompanyOwner())" :to="'#'" tag="button" class="btn btn-primary">
-                    <span v-text="'Zakaži sastanak'"> Zakaži sastanak</span>
+                    <span v-text="$t('riportalApp.advertisement.interactionButtons.appointment')"> Zakaži sastanak</span>
                 </router-link>
                 <b-button v-if="advertisement.id && authenticated && (hasAnyAuthority('ROLE_ADMIN') || !isCompanyOwner())" v-on:click="prepareAdCollaboration(advertisement)" class="btn btn-primary" v-b-modal.adCollaboration>
-                    <span v-text="'Pokreni saradnju'"> Pokreni saradnju</span>
+                    <span v-text="$t('riportalApp.advertisement.interactionButtons.collaboration')"> Pokreni saradnju</span>
                 </b-button>
                 
 
@@ -148,40 +148,40 @@
                 <br>
                 <br>
                 <b-modal v-if="inquiryDTO" ref="adInquiry" id="adInquiry" >
-                    <span slot="modal-title"><span id="riportalApp.advertisement.delete.question">Upit za oglas</span></span>
+                    <span slot="modal-title"><span id="riportalApp.advertisement.delete.question" v-text="$t('riportalApp.advertisement.modal.advertisementModalTitle')">Upit za oglas</span></span>
                     <div class="modal-body">
-                        <p id="jhi-delete-advertisement-heading"><b>Oglas: </b>{{ advertisement.title }}</p>
-                        <p v-if="advertisement.company" id="jhi-delete-advertisement-heading"><b>Kompanija: </b>{{ advertisement.company.name }}</p>
+                        <p id="jhi-delete-advertisement-heading"><b>{{ $t('riportalApp.advertisement.modal.advertisementTitle') }}</b>{{ advertisement.title }}</p>
+                        <p v-if="advertisement.company" id="jhi-delete-advertisement-heading"><b>{{ $t('riportalApp.advertisement.modal.companyTitle') }}</b>{{ advertisement.company.name }}</p>
                         <br>
-                        <label name="inquiry-subject">Naziv poruke:</label>
+                        <label name="inquiry-subject" v-text="$t('entity.form.messageTitle')">Naslov poruke:</label>
                         <b-input v-model.trim="inputSubject.value" @blur="clearValidity('inputSubject')" ></b-input>
-                        <p v-if="!inputSubject.isValid" class="text-danger small">Naziv poruke ne može biti prazan.</p>
+                        <p v-if="!inputSubject.isValid" class="text-danger small" v-text="$t('entity.form.validation.content')">Naziv poruke ne može biti prazan.</p>
                         <br>
-                        <label name="inquiry-content">Sadržaj poruke:</label>
+                        <label name="inquiry-content" v-text="$t('entity.form.messageContent')">Sadržaj poruke:</label>
                         <b-textarea v-model.trim="textareaContent.value" @blur="clearValidity('textareaContent')"></b-textarea>
-                        <p v-if="!textareaContent.isValid" class="text-danger small">Sadržaj poruke ne može biti prazan.</p>
+                        <p v-if="!textareaContent.isValid" class="text-danger small" v-text="$t('entity.form.validation.content')">Sadržaj poruke ne može biti prazan.</p>
                     </div>
                     <div slot="modal-footer">
-                        <button type="button" class="btn btn-secondary" v-text="'Otkaži'" v-on:click="closeAdInquiry()">Otkaži</button>
-                        <button type="button" class="btn btn-primary" id="jhi-confirm-delete-advertisement" v-on:click="sendInquiry()">Pošalji</button>
+                        <button type="button" class="btn btn-secondary" v-text="$t('entity.action.cancel')" v-on:click="closeAdInquiry()">Otkaži</button>
+                        <button type="button" class="btn btn-primary" id="jhi-confirm-delete-advertisement" v-text="$t('entity.action.save')" v-on:click="sendInquiry()">Pošalji</button>
                     </div>
                 </b-modal>
 
                 <b-modal ref="adCollaboration" id="adCollaboration" >
-                    <span slot="modal-title"><span id="riportalApp.advertisement.delete.question">Potvrdite pokretanje saradnje</span></span>
+                    <span slot="modal-title"><span id="riportalApp.advertisement.delete.question" v-text="$t('riportalApp.advertisement.modal.collaborationModalTitle')">Potvrdite pokretanje saradnje</span></span>
                     <div class="modal-body">
-                        <p id="jhi-delete-advertisement-heading"><b>Oglas: </b>{{ advertisement.title }}</p>
-                        <p v-if="advertisement.company" id="jhi-delete-advertisement-heading"><b>Kompanija: </b>{{ advertisement.company.name }}</p>
+                        <p id="jhi-delete-advertisement-heading"><b>{{ $t('riportalApp.advertisement.modal.advertisementTitle') }}</b>{{ advertisement.title }}</p>
+                        <p v-if="advertisement.company" id="jhi-delete-advertisement-heading"><b>{{ $t('riportalApp.advertisement.modal.companyTitle') }}</b>{{ advertisement.company.name }}</p>
                         <br>
                     </div>
                     <div slot="modal-footer">
-                        <button type="button" class="btn btn-danger" v-text="'Otkaži'" v-on:click="closeAdCollaboration()">Otkaži</button>
-                        <button type="button" class="btn btn-success" id="jhi-confirm-delete-advertisement" v-on:click="startAdCollaboration()">Pokreni</button>
+                        <button type="button" class="btn btn-danger" v-text="$t('entity.action.cancel')" v-on:click="closeAdCollaboration()">Otkaži</button>
+                        <button type="button" class="btn btn-success" id="jhi-confirm-delete-advertisement" v-text="$t('entity.action.send')" v-on:click="startAdCollaboration()">Pokreni</button>
                     </div>
                 </b-modal>
 
                 <dl class="row jh-entity-details" v-if="authenticated && hasAnyAuthority('ROLE_ADMIN')" style="justify-items: left; margin: 0;">
-                        <h4 v-text="'Podaci o izmenama'">Podaci o izmenama</h4>
+                        <h4 v-text="$t('riportalApp.advertisement.dataChanges')">Podaci o izmenama</h4>
                         <br>
                         <dt>
                             <span v-text="$t('riportalApp.advertisement.createdAt')">Created At</span>

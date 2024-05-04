@@ -4,7 +4,7 @@
       "home": {
         "title": "Advertisements",
         "createLabel": "Kreiraj novi Advertisement",
-        "createOrEditLabel": "Kreirajte ili izmenite Advertisement",
+        "createOrEditLabel": "Kreirajte ili izmenite oglas",
         "notFound": "No Advertisements found"
       },
       "created": "Kreiran je novi Advertisement pod nazivom {{ param }}",
@@ -16,26 +16,72 @@
       "detail": {
         "title": "Advertisement"
       },
-      "createdAt": "Created At",
-      "modifiedAt": "Modified At",
-      "activationDatetime": "Activation Datetime",
-      "title": "Title",
-      "description": "Description",
-      "budget": "Budget",
-      "conditions": "Conditions",
+      "createdAt": "Kreirano",
+      "modifiedAt": "Izmenjeno",
+      "activationDatetime": "Datum aktivacije",
+      "expirationDatetime": "Datum isteka",
+      "title": "Naslov",
+      "description": "Opis",
+      "budget": "Budžet",
+      "conditions": "Uslovi",
       "advertisementSupporter": "Advertisement Supporter",
       "collaboration": "Collaboration",
       "meeting": "Meeting",
       "document": "Document",
-      "createdBy": "Created By",
-      "modifiedBy": "Modified By",
-      "company": "Company",
+      "documents": "Dokumenti",
+      "advertiser": "Oglašivač",
+      "createdBy": "Kreirao",
+      "modifiedBy": "Izmenio",
+      "dataChanges": "Podaci o izmenama",
+      "company": "Kompanija",
       "status": "Status",
-      "duration": "Duration",
-      "type": "Type",
-      "kind": "Kind",
-      "subsubcategory": "Subsubcategory",
-      "thread": "Thread"
+      "duration": "Period",
+      "type": "Tip",
+      "kind": "Vrsta",
+      "subsubcategory": "Podkategorija",
+      "thread": "Thread",
+      "upload": {
+        "imgUpload": "Dodajte slike",
+        "documentUpload": "Dodajte dokumente",
+        "imgInfo": {
+          "imgNumber": "* Broj slika koje možete dodati je: ",
+          "imgSize": "* Dozvoljena maksimalna veličina slike je 2 mb.",
+          "imgLimit": "Dostignut je maksimalan broj slika (15). Molim Vas uklonite pojedine slike, kako biste mogli da dodate nove."
+        },
+        "documentInfo": {
+          "documentNumber": "* Broj dokumenata koje možete dodati je: ",
+          "documentSize": "* Dozvoljena maksimalna veličina dokumenta je 2 mb.",
+          "documentLimit": "Dostignut je maksimalan broj dokumenata (15). Molim Vas uklonite pojedine dokumente, kako biste mogli da dodate nove."
+        },
+        "currentImg": "Sačuvane slike:",
+        "newImg": "Nove slike:",
+        "currentDoc": "Sačuvani dokumenti:",
+        "newDoc": "Novi dokumenti:",
+        "delete": {
+          "question": "Da li ste sigurni da želite da obrišete sliku?",
+          "title": "Potvrdite brisanje slike"
+        }
+      },
+      "error": {
+        "imgSize": "Broj slika koji ne može biti dodat je {numberOfBigImages}.<br>Prekoračena ograničenja:<br><ul><li>veličina slike (2mb).</li></ul>",
+        "imgNumber": "Broj slika koji ne može biti dodat je {numberOfLimitImages}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj slika (15).</li></ul>",
+        "imgSize&Number": "Broj slika koji ne može biti dodat je {totalNumberOfImages}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj slika (15).</li><li>veličina slike (2mb).</li></ul>",
+        "documentSize": "Broj dokumenata koji ne može biti dodat je {numberOfBigDocuments}.<br>Prekoračena ograničenja:<br><ul><li>veličina dokumenta (2mb).</li></ul>",
+        "documentNumber": "Broj dokumenata koji ne može biti dodat je {numberOfLimitDocuments}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj dokumenata (15).</li></ul>",
+        "documentSize&Number": "Broj dokumenata koji ne može biti dodat je {totalNumberOfDocuments}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj dokumenata (15).</li><li>veličina dokumenta (2mb).</li></ul>"
+      },
+      "browseText": "Izaberite",
+      "interactionButtons": {
+        "question": "Pošalji upit",
+        "appointment": "Zakaži sastanak",
+        "collaboration": "Pokreni saradnju"
+      },
+      "modal": {
+        "advertisementModalTitle": "Upit za oglas",
+        "collaborationModalTitle": "Potvrdite pokretanje saradnje",
+        "advertisementTitle": "Oglas: ",
+        "companyTitle": "Kompanija: "
+      }
     }
   }
 }

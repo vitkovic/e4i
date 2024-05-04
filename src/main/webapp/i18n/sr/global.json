@@ -234,6 +234,8 @@
       "edit": "Izmeni",
       "open": "Otvori",
       "save": "Pošalji",
+      "send": "Pošalji",
+      "remove": "Ukloni",
       "saveLogo": "Upamti logo",
       "saveImages": "Upamti slike",
       "view": "Pregled",
@@ -242,7 +244,10 @@
       "vote": "Glasaj",
       "zbirniPrikaz": "Zbirni prikaz",
       "readLess": "Pročitaj manje",
-      "readMore": "Pročitaj više"
+      "readMore": "Pročitaj više",
+      "saveDocuments": "Upamti dokumenta",
+      "messageTitle": "Naziv poruke:",
+      "messageContent": "Sadržaj poruke:"
     },
     "detail": {
       "field": "Polje",
@@ -262,6 +267,14 @@
       "pattern": "Polje mora da sledi obrazac {{ pattern }}.",
       "number": "Polje mora biti broj.",
       "datetimelocal": "Polje mora biti datum i vreme."
+    },
+    "form": {
+      "messageTitle": "Naslov poruke:",
+      "messageContent": "Sadržaj poruke:",
+      "validation": {
+        "title": "Naziv poruke ne može biti prazan.",
+        "content": "Sadržaj poruke ne može biti prazan."
+      }
     }
   },
   "error": {

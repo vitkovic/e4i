@@ -147,7 +147,7 @@ export default class AdvertisementUpdate extends Vue {
   public formDocuments: DocumentBlob[] = [];
   public documentFiles: DocumentBlob[] = [];
   public placeholdertext = '';
-  public browseText = '';
+  public browseText: string = '';
   public showDocumentsSection = false;
   public selectedImageId: number | null = null;
   public showImageSizeError: { number: number; state: boolean } = { number: 0, state: false };
@@ -428,23 +428,26 @@ export default class AdvertisementUpdate extends Vue {
       }
     }
 
-    if (this.advertisement.documents.filter(doc => doc.type.type === 'image').length + this.imageFiles.length + newImagesArray.length > 15) {
-      const imagesToAdd = 15 - this.imageFiles.length - this.advertisement.documents.filter(doc => doc.type.type === 'image').length;
+    if (this.advertisement.documents.filter(doc => doc.type.type === 'image').length + this.imageFiles.length + newImagesArray.length > 4) {
+      const imagesToAdd = 4 - this.imageFiles.length - this.advertisement.documents.filter(doc => doc.type.type === 'image').length;
       const imagesToAddArray = newImagesArray.slice(0, imagesToAdd);
       numberOfLimitImages = newImagesArray.length - imagesToAddArray.length;
       this.imageFiles.push(...imagesToAddArray);
 
-      if(numberOfLimitImages > 0 && numberOfBigImages > 0) {
+      if (numberOfLimitImages > 0 && numberOfBigImages > 0) {
+        const totalNumberOfImages = numberOfLimitImages + numberOfBigImages;
+        const errorText = this.$t('riportalApp.advertisement.error.imgSize&Number', { totalNumberOfImages });
         this.$notify({
-          text: `Broj slika koji ne može biti dodat je ${numberOfLimitImages + numberOfBigImages}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj slika (15).</li><li>veličina slike (2mb).</li></ul>`,
+          text: errorText,
           type: 'error',
-          duration: 8000 // Duration of the notification
+          duration: 8000, // Duration of the notification
         });
-      } else if(numberOfLimitImages > 0) {
+      } else if (numberOfLimitImages > 0) {
+        const errorText = this.$t('riportalApp.advertisement.error.imgNumber', { numberOfLimitImages });
         this.$notify({
-          text: `Broj slika koji ne može biti dodat je ${numberOfLimitImages}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj slika (15).</li></ul>`,
+          text: errorText,
           type: 'error',
-          duration: 8000 // Duration of the notification
+          duration: 8000, // Duration of the notification
         });
       }
     } else {
@@ -453,17 +456,18 @@ export default class AdvertisementUpdate extends Vue {
       }
 
       if (numberOfBigImages > 0) {
+        const errorText = this.$t('riportalApp.advertisement.error.imgSize', { numberOfBigImages });
         this.$notify({
-          text: `Broj slika koji ne može biti dodat je ${numberOfBigImages}.<br>Prekoračena ograničenja:<br><ul><li>veličina slike (2mb).</li></ul>`,
+          text: errorText,
           type: 'error',
-          duration: 8000
+          duration: 8000,
         });
       }
     }
   }
 
   public appendDocumentFiles(): void {
-
+    console.log(this.currentLanguage);
     const newDocumentsArray: DocumentBlob[] = [];
     let numberOfBigDocuments: number = 0;
     let numberOfLimitDocuments: number = 0;
@@ -477,23 +481,32 @@ export default class AdvertisementUpdate extends Vue {
       }
     }
 
-    if (this.advertisement.documents.filter(doc => doc.type.type === 'document').length + this.documentFiles.length + newDocumentsArray.length > 15) {
-      const documentsToAdd = 15 - this.documentFiles.length - this.advertisement.documents.filter(doc => doc.type.type === 'document').length;
+    if (
+      this.advertisement.documents.filter(doc => doc.type.type === 'document').length +
+        this.documentFiles.length +
+        newDocumentsArray.length >
+      4
+    ) {
+      const documentsToAdd =
+        4 - this.documentFiles.length - this.advertisement.documents.filter(doc => doc.type.type === 'document').length;
       const documentsToAddArray = newDocumentsArray.slice(0, documentsToAdd);
       numberOfLimitDocuments = newDocumentsArray.length - documentsToAddArray.length;
       this.documentFiles.push(...documentsToAddArray);
 
-      if(numberOfLimitDocuments > 0 && numberOfBigDocuments > 0) {
+      if (numberOfLimitDocuments > 0 && numberOfBigDocuments > 0) {
+        const totalNumberOfDocuments = numberOfLimitDocuments + numberOfBigDocuments;
+        const errorText = this.$t('riportalApp.advertisement.error.documentSize&Number', { totalNumberOfDocuments });
         this.$notify({
-          text: `Broj dokumenata koji ne može biti dodat je ${numberOfLimitDocuments + numberOfBigDocuments}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj dokumenata (15).</li><li>veličina dokumenta (2mb).</li></ul>`,
+          text: errorText,
           type: 'error',
-          duration: 8000 // Duration of the notification
+          duration: 8000, // Duration of the notification
         });
-      } else if(numberOfLimitDocuments > 0) {
+      } else if (numberOfLimitDocuments > 0) {
+        const errorText = this.$t('riportalApp.advertisement.error.documentNumber', { numberOfLimitDocuments });
         this.$notify({
-          text: `Broj dokumenata koji ne može biti dodat je ${numberOfLimitDocuments}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj dokumenata (15).</li></ul>`,
+          text: errorText,
           type: 'error',
-          duration: 8000 // Duration of the notification
+          duration: 8000, // Duration of the notification
         });
       }
     } else {
@@ -502,10 +515,11 @@ export default class AdvertisementUpdate extends Vue {
       }
 
       if (numberOfBigDocuments > 0) {
+        const errorText = this.$t('riportalApp.advertisement.error.documentSize', { numberOfBigDocuments });
         this.$notify({
-          text: `Broj dokumenata koji ne može biti dodat je ${numberOfBigDocuments}.<br>Prekoračena ograničenja:<br><ul><li>veličina dokumenta (2mb).</li></ul>`,
+          text: errorText,
           type: 'error',
-          duration: 8000 // Duration of the notification
+          duration: 8000, // Duration of the notification
         });
       }
     }
@@ -566,20 +580,31 @@ export default class AdvertisementUpdate extends Vue {
   }
 
   get availableNumberOfImagesToAdd(): number {
-    return 15 - this.advertisement.documents.filter(doc => doc.type.type === 'image').length;
+    return 4 - this.advertisement.documents.filter(doc => doc.type.type === 'image').length;
   }
 
   get isUploadImageFilesDisabled(): boolean {
     const totalImages: number = this.advertisement.documents.filter(doc => doc.type.type === 'image').length + this.imageFiles.length;
-    return totalImages === 15;
+    return totalImages === 4;
   }
 
   get availableNumberOfDocumentsToAdd(): number {
-    return 15 - this.advertisement.documents.filter(doc => doc.type.type === 'document').length;
+    return 4 - this.advertisement.documents.filter(doc => doc.type.type === 'document').length;
   }
 
   get isUploadDocumentFilesDisabled(): boolean {
-    const totalDocuments: number = this.advertisement.documents.filter(doc => doc.type.type === 'document').length + this.documentFiles.length;
-    return totalDocuments === 15;
+    const totalDocuments: number =
+      this.advertisement.documents.filter(doc => doc.type.type === 'document').length + this.documentFiles.length;
+    return totalDocuments === 4;
+  }
+
+  get browseButtonText(): string {
+    if(this.currentLanguage === 'en') {
+      return this.$t('riportalApp.advertisement.browseText');
+    } else if(this.currentLanguage === 'sr') {
+      return this.$t('riportalApp.advertisement.browseText');
+    } else if(this.currentLanguage === 'src') {
+      return this.$t('riportalApp.advertisement.browseText');
+    }
   }
 }

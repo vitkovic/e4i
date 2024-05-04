@@ -236,6 +236,8 @@
       "edit": "Edit",
       "open": "Open",
       "save": "Save",
+      "send": "Send",
+      "remove": "Remove",
       "saveLogo": "Save logo",
       "saveImages": "Save images",
       "view": "View",
@@ -245,7 +247,8 @@
       "summaryView": "Summary view",
       "zbirniPrikaz": "Service request overview",
       "readLess": "Read Less",
-      "readMore": "Read More"
+      "readMore": "Read More",
+      "saveDocuments": "Save documents"
     },
     "detail": {
       "field": "Field",
@@ -266,6 +269,14 @@
       "number": "This field should be a number.",
       "datetimelocal": "This field should be a date and time.",
       "patternLogin": "This field can only contain letters, digits and e-mail addresses."
+    },
+    "form": {
+      "messageTitle": "Message title:",
+      "messageContent": "Message content:",
+      "validation": {
+        "title": "The message title cannot be empty.",
+        "content": "The message content cannot be empty."
+      }
     }
   },
   "error": {
