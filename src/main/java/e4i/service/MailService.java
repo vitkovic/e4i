@@ -261,6 +261,46 @@ public class MailService {
         return mailDTO;
     }
     
+    @Transactional
+    public NotificationMailDTO createNotificationMailDTOForCollaborationRatingCompanyOffer(Collaboration collaboration) {
+    	Company company = collaboration.getCompanyOffer();
+    	
+        List<PortalUser> companyPortalUsers = portalUserRepository.findAllByCompanyAndDoNotify(company, true); 
+        List<String> emails = companyPortalUsers.stream()
+                .map(portalUser -> portalUser.getUser().getEmail())
+                .collect(Collectors.toList());
+	
+        String mailSubject = "B2B portal - Obaveštenje o novoj oceni za saradnju";
+        String mailContent = this.prepareNotificationContentForCollaborationRatingCompanyOffer(collaboration);
+
+        NotificationMailDTO mailDTO = new NotificationMailDTO();
+        mailDTO.setEmails(emails);
+        mailDTO.setSubject(mailSubject);
+        mailDTO.setContent(mailContent);
+        
+        return mailDTO;
+    }
+    
+    @Transactional
+    public NotificationMailDTO createNotificationMailDTOForCollaborationRatingCompanyRequest(Collaboration collaboration) {
+    	Company company = collaboration.getCompanyRequest();
+    	
+        List<PortalUser> companyPortalUsers = portalUserRepository.findAllByCompanyAndDoNotify(company, true); 
+        List<String> emails = companyPortalUsers.stream()
+                .map(portalUser -> portalUser.getUser().getEmail())
+                .collect(Collectors.toList());
+	
+        String mailSubject = "B2B portal - Obaveštenje o novoj oceni za saradnju";
+        String mailContent = this.prepareNotificationContentForCollaborationRatingCompanyRequest(collaboration);
+
+        NotificationMailDTO mailDTO = new NotificationMailDTO();
+        mailDTO.setEmails(emails);
+        mailDTO.setSubject(mailSubject);
+        mailDTO.setContent(mailContent);
+        
+        return mailDTO;
+    }
+    
     public String prepareContentForNewMessageNotification(Message message, Thread thread, Company company, PortalUser portalUser) {
     	
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
@@ -341,13 +381,72 @@ public class MailService {
         		+ "<p>Prihvačen je zahtev za saradnjom na B2B portalu za kompaniju " + collaboration.getCompanyRequest().getName() + ".</p>"
         		+ "<br>"
         		+ "<p><b>Vreme: </b><span>" + dateTimeFormatter.format(zonedDateTime) + "</span></p>"
-        		+ "<p><b>Pružalac: </b><span>" + collaboration.getCompanyOffer().getName() + "</span></p>"
+        		+ "<p><b>Oglašivač: </b><span>" + collaboration.getCompanyOffer().getName() + "</span></p>"
         		+ advertisementString
         		+ "<hr>"
         		+ "<p>Sve ostvarene saradnje možete pogledati sa "
         		+ "<a href='" + companyMessagesLink + "'>profila Vaše kompanije<a>.</p>"
         		+ "<p>Ovo je automatski poslata poruka, ne odgovarati na ovaj mail.</p>";
              
+    	return content;
+    }
+
+    public String prepareNotificationContentForCollaborationRatingCompanyOffer(Collaboration collaboration) {        
+        String homeURL = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
+        String companyMessagesLink = homeURL + "/b2b/company/" + collaboration.getCompanyOffer().getId() + "/collaborations";
+
+        String rating = "<p><b>Ocena: </b><span>"
+				+ collaboration.getRatingRequest().getNumber() 
+				+ "/4 - " +  collaboration.getRatingRequest().getDescription() 
+				+ "</span></p>";
+        
+        String ratingComment = "";
+        if (collaboration.getCommentRequest() != "") {
+        	ratingComment ="<p><b>Komentar: </b>" + collaboration.getCommentRequest() + "</span></p>";
+        }
+        
+        String content = "<div>"
+        		+ "<p>Imate novu ocenu na B2B portalu za ostvarenu saradnju kao oglašivač."
+        		+ "<br>"
+        		+ "<p><b>Oglas: </b><span>" + collaboration.getAdvertisement().getTitle() + "</span></p>"
+        		+ "<p><b>Oglašivač: </b><span>" + collaboration.getCompanyOffer().getName() + "</span></p>"
+        		+ "<p><b>Tražilac: </b><span>" + collaboration.getCompanyRequest().getName() + "</span></p>"
+        		+ "<hr>"
+        		+ rating
+        		+ ratingComment
+        		+ "<hr>"
+        		+ "<p>Sve ostvarene saradnje možete pogledati sa "
+        		+ "<a href='" + companyMessagesLink + "'>profila Vaše kompanije<a>.</p>"
+        		+ "<p>Ovo je automatski poslata poruka, ne odgovarati na ovaj mail.</p>";
+    	return content;
+    }
+    
+    public String prepareNotificationContentForCollaborationRatingCompanyRequest(Collaboration collaboration) {        
+        String homeURL = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
+        String companyMessagesLink = homeURL + "/b2b/company/" + collaboration.getCompanyRequest().getId() + "/collaborations";
+        
+        String rating = "<p><b>Ocena: </b><span>"
+				+ collaboration.getRatingOffer().getNumber() 
+				+ "/4 - " +  collaboration.getRatingOffer().getDescription() 
+				+ "</span></p>";
+        
+        String ratingComment = "";
+        if (collaboration.getCommentRequest() != "") {
+        	ratingComment ="<p><b>Komentar: </b>" + collaboration.getCommentOffer() + "</span></p>";
+        }
+        String content = "<div>"
+        		+ "<p>Imate novu ocenu na B2B portalu za ostvarenu saradnju kao tražilac."
+        		+ "<br>"
+        		+ "<p><b>Oglas: </b><span>" + collaboration.getAdvertisement().getTitle() + "</span></p>"
+        		+ "<p><b>Oglašivač: </b><span>" + collaboration.getCompanyOffer().getName() + "</span></p>"
+        		+ "<p><b>Tražilac: </b><span>" + collaboration.getCompanyRequest().getName() + "</span></p>"
+        		+ "<hr>"
+        		+ rating
+        		+ ratingComment
+        		+ "<hr>"
+        		+ "<p>Sve ostvarene saradnje možete pogledati sa "
+        		+ "<a href='" + companyMessagesLink + "'>profila Vaše kompanije<a>.</p>"
+        		+ "<p>Ovo je automatski poslata poruka, ne odgovarati na ovaj mail.</p>";
     	return content;
     }
 }

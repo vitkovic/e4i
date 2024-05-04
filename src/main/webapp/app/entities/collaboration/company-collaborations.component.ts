@@ -183,7 +183,6 @@ export default class Collaboration extends mixins(AlertMixin) {
       .retrieve()
       .then(res => {
         this.collaborationRatings = res.data;
-        console.log(this.collaborationRatings);
       });
     }
 

@@ -270,12 +270,12 @@ public class CollaborationResource {
         	CollaborationRating rating = collaborationRatingService.findOneById(ratingId);
         	Collaboration collaboration = collaborationService.updateCollaborationRatingForCompanyOffer(collaborationId, rating, comment);
         	
-        	// send email notification
-//        	NotificationMailDTO mailDTO = mailService.createNotificationMailDTOForCollaborationConfirm(message, collaboration);
+        	// Ocenu je dao oglasivac, pa se mail salje traziocu
+        	NotificationMailDTO mailDTO = mailService.createNotificationMailDTOForCollaborationRatingCompanyRequest(collaboration);
         	
-//        	if (!mailDTO.getEmails().isEmpty()) {
-//        		mailService.sendNotificationMail(mailDTO);
-//        	}
+        	if (!mailDTO.getEmails().isEmpty()) {
+        		mailService.sendNotificationMail(mailDTO);
+        	}
 
         	return ResponseEntity.created(new URI("/api/collaborations/rate-offer"))
                     .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, collaboration.getId().toString()))
@@ -298,12 +298,12 @@ public class CollaborationResource {
         	CollaborationRating rating = collaborationRatingService.findOneById(ratingId);
         	Collaboration collaboration = collaborationService.updateCollaborationRatingForCompanyRequest(collaborationId, rating, comment);
         	
-        	// send email notification
-//        	NotificationMailDTO mailDTO = mailService.createNotificationMailDTOForCollaborationConfirm(message, collaboration);
-        	
-//        	if (!mailDTO.getEmails().isEmpty()) {
-//        		mailService.sendNotificationMail(mailDTO);
-//        	}
+        	// Ocenu je dao trazilac, pa se mail salje oglasivacu
+        	NotificationMailDTO mailDTO = mailService.createNotificationMailDTOForCollaborationRatingCompanyOffer(collaboration);
+         	
+        	if (!mailDTO.getEmails().isEmpty()) {
+        		mailService.sendNotificationMail(mailDTO);
+        	}
 
         	return ResponseEntity.created(new URI("/api/collaborations/rate-request"))
                     .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, collaboration.getId().toString()))
