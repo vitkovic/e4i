@@ -110,8 +110,10 @@ export default class CompanyUpdate extends Vue {
   public formDocuments: DocumentBlob[] = [];
   public documentFiles: DocumentBlob[] = [];
   public placeholdertext = '';
-  public browseText = '';
+  public browseText: string = '';
   public showDocumentsSection = false;
+  public selectedImageId: number | null = null;
+  public selectedDocumentId: number | null = null;
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -428,46 +430,244 @@ export default class CompanyUpdate extends Vue {
         // this.documentFiles = [];
         // this.company.documents = res;
         this.retrieveCompany(this.company.id);
+        this.closeDeleteLogoDialog();
       });
   }
 
-  public deleteImage(imageId: number): void {
-    const companyId = this.company.id;
-    this.companyService()
-      .deleteImage(companyId, imageId)
-      .then(res => {
-        this.isSaving = false;
-        // this.documentFiles = [];
-        // this.company.documents = res;
-        this.retrieveCompany(this.company.id);
-      });
+  // public deleteImage(imageId: number): void {
+  //   const companyId = this.company.id;
+  //   this.companyService()
+  //     .deleteImage(companyId, imageId)
+  //     .then(res => {
+  //       this.isSaving = false;
+  //       // this.documentFiles = [];
+  //       // this.company.documents = res;
+  //       this.retrieveCompany(this.company.id);
+  //     });
+  // }
+
+  public deleteImage(): void {
+    if (this.selectedImageId !== null) {
+      const companyId = this.company.id;
+      this.companyService()
+        .deleteImage(companyId, this.selectedImageId)
+        .then(res => {
+          this.isSaving = false;
+          this.retrieveCompany(this.company.id);
+          // Close the modal after successful deletion
+          this.closeDeleteImageDialog();
+        });
+    }
   }
+
+  // public deleteDocument(documentId: number): void {
+  //   const companyId = this.company.id;
+  //   this.companyService()
+  //     .deleteDocument(companyId, documentId)
+  //     .then(res => {
+  //       this.isSaving = false;
+  //       // this.documentFiles = [];
+  //       // this.company.documents = res;
+  //       this.retrieveCompany(this.company.id);
+  //     });
+  // }
 
   public deleteDocument(documentId: number): void {
-    const companyId = this.company.id;
-    this.companyService()
-      .deleteDocument(companyId, documentId)
-      .then(res => {
-        this.isSaving = false;
-        // this.documentFiles = [];
-        // this.company.documents = res;
-        this.retrieveCompany(this.company.id);
-      });
+    if (this.selectedDocumentId !== null) {
+      const companyId = this.company.id;
+      this.companyService()
+        .deleteDocument(companyId, this.selectedDocumentId)
+        .then(res => {
+          this.isSaving = false;
+          this.retrieveCompany(this.company.id);
+          this.closeDeleteDocumentDialog();
+        });
+    }
   }
 
+  // public appendImageFiles(): void {
+  //   for (const formImage of this.formImages) {
+  //     if (this.imageFiles.filter(image => image.name === formImage.name).length === 0) {
+  //       this.imageFiles.push(formImage);
+  //     }
+  //   }
+  // }
+
   public appendImageFiles(): void {
+    console.log(this.company.documents);
+    const newImagesArray: ImageBlob[] = [];
+    let numberOfBigImages: number = 0;
+    let numberOfLimitImages: number = 0;
+
     for (const formImage of this.formImages) {
-      if (this.imageFiles.filter(image => image.name === formImage.name).length === 0) {
+      if (formImage.size > 2 * 1024 * 1024) {
+        numberOfBigImages++;
+      }
+      if (formImage.size <= 2 * 1024 * 1024 && this.imageFiles.filter(image => image.name === formImage.name).length === 0) {
+        newImagesArray.push(formImage);
+      }
+    }
+
+    if (
+      this.company.documents.filter(doc => doc.type.type === 'image').length + this.imageFiles.length + newImagesArray.length >
+      15
+    ) {
+      const imagesToAdd = 15 - this.imageFiles.length - this.company.documents.filter(doc => doc.type.type === 'image').length;
+      const imagesToAddArray = newImagesArray.slice(0, imagesToAdd);
+      numberOfLimitImages = newImagesArray.length - imagesToAddArray.length;
+      this.imageFiles.push(...imagesToAddArray);
+
+      if (numberOfLimitImages > 0 && numberOfBigImages > 0) {
+        const totalNumberOfImages = numberOfLimitImages + numberOfBigImages;
+        const errorText = this.$t('riportalApp.company.error.imgSize&Number', { totalNumberOfImages });
+        this.$notify({
+          text: errorText,
+          type: 'error',
+          duration: 8000, // Duration of the notification
+        });
+      } else if (numberOfLimitImages > 0) {
+        const errorText = this.$t('riportalApp.company.error.imgNumber', { numberOfLimitImages });
+        this.$notify({
+          text: errorText,
+          type: 'error',
+          duration: 8000, // Duration of the notification
+        });
+      }
+    } else {
+      for (const formImage of newImagesArray) {
         this.imageFiles.push(formImage);
+      }
+
+      if (numberOfBigImages > 0) {
+        const errorText = this.$t('riportalApp.company.error.imgSize', { numberOfBigImages });
+        this.$notify({
+          text: errorText,
+          type: 'error',
+          duration: 8000,
+        });
       }
     }
   }
 
+  // public appendDocumentFiles(): void {
+  //   for (const formDocument of this.formDocuments) {
+  //     if (this.documentFiles.filter(document => document.name === formDocument.name).length === 0) {
+  //       this.documentFiles.push(formDocument);
+  //     }
+  //   }
+  // }
+
   public appendDocumentFiles(): void {
+    const newDocumentsArray: DocumentBlob[] = [];
+    let numberOfBigDocuments: number = 0;
+    let numberOfLimitDocuments: number = 0;
+
     for (const formDocument of this.formDocuments) {
-      if (this.documentFiles.filter(document => document.name === formDocument.name).length === 0) {
+      if (formDocument.size > 2 * 1024 * 1024) {
+        numberOfBigDocuments++;
+      }
+      if (formDocument.size <= 2 * 1024 * 1024 && this.documentFiles.filter(document => document.name === formDocument.name).length === 0) {
+        newDocumentsArray.push(formDocument);
+      }
+    }
+
+    if (
+      this.company.documents.filter(doc => doc.type.type === 'document').length +
+        this.documentFiles.length +
+        newDocumentsArray.length >
+      15
+    ) {
+      const documentsToAdd =
+        15 - this.documentFiles.length - this.company.documents.filter(doc => doc.type.type === 'document').length;
+      const documentsToAddArray = newDocumentsArray.slice(0, documentsToAdd);
+      numberOfLimitDocuments = newDocumentsArray.length - documentsToAddArray.length;
+      this.documentFiles.push(...documentsToAddArray);
+
+      if (numberOfLimitDocuments > 0 && numberOfBigDocuments > 0) {
+        const totalNumberOfDocuments = numberOfLimitDocuments + numberOfBigDocuments;
+        const errorText = this.$t('riportalApp.company.error.documentSize&Number', { totalNumberOfDocuments });
+        this.$notify({
+          text: errorText,
+          type: 'error',
+          duration: 8000, // Duration of the notification
+        });
+      } else if (numberOfLimitDocuments > 0) {
+        const errorText = this.$t('riportalApp.company.error.documentNumber', { numberOfLimitDocuments });
+        this.$notify({
+          text: errorText,
+          type: 'error',
+          duration: 8000, // Duration of the notification
+        });
+      }
+    } else {
+      for (const formDocument of newDocumentsArray) {
         this.documentFiles.push(formDocument);
       }
+
+      if (numberOfBigDocuments > 0) {
+        const errorText = this.$t('riportalApp.company.error.documentSize', { numberOfBigDocuments });
+        this.$notify({
+          text: errorText,
+          type: 'error',
+          duration: 8000, // Duration of the notification
+        });
+      }
+    }
+  }
+
+  public openDeleteImageModal(imageId: number): void {
+    this.selectedImageId = imageId;
+  }
+
+  public closeDeleteImageDialog(): void {
+    this.selectedImageId = null;
+    (this.$refs.deleteImageModal as any).hide();
+  }
+
+  public openDeleteDocumentModal(documentId: number): void {
+    this.selectedDocumentId = documentId;
+  }
+
+  public closeDeleteDocumentDialog(): void {
+    this.selectedDocumentId = null;
+    (this.$refs.deleteDocumentModal as any).hide();
+  }
+
+  public openDeleteLogoModal(): void {
+    // this.selectedImageId = imageId;
+  }
+
+  public closeDeleteLogoDialog(): void {
+    // this.selectedDocumentId = null;
+    (this.$refs.deleteLogoModal as any).hide();
+  }
+
+  get availableNumberOfImagesToAdd(): number {
+    return 15 - this.company.documents.filter(doc => doc.type.type === 'image').length;
+  }
+
+  get isUploadImageFilesDisabled(): boolean {
+    const totalImages: number = this.company.documents.filter(doc => doc.type.type === 'image').length + this.imageFiles.length;
+    return totalImages === 15;
+  }
+
+  get availableNumberOfDocumentsToAdd(): number {
+    return 15 - this.company.documents.filter(doc => doc.type.type === 'document').length;
+  }
+
+  get isUploadDocumentFilesDisabled(): boolean {
+    const totalDocuments: number =
+      this.company.documents.filter(doc => doc.type.type === 'document').length + this.documentFiles.length;
+    return totalDocuments === 15;
+  }
+
+  get browseButtonText(): string {
+    if (this.currentLanguage === 'en') {
+      return this.$t('riportalApp.company.browseText');
+    } else if (this.currentLanguage === 'sr') {
+      return this.$t('riportalApp.company.browseText');
+    } else if (this.currentLanguage === 'src') {
+      return this.$t('riportalApp.company.browseText');
     }
   }
 }

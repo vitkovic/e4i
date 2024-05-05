@@ -415,7 +415,6 @@ export default class AdvertisementUpdate extends Vue {
   }
 
   public appendImageFiles(): void {
-    console.log(this.advertisement.documents);
     const newImagesArray: ImageBlob[] = [];
     let numberOfBigImages: number = 0;
     let numberOfLimitImages: number = 0;
@@ -471,7 +470,6 @@ export default class AdvertisementUpdate extends Vue {
   }
 
   public appendDocumentFiles(): void {
-    console.log(this.currentLanguage);
     const newDocumentsArray: DocumentBlob[] = [];
     let numberOfBigDocuments: number = 0;
     let numberOfLimitDocuments: number = 0;
