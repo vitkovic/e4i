@@ -39,6 +39,9 @@
       "thread": "Thread",
       "badge": "Badge",
       "document": "Document",
+      "documents": "Dokumenti",
+      "gallery": "Galerija",
+      "collaborations": "Saradnje",
       "createdBy": "Kreirao",
       "modifiedBy": "Izmenio",
       "logo": "Logo",
@@ -84,6 +87,13 @@
         "documentSize": "Broj dokumenata koji ne može biti dodat je {numberOfBigDocuments}.<br>Prekoračena ograničenja:<br><ul><li>veličina dokumenta (2mb).</li></ul>",
         "documentNumber": "Broj dokumenata koji ne može biti dodat je {numberOfLimitDocuments}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj dokumenata (15).</li></ul>",
         "documentSize&Number": "Broj dokumenata koji ne može biti dodat je {totalNumberOfDocuments}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj dokumenata (15).</li><li>veličina dokumenta (2mb).</li></ul>"
+      },
+      "modal": {
+        "advertisementModalTitle": "Stupite u kontakt sa kompanijom "
+      },
+      "interactionButtons": {
+        "message": "Pošalji poruku",
+        "advertisements": "Pogledaj oglase"
       }
     }
   }

@@ -16,7 +16,7 @@
                             <font-awesome-icon icon="pencil-alt"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.edit')"> Edit</span>
                         </router-link>
                         <router-link v-if="company.id" :to="{name: 'CompanyAdvertisements', params: {companyId: company.id}}" tag="button" class="btn btn-primary ml-2" style="align-self: center;">
-                            <span v-text="'Pogledaj oglase'"> Edit</span>
+                            <span v-text="$t('riportalApp.company.interactionButtons.advertisements')"> Pogledaj oglase</span>
                         </router-link>
                         <b-button v-if="company.id && authenticated && (hasAnyAuthority('ROLE_ADMIN') || !isCompanyOwner())"
                             v-on:click="prepareAdInquiry()"
@@ -24,7 +24,7 @@
                             class="btn btn-primary ml-2"
                             v-b-modal.adInquiry
                             style="align-self: center;">
-                    <span class="d-none d-md-inline" v-text="'Pošalji poruku'">Pošalji poruku</span>
+                    <span class="d-none d-md-inline" v-text="$t('riportalApp.company.interactionButtons.message')">Pošalji poruku</span>
                 </b-button>
                     </div>
                 </div>
@@ -187,7 +187,7 @@
                     
                     
                 <section>
-                    <h3 v-text="'Galerija'">Galerija</h3>
+                    <h3 v-text="$t('riportalApp.company.gallery')">Galerija</h3>
                     <div class="row images-container mt-2">
                     <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 mb-4" v-for="document in company.documents" v-if="document.type.type == 'image'">
                         <img class="img-thumbnail img-fluid"  :src="companyService().retrieveImage(document.filename)" width="200px"/>
@@ -196,7 +196,7 @@
 
                 </section>
                 <section>
-                    <h3 v-text="'Dokumenti'">Dokumenti</h3>
+                    <h3 v-text="$t('riportalApp.company.documents')">Dokumenti</h3>
                     <div v-for="document in company.documents">
                         <li v-if="document.type.type == 'document'">
                             <a class="text-info" 
@@ -209,7 +209,7 @@
                 </section>
                 <br>
                 <section>
-                    <h3 v-text="'Saradnje'">Saradnje</h3>
+                    <h3 v-text="$t('riportalApp.company.collaborations')">Saradnje</h3>
                 </section>
                 <br>
                 <!-- <section>
@@ -221,15 +221,15 @@
                 </section> -->
                 <br>
                 <b-modal v-if="inquiryDTO" ref="adInquiry" id="adInquiry" >
-                    <span slot="modal-title"><span id="riportalApp.advertisement.delete.question">{{ 'Stupite u kontakt sa kompanijom ' + company.name }}</span></span>
+                    <span slot="modal-title"><span id="riportalApp.advertisement.delete.question"> {{ $t('riportalApp.company.modal.advertisementModalTitle') }}{{ company.name }}</span></span>
                     <div class="modal-body">
-                        <label name="inquiry-subject">Naziv poruke:</label>
+                        <label name="inquiry-subject" v-text="$t('entity.form.messageTitle')">Naziv poruke:</label>
                         <b-input v-model.trim="inputSubject.value" @blur="clearValidity('inputSubject')"></b-input>
-                        <p v-if="!inputSubject.isValid" class="text-danger small">Naziv poruke ne može biti prazan.</p>
+                        <p v-if="!inputSubject.isValid" class="text-danger small" v-text="$t('entity.form.validation.title')">Naziv poruke ne može biti prazan.</p>
                         <br>
-                        <label name="inquiry-content">Sadržaj poruke:</label>
+                        <label name="inquiry-content" v-text="$t('entity.form.messageContent')">Sadržaj poruke:</label>
                         <b-textarea v-model.trim="textareaContent.value" @blur="clearValidity('textareaContent')"></b-textarea>
-                        <p v-if="!textareaContent.isValid" class="text-danger small">Sadržaj poruke ne može biti prazan.</p>
+                        <p v-if="!textareaContent.isValid" class="text-danger small" v-text="$t('entity.form.validation.content')">Sadržaj poruke ne može biti prazan.</p>
                     </div>
                     <div slot="modal-footer">
                         <button type="button" class="btn btn-secondary" v-text="'Otkaži'" v-on:click="closeAdInquiry()">Otkaži</button>

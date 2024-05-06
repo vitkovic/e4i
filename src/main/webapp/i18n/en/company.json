@@ -41,6 +41,9 @@
       "thread": "Thread",
       "badge": "Badge",
       "document": "Document",
+      "documents": "Documents",
+      "gallery": "Gallery",
+      "collaborations": "Collaborations",
       "createdBy": "Created by",
       "modifiedBy": "Modified by",
       "logo": "Logo",
@@ -85,8 +88,14 @@
         "documentSize": "Number of images that cannot be added is {numberOfBigDocuments}.<br>Limits exceeded:<br><ul><li>maximum document size (2mb).</li></ul>",
         "documentNumber": "Number of documents that cannot be added is {numberOfLimitDocuments}.<br>Limits exceeded:<br><ul><li>maximum number of documents (15).</li></ul>",
         "documentSize&Number": "Number of documents that cannot be added is {totalNumberOfDocuments}.<br>Limits exceeded:<br><ul><li>maximum number of documents (15).</li><li>maximum document size (2mb).</li></ul>"
+      },
+      "modal": {
+        "advertisementModalTitle": "Get in touch with the company "
+      },
+      "interactionButtons": {
+        "message": "Send a message",
+        "advertisements": "View advertisements"
       }
-
     }
   }
 }

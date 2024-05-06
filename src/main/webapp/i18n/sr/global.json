@@ -272,7 +272,7 @@
       "messageTitle": "Naslov poruke:",
       "messageContent": "Sadržaj poruke:",
       "validation": {
-        "title": "Naziv poruke ne može biti prazan.",
+        "title": "Naslov poruke ne može biti prazan.",
         "content": "Sadržaj poruke ne može biti prazan."
       }
     }

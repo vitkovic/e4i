@@ -40,6 +40,9 @@
       "thread": "Thread",
       "badge": "Badge",
       "document": "Document",
+      "documents": "Документи",
+      "gallery": "Галерија",
+      "collaborations": "Сарадње",
       "createdBy": "Креирао",
       "modifiedBy": "Изменио",
       "logo": "Logo",
@@ -86,6 +89,14 @@
         "documentNumber": "Број докумената који не може бити додат је {numberOfLimitDocuments}.<br>Прекорачена ограничења:<br><ul><li>максималан број докумената (15).</li></ul>",
         "documentSize&Number": "Број докумената који не може бити додат је {totalNumberOfDocuments}.<br>Прекорачена ограничења:<br><ul><li>максималан број докумената (15).</li><li>величина документа (2mb).</li></ul>"
       },
+      "modal": {
+        "advertisementModalTitle": "Ступите у контакт са компанијом "
+      },
+      "interactionButtons": {
+        "message": "Пошаљи поруку",
+        "advertisements": "Погледај огласе"
+      },
+
 
 
       "title": "Title",

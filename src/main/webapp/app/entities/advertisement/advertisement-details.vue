@@ -155,7 +155,7 @@
                         <br>
                         <label name="inquiry-subject" v-text="$t('entity.form.messageTitle')">Naslov poruke:</label>
                         <b-input v-model.trim="inputSubject.value" @blur="clearValidity('inputSubject')" ></b-input>
-                        <p v-if="!inputSubject.isValid" class="text-danger small" v-text="$t('entity.form.validation.content')">Naziv poruke ne može biti prazan.</p>
+                        <p v-if="!inputSubject.isValid" class="text-danger small" v-text="$t('entity.form.validation.title')">Naziv poruke ne može biti prazan.</p>
                         <br>
                         <label name="inquiry-content" v-text="$t('entity.form.messageContent')">Sadržaj poruke:</label>
                         <b-textarea v-model.trim="textareaContent.value" @blur="clearValidity('textareaContent')"></b-textarea>
