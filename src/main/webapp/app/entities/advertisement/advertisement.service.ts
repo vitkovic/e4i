@@ -14,6 +14,9 @@ const apiDeleteDocument = 'api/advertisements/delete-document';
 const apiUpdateStatus = 'api/advertisements/update-status';
 const apiBrowse = 'api/advertisements/browse';
 const apiFindAllByCompany = 'api/advertisements/company';
+const apiFindAllByCompanyIdAndStatusId = 'api/advertisements/company-status';
+const apiFindAllByStatusId = 'api/advertisements/status';
+const apiFindAllByCompanyIdAndTypeId = 'api/advertisements/company-type';
 
 export default class AdvertisementService {
   public find(id: number): Promise<IAdvertisement> {
@@ -60,6 +63,51 @@ export default class AdvertisementService {
       axios
         .get(
           apiFindAllByCompany + `?companyId=${companyId}` + `&` + `status=${status}` + `&` + `${buildPaginationQueryOpts(paginationQuery)}`
+        )
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public retrieveAllByCompanyAndStatusId(companyId: number, statusId: number, paginationQuery?: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(
+          apiFindAllByCompanyIdAndStatusId + `?companyId=${companyId}` + `&` + `statusId=${statusId}` + `&` + `${buildPaginationQueryOpts(paginationQuery)}`
+        )
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public retrieveAllByStatusId(statusId: number, paginationQuery?: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(
+          apiFindAllByStatusId + `?statusId=${statusId}` + `&` + `${buildPaginationQueryOpts(paginationQuery)}`
+        )
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public retrieveAllByCompanyAndTypeId(companyId: number, typeId: number, paginationQuery?: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(
+          apiFindAllByCompanyIdAndTypeId + `?companyId=${companyId}` + `&` + `typeId=${typeId}` + `&` + `${buildPaginationQueryOpts(paginationQuery)}`
         )
         .then(res => {
           resolve(res);

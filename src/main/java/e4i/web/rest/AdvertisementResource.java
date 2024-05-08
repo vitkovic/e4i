@@ -365,4 +365,42 @@ public class AdvertisementResource {
 	        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
 	        return ResponseEntity.ok().headers(headers).body(page.getContent());
 	    }
+	    
+	    @GetMapping("/advertisements/company-status")
+	    public ResponseEntity<List<Advertisement>> findAllAdvertisementsByCompanyAndStatus(
+	    		Pageable pageable, 
+	    		@RequestParam Long companyId,
+	    		@RequestParam Long statusId) {
+	    	log.debug("REST request to get a page of Advertisements for company: {} and status: {}", companyId, statusId);
+	    	
+	        Page<Advertisement> page = advertisementService.findAllByCompanyIdAndStatusId(companyId, statusId, pageable);
+	        	        
+	        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+	        return ResponseEntity.ok().headers(headers).body(page.getContent());
+	    }
+	    
+	    @GetMapping("/advertisements/status")
+	    public ResponseEntity<List<Advertisement>> findAllAdvertisementsByStatus(
+	    		Pageable pageable, 
+	    		@RequestParam Long statusId) {
+	    	log.debug("REST request to get a page of Advertisements for status: {}", statusId);
+	    	
+	        Page<Advertisement> page = advertisementService.findAllByStatusId(statusId, pageable);
+	        	        
+	        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+	        return ResponseEntity.ok().headers(headers).body(page.getContent());
+	    }
+	    
+	    @GetMapping("/advertisements/company-type")
+	    public ResponseEntity<List<Advertisement>> findAllAdvertisementsByCompanyAndType(
+	    		Pageable pageable, 
+	    		@RequestParam Long companyId,
+	    		@RequestParam Long typeId) {
+	    	log.debug("REST request to get a page of Advertisements for company: {} and type: {}", companyId, typeId);
+	    	
+	        Page<Advertisement> page = advertisementService.findAllByCompanyIdAndTypeId(companyId, typeId, pageable);
+	        	        
+	        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+	        return ResponseEntity.ok().headers(headers).body(page.getContent());
+	    }
 }

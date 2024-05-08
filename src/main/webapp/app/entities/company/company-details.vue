@@ -15,7 +15,7 @@
                         <router-link v-if="company.id && authenticated && (hasAnyAuthority('ROLE_ADMIN') || isCompanyOwner())" :to="{name: 'CompanyEdit', params: {companyId: company.id}}" tag="button" class="btn btn-primary ml-2" style="align-self: center;">
                             <font-awesome-icon icon="pencil-alt"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.edit')"> Edit</span>
                         </router-link>
-                        <router-link v-if="company.id" :to="{name: 'CompanyAdvertisements', params: {companyId: company.id}}" tag="button" class="btn btn-primary ml-2" style="align-self: center;">
+                        <router-link v-if="company.id" :to="{name: 'CompanyAdvertisementsView', params: {companyId: company.id}}" tag="button" class="btn btn-primary ml-2" style="align-self: center;">
                             <span v-text="$t('riportalApp.company.interactionButtons.advertisements')"> Pogledaj oglase</span>
                         </router-link>
                         <b-button v-if="company.id && authenticated && (hasAnyAuthority('ROLE_ADMIN') || !isCompanyOwner())"

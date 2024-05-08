@@ -1,28 +1,39 @@
+import Vue2Filters from 'vue2-filters';
+import AlertMixin from '@/shared/alert/alert.mixin';
 import { mixins } from 'vue-class-component';
 
 import { Component, Vue, Inject } from 'vue-property-decorator';
-import Vue2Filters from 'vue2-filters';
+import { IAdvertisementStatus } from '@/shared/model/advertisement-status.model';
 import { IAdvertisement } from '@/shared/model/advertisement.model';
-import AlertMixin from '@/shared/alert/alert.mixin';
 
 import AdvertisementService from './advertisement.service';
-
 import AdvertisementStatusService from '../advertisement-status/advertisement-status.service';
-import { IAdvertisementStatus } from '@/shared/model/advertisement-status.model';
-
 import AccountService from '@/account/account.service';
+
+enum AdvertisementStatus {
+  ACTIVE = 'Активан',
+  INACTIVE = 'Неактиван',
+  ARCHIVED = 'Архивиран',
+}
+
+enum AdvertisementStatusFilter {
+  ALL = 'all',
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  ARCHIVED = 'archived',
+}
 
 @Component({
   mixins: [Vue2Filters.mixin],
 })
 export default class Advertisement extends mixins(AlertMixin) {
   @Inject('advertisementService') private advertisementService: () => AdvertisementService;
-
   @Inject('advertisementStatusService') private advertisementStatusService: () => AdvertisementStatusService;
-
   @Inject('accountService') private accountService: () => AccountService;
 
+  public advertisements: IAdvertisement[] = [];
   public advertisementStatuses: IAdvertisementStatus[] = [];
+  public activeAdStatus : IAdvertisementStatus | null = null;
 
   private removeId: number = null;
   private advertisementToSwitchStatus: IAdvertisement = null;
@@ -36,13 +47,9 @@ export default class Advertisement extends mixins(AlertMixin) {
   public propOrder = 'id';
   public reverse = false;
   public totalItems = 0;
-
-  public advertisements: IAdvertisement[] = [];
-  public selectedAdvertisements: IAdvertisement[] = [];
-
   public isFetching = false;
 
-  public activeStatusFilter = 'All';
+  public activeAdStatusFilter = AdvertisementStatusFilter.ALL;
   public filterAllButtonVariant = 'secondary';
   public filterActiveButtonVariant = 'outline-secondary';
   public filterInactiveButtonVariant = 'outline-secondary';
@@ -70,34 +77,38 @@ export default class Advertisement extends mixins(AlertMixin) {
       size: this.itemsPerPage,
       sort: this.sort(),
     };
-    this.advertisementService()
+
+    if (this.activeAdStatusFilter === AdvertisementStatusFilter.ALL) {
+      this.advertisementService()
       .retrieve(paginationQuery)
       .then(
         res => {
           this.advertisements = res.data;
-
-          if (!this.hasAnyAuthority('ROLE_ADMIN')) {
-            this.advertisements = this.advertisements.filter(ad => ad.status.status != 'Архивиран');
-          }
-
           this.totalItems = Number(res.headers['x-total-count']);
           this.queryCount = this.totalItems;
           this.isFetching = false;
-
-          if (this.activeStatusFilter === 'All') {
-            this.showAllAdvertisements();
-          } else if (this.activeStatusFilter === 'Active') {
-            this.showActiveAdvertisements();
-          } else if (this.activeStatusFilter === 'Inactive') {
-            this.showInactiveAdvertisements();
-          } else if (this.activeStatusFilter === 'SoftDeleted') {
-            this.showSoftDeleteAdvertisements();
-          }
         },
         err => {
           this.isFetching = false;
         }
       );
+    } else {
+      if (this.activeAdStatus) {
+        this.advertisementService()
+        .retrieveAllByStatusId(this.activeAdStatus.id, paginationQuery)
+        .then(
+          res => {
+            this.advertisements = res.data;
+            this.totalItems = Number(res.headers['x-total-count']);
+            this.queryCount = this.totalItems;
+            this.isFetching = false;
+          },
+          err => {
+            this.isFetching = false;
+          }
+        );
+      }
+    }
   }
 
   public get authenticated(): boolean {
@@ -246,18 +257,20 @@ export default class Advertisement extends mixins(AlertMixin) {
   }
 
   public showAllAdvertisements(): void {
-    this.selectedAdvertisements = this.advertisements;
+    this.activeAdStatusFilter = AdvertisementStatusFilter.ALL;
+    this.activeAdStatus = null;
+    this.retrieveAllAdvertisements();
 
-    this.activeStatusFilter = 'All';
     this.filterAllButtonVariant = 'secondary';
     this.filterActiveButtonVariant = 'outline-secondary';
     this.filterInactiveButtonVariant = 'outline-secondary';
   }
 
   public showActiveAdvertisements(): void {
-    this.selectedAdvertisements = this.advertisements.filter(ad => ad.status.status === 'Активан');
+    this.activeAdStatusFilter = AdvertisementStatusFilter.ACTIVE;
+    this.activeAdStatus = this.advertisementStatuses.find(status => status.status === AdvertisementStatus.ACTIVE);
+    this.retrieveAllAdvertisements();
 
-    this.activeStatusFilter = 'Active';
     this.filterAllButtonVariant = 'outline-secondary';
     this.filterActiveButtonVariant = 'secondary';
     this.filterInactiveButtonVariant = 'outline-secondary';
@@ -265,9 +278,10 @@ export default class Advertisement extends mixins(AlertMixin) {
   }
 
   public showInactiveAdvertisements(): void {
-    this.selectedAdvertisements = this.advertisements.filter(ad => ad.status.status === 'Неактиван');
+    this.activeAdStatusFilter = AdvertisementStatusFilter.INACTIVE;
+    this.activeAdStatus = this.advertisementStatuses.find(status => status.status === AdvertisementStatus.INACTIVE);
+    this.retrieveAllAdvertisements();
 
-    this.activeStatusFilter = 'Inactive';
     this.filterAllButtonVariant = 'outline-secondary';
     this.filterActiveButtonVariant = 'outline-secondary';
     this.filterInactiveButtonVariant = 'secondary';
@@ -275,9 +289,10 @@ export default class Advertisement extends mixins(AlertMixin) {
   }
 
   public showSoftDeleteAdvertisements(): void {
-    this.selectedAdvertisements = this.advertisements.filter(ad => ad.status.status === 'Архивиран');
+    this.activeAdStatusFilter = AdvertisementStatusFilter.ARCHIVED;
+    this.activeAdStatus = this.advertisementStatuses.find(status => status.status === AdvertisementStatus.ARCHIVED);
+    this.retrieveAllAdvertisements();
 
-    this.activeStatusFilter = 'SoftDeleted';
     this.filterAllButtonVariant = 'outline-secondary';
     this.filterActiveButtonVariant = 'outline-secondary';
     this.filterInactiveButtonVariant = 'outline-secondary';

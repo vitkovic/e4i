@@ -220,7 +220,9 @@ const AdvertisementDetails = () => import('@/entities/advertisement/advertisemen
 // prettier-ignore
 const AdvertisementBrowse = () => import('@/entities/advertisement/advertisement-browse.vue');
 // prettier-ignore
-const CompanyAdvertisements = () => import('@/entities/advertisement/company-advertisements.vue');
+const CompanyAdvertisementsView = () => import('@/entities/advertisement/company-advertisements-view.vue');
+// prettier-ignore
+const CompanyAdvertisementsManage = () => import('@/entities/advertisement/company-advertisements-manage.vue');
 // prettier-ignore
 const Company = () => import('@/entities/company/company.vue');
 // prettier-ignore
@@ -1244,10 +1246,6 @@ export default [
   },
 
   // jhipster-needle-add-entity-to-router - JHipster will add entities to the router here
-  
-  
- 
-
   {
     path: '/b2b/advertisement',
     name: 'Advertisement',
@@ -1279,9 +1277,15 @@ export default [
     meta: { authorities: [Authority.USER] },
   },
   {
-    path: '/b2b/company/:companyId/advertisements',
-    name: 'CompanyAdvertisements',
-    component: CompanyAdvertisements,
+    path: '/b2b/company/:companyId/advertisements-view',
+    name: 'CompanyAdvertisementsView',
+    component: CompanyAdvertisementsView,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/b2b/company/:companyId/advertisements-manage',
+    name: 'CompanyAdvertisementsManage',
+    component: CompanyAdvertisementsManage,
     meta: { authorities: [Authority.USER] },
   },
   {

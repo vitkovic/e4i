@@ -254,7 +254,7 @@
 					<b-dropdown-item to="#" tag="b-dropdown-item" v-if="authenticated" active-class="active">
 						<span v-text="'Unos dodatnih korisnika'">Unos dodatnih korisnika</span>
 					</b-dropdown-item>
-					<b-dropdown-item to="/b2b/advertisement" tag="b-dropdown-item" v-if="authenticated" active-class="active">
+					<b-dropdown-item v-if="authenticated && portalUser && portalUser.company" :to="{name: 'CompanyAdvertisementsManage', params: {companyId: portalUser.company.id}}" tag="b-dropdown-item" active-class="active">
 						<span v-text="'Oglasi'">Oglasi</span>
 					</b-dropdown-item>
 					<b-dropdown-item v-if="authenticated && portalUser && portalUser.company" :to="{name: 'CompanyCollaborations', params: {companyId: portalUser.company.id}}" tag="b-dropdown-item"  active-class="active">	

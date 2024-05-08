@@ -173,4 +173,19 @@ public class AdvertisementService {
         
         return result;
     }
+    
+    @Transactional
+    public Page<Advertisement> findAllByCompanyIdAndStatusId(Long companyId, Long statusId, Pageable pageable) {
+    	return advertisementRepository.findAllByCompanyIdandStatusId(companyId, statusId, pageable);
+    }
+    
+    @Transactional
+    public Page<Advertisement> findAllByStatusId(Long statusId, Pageable pageable) {
+    	return advertisementRepository.findAllByStatusId(statusId, pageable);
+    }
+    
+    @Transactional
+    public Page<Advertisement> findAllByCompanyIdAndTypeId(Long companyId, Long typeId, Pageable pageable) {
+    	return advertisementRepository.findAllByCompanyIdandTypeId(companyId, typeId, pageable);
+    }
 }

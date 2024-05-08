@@ -1,7 +1,6 @@
 <template>
     <div>
         <h2 id="page-heading">
-            <span v-text="$t('riportalApp.advertisement.home.title')" id="advertisement-heading">Advertisements</span>
             <router-link :to="{name: 'AdvertisementCreate'}" tag="button" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-advertisement">
                 <font-awesome-icon icon="plus"></font-awesome-icon>
                 <span  v-text="$t('riportalApp.advertisement.home.createLabel')">
@@ -20,11 +19,14 @@
         <div class="alert alert-warning" v-if="!isFetching && advertisements && advertisements.length === 0">
             <span v-text="$t('riportalApp.advertisement.home.notFound')">No advertisements found</span>
         </div>
-        <div class="ml-3 mb-3">
-            <b-button :variant="filterAllButtonVariant" v-text="'Svi'" v-on:click="showAllAdvertisements()">Cancel</b-button>
-            <b-button :variant="filterActiveButtonVariant" v-text="'Aktivni'" v-on:click="showActiveAdvertisements()">Cancel</b-button>
-            <b-button :variant="filterInactiveButtonVariant" v-text="'Neaktivni'" v-on:click="showInactiveAdvertisements()">Cancel</b-button>
-            <b-button v-if="authenticated && hasAnyAuthority('ROLE_ADMIN')" :variant="filterSoftDeleteButtonVariant" v-text="'Arhivirani'" v-on:click="showSoftDeleteAdvertisements()">Cancel</b-button>
+        <div class="ml-3 mb-3" style="display: flex; align-items: center;">
+            <h3 v-text="'Oglasi'" class="mr-3">Oglasi</h3>
+            <div>
+                <b-button :variant="filterAllButtonVariant" v-text="'Svi'" v-on:click="showAllAdvertisements()">Cancel</b-button>
+                <b-button :variant="filterActiveButtonVariant" v-text="'Aktivni'" v-on:click="showActiveAdvertisements()">Cancel</b-button>
+                <b-button :variant="filterInactiveButtonVariant" v-text="'Neaktivni'" v-on:click="showInactiveAdvertisements()">Cancel</b-button>
+                <b-button v-if="authenticated && hasAnyAuthority('ROLE_ADMIN')" :variant="filterSoftDeleteButtonVariant" v-text="'Arhivirani'" v-on:click="showSoftDeleteAdvertisements()">Cancel</b-button>
+            </div>
         </div>
         <div class="table-responsive" v-if="advertisements && advertisements.length > 0">
             <table class="table table-striped">
@@ -45,13 +47,14 @@
                     <th v-on:click="changeOrder('subsubcategory.name')"><span v-text="$t('riportalApp.advertisement.subsubcategory')">Subsubcategory</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'subsubcategory.name'"></jhi-sort-indicator></th>  
                     <th v-on:click="changeOrder('budget')"><span v-text="$t('riportalApp.advertisement.budget')">Budget</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'budget'"></jhi-sort-indicator></th>
                     <th v-on:click="changeOrder('company.id')"><span v-text="$t('riportalApp.advertisement.company')">Company</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'company.id'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('activationDatetime')"><span v-text="$t('riportalApp.advertisement.activationDatetime')">Activation Datetime</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'activationDatetime'"></jhi-sort-indicator></th>
+                    <th v-on:click="changeOrder('activationDatetime')"><span v-text="$t('riportalApp.advertisement.activationDatetime')">Activation Datetime</span> 
+                    <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'activationDatetime'"></jhi-sort-indicator></th>
                     <th v-on:click="changeOrder('duration.id')"><span v-text="'Expiration Date'">Duration</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'duration.id'"></jhi-sort-indicator></th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="advertisement in selectedAdvertisements"
+                <tr v-for="advertisement in advertisements"
                     :key="advertisement.id">
                     <!-- <td>
                         <router-link :to="{name: 'AdvertisementView', params: {advertisementId: advertisement.id}}">{{advertisement.id}}</router-link>
@@ -95,7 +98,7 @@
                         <div v-if="advertisement.company">
                             <router-link :to="{name: 'CompanyView', params: {companyId: advertisement.company.id}}">{{advertisement.company.name}}</router-link>
                         </div>
-                    </td>                    
+                    </td>             
                     <td>{{advertisement.activationDatetime ? $d(Date.parse(advertisement.activationDatetime), 'short') : ''}}</td>
                     <td>
                         <div v-if="advertisement.duration && advertisement.activationDatetime">
