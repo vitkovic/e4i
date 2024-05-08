@@ -5,6 +5,8 @@
         "title": "Advertisements",
         "createLabel": "Kreiraj novi Advertisement",
         "createOrEditLabel": "Kreirajte ili izmenite oglas",
+        "createTitleLabel": "Kreirajte oglas",
+        "editTitleLabel": "Izmenite oglas",
         "notFound": "No Advertisements found"
       },
       "created": "Kreiran je novi Advertisement pod nazivom {{ param }}",

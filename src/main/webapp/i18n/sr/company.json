@@ -5,6 +5,8 @@
         "title": "Companies",
         "createLabel": "Kreiraj novi Company",
         "createOrEditLabel": "Kreirajte ili izmenite kompaniju",
+        "createTitleLabel": "Kreirajte kompaniju",
+        "editTitleLabel": "Izmenite kompaniju",
         "notFound": "No Companies found"
       },
       "created": "Kreiran je novi Company pod nazivom {{ param }}",

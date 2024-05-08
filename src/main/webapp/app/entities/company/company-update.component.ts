@@ -114,11 +114,15 @@ export default class CompanyUpdate extends Vue {
   public showDocumentsSection = false;
   public selectedImageId: number | null = null;
   public selectedDocumentId: number | null = null;
+  public companyTitleHasID: boolean = false;
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (to.params.companyId) {
+        vm.companyTitleHasID = false;
         vm.retrieveCompany(to.params.companyId);
+      } else {
+        vm.companyTitleHasID = true;
       }
       vm.initRelationships();
     });

@@ -153,11 +153,15 @@ export default class AdvertisementUpdate extends Vue {
   public selectedDocumentId: number | null = null;
   public showImageSizeError: { number: number; state: boolean } = { number: 0, state: false };
   public showImageLimitError: { number: number; state: boolean } = { number: 0, state: false };
+  public advertisementTitleHasID: boolean = false;
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (to.params.advertisementId) {
+        vm.advertisementTitleHasID = false;
         vm.retrieveAdvertisement(to.params.advertisementId);
+      } else {
+        vm.advertisementTitleHasID = true;
       }
       vm.initRelationships();
     });

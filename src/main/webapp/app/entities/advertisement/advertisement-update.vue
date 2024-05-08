@@ -2,8 +2,11 @@
   <div class="row justify-content-center">
     <div class="col-8">
       <form name="editForm" role="form" novalidate v-on:submit.prevent="save()">
-        <h2 id="riportalApp.advertisement.home.createOrEditLabel" v-text="$t('riportalApp.advertisement.home.createOrEditLabel')">
-          Create or edit a Advertisement
+        <h2 v-if="advertisementTitleHasID === true" id="riportalApp.advertisement.home.createOrEditLabel" v-text="$t('riportalApp.advertisement.home.createTitleLabel')">
+          Create an Advertisement
+        </h2>
+        <h2 v-else id="riportalApp.advertisement.home.createOrEditLabel" v-text="$t('riportalApp.advertisement.home.editTitleLabel')">
+          Edit an Advertisement
         </h2>
         <div class="row justify-content-between">
           <!-- <div class="form-group" v-if="advertisement.id">

@@ -5,6 +5,8 @@
         "title": "Advertisements",
         "createLabel": "Create a new Advertisement",
         "createOrEditLabel": "Create or edit an Advertisement",
+        "createTitleLabel": "Create an advertisement",
+        "editTitleLabel": "Edit an advertisement",
         "notFound": "No Advertisements found"
       },
       "created": "A new Advertisement is created with identifier {{ param }}",
