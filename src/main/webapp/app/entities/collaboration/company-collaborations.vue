@@ -106,7 +106,7 @@
                                    v-b-modal.ratingEntity>
                                 <span class="d-none d-md-inline" v-text="'Oceni'">Oceni</span>
                             </b-button>
-                            <b-button v-on:click="prepareRenewAd(collaboration)"
+                            <b-button v-if="company.id === collaboration.advertisement.company.id" v-on:click="prepareRenewAd(collaboration)"
                                    variant="primary"
                                    class="btn btn-sm mr-1"
                                    v-b-modal.renewAdEntity>

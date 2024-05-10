@@ -19,6 +19,7 @@ import e4i.repository.ThreadRepository;
 import e4i.service.MailService;
 import e4i.service.MessageService;
 import e4i.web.rest.dto.InquiryDTO;
+import e4i.web.rest.dto.NotificationMailDTO;
 import io.github.jhipster.web.util.HeaderUtil;
 
 @RestController
@@ -75,7 +76,11 @@ public class InquiryResource {
         String param = newThread.getId().toString() + "/" + newMessage.getId().toString();
         
         try {
-        	mailService.createNotificationMailDTOForNewMessage(newMessage);
+        	NotificationMailDTO mailDTO = mailService.createNotificationMailDTOForNewMessage(newMessage);
+        	if (!mailDTO.getEmails().isEmpty()) {
+        		mailService.sendNotificationMail(mailDTO);
+        	}
+        	
         } catch (Exception e) {
         	e.printStackTrace();
 		}
