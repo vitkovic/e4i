@@ -71,6 +71,8 @@ export default class Thread extends mixins(AlertMixin) {
   public filterSenderButtonVariant = 'outline-secondary';
   public filterReceiverButtonVariant = 'outline-secondary';
 
+  public openThreadId: string | null = null;
+
   beforeRouteEnter(to, from, next) {
     next(vm => {
       if (to.params.companyId) {
@@ -233,8 +235,10 @@ export default class Thread extends mixins(AlertMixin) {
   }
 
   public showAllThreads(): void {
+
     this.activeThreadFilter = ThreadsFilter.ALL;
     this.retrieveThreads();
+    this.collapseAllThreads(this.openThreadId);
 
     this.filterAllButtonVariant = 'secondary';
     this.filterSenderButtonVariant = 'outline-secondary';
@@ -242,8 +246,10 @@ export default class Thread extends mixins(AlertMixin) {
   }
 
   public showSenderThreads(): void {
+
     this.activeThreadFilter = ThreadsFilter.SENDER;
     this.retrieveThreads();
+    this.collapseAllThreads(this.openThreadId);
 
     this.filterAllButtonVariant = 'outline-secondary';
     this.filterSenderButtonVariant = 'secondary';
@@ -251,8 +257,10 @@ export default class Thread extends mixins(AlertMixin) {
   }
 
   public showReceiverThreads(): void {
+    
     this.activeThreadFilter = ThreadsFilter.RECEIVER;
     this.retrieveThreads();
+    this.collapseAllThreads(this.openThreadId);
 
     this.filterAllButtonVariant = 'outline-secondary';
     this.filterSenderButtonVariant = 'outline-secondary';
@@ -383,6 +391,11 @@ export default class Thread extends mixins(AlertMixin) {
   }
 
   public closeConfirmCollaboration(): void {
+    
+    (<any>this.$refs.confirmCollaboration).hide();
+  }
+
+  public closeConfirmCollaborationSecond(): void {
     this.collaboration = null;
     (<any>this.$refs.confirmCollaboration).hide();
   }
@@ -398,13 +411,51 @@ export default class Thread extends mixins(AlertMixin) {
     this.collaborationService()
     .confirmCollaboration(this.collaboration.id)
     .then(res => {
-      const message = 'Potvrdili ste zahtev za saradnju za oglas "' + ADVERTISEMENT_TITLE + '".';
-      this.$notify({
-        text: message,
-      });
+      // const message = 'Potvrdili ste zahtev za saradnju za oglas "' + ADVERTISEMENT_TITLE + '".';
+      // this.$notify({
+      //   text: message,
+      // });
       this.retrieveThreads();
       });
       
     this.closeConfirmCollaboration();  
   }
+
+  public confirmCollaborationSecond(): void {
+    const ADVERTISEMENT_TITLE = this.collaboration.advertisement.title;
+
+    if (!this.collaboration) {
+      this.closeConfirmCollaborationSecond();
+      return    
+    }
+
+    const message = 'Potvrdili ste zahtev za saradnju za oglas "' + ADVERTISEMENT_TITLE + '".<br>Ostali zahtevi za saradnju na oglasu "' + ADVERTISEMENT_TITLE + '" su odbijeni.';
+    this.$notify({
+        text: message,
+      });
+
+
+    // this.collaborationService()
+    // .confirmCollaboration(this.collaboration.id)
+    // .then(res => {
+    //   // const message = 'Potvrdili ste zahtev za saradnju za oglas "' + ADVERTISEMENT_TITLE + '".';
+    //   // this.$notify({
+    //   //   text: message,
+    //   // });
+    //   this.retrieveThreads();
+    //   });
+      
+    this.closeConfirmCollaborationSecond();  
+  }
+
+public toggleThreadCollapse(threadId) {
+  this.openThreadId = threadId;
+}
+
+private collapseAllThreads(string): void {
+    const threadId = string;
+    this.$root.$emit('bv::toggle::collapse', threadId);
+    this.openThreadId = null;
+  
+}
 }
