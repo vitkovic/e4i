@@ -236,6 +236,7 @@
       "save": "Pošalji",
       "send": "Pošalji",
       "remove": "Ukloni",
+      "confirm": "Potvrdi",
       "saveLogo": "Upamti logo",
       "saveImages": "Upamti slike",
       "view": "Pregled",
@@ -245,16 +246,15 @@
       "zbirniPrikaz": "Zbirni prikaz",
       "readLess": "Pročitaj manje",
       "readMore": "Pročitaj više",
-      "saveDocuments": "Upamti dokumenta",
-      "messageTitle": "Naziv poruke:",
-      "messageContent": "Sadržaj poruke:"
+      "saveDocuments": "Upamti dokumenta"
     },
     "detail": {
       "field": "Polje",
       "value": "Vrednost"
     },
     "delete": {
-      "title": "Potvrdi brisanje"
+      "title": "Potvrdi brisanje",
+      "deleteMessage": "Obriši poruku"
     },
     "validation": {
       "required": "Polje je obavezno.",

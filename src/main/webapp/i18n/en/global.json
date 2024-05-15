@@ -238,6 +238,7 @@
       "save": "Save",
       "send": "Send",
       "remove": "Remove",
+      "confirm": "Confirm",
       "saveLogo": "Save logo",
       "saveImages": "Save images",
       "view": "View",
@@ -255,7 +256,8 @@
       "value": "Value"
     },
     "delete": {
-      "title": "Confirm delete operation"
+      "title": "Confirm delete operation",
+      "deleteMessage": "Delete message"
     },
     "validation": {
       "required": "This field is required.",
