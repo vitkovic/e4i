@@ -35,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -279,7 +280,7 @@ public class AdvertisementResource {
 	         	  
 	      // Ovako se brisu veze iz many-to-many tabele "company-documents"
 	      advertisement.getDocuments().remove(image);
-	   	  image.getCompanies().remove(advertisement);
+	   	  image.getAdvertisements().remove(advertisement);
 	   	  
 	      documentRepository.delete(image);
 	      storageService.deleteImage(image.getFilename());
@@ -302,7 +303,7 @@ public class AdvertisementResource {
 
 	      // Ovako se brisu veze iz many-to-many tabele "company-documents"
 	   	  advertisement.getDocuments().remove(document);
-	   	  document.getCompanies().remove(advertisement);
+	   	  document.getAdvertisements().remove(advertisement);
 
 	      documentRepository.delete(document);
 	      storageService.deleteDocument(document);
@@ -326,6 +327,13 @@ public class AdvertisementResource {
 	        AdvertisementStatus advertisementStatus = advertisementStatusOptional.get();
 	        
 	        advertisement.setStatus(advertisementStatus);
+	        
+	        if (advertisementStatus.getStatus().equals(AdvertisementStatus.ACTIVE)) {
+	        	advertisement.setActivationDatetime(Instant.now());
+	        	advertisement.setDeletionDatetime(null);
+	        } else if (advertisementStatus.getStatus().equals(AdvertisementStatus.ARCHIVED)) {
+	        	advertisement.setDeletionDatetime(Instant.now());
+	        }
 	        
 	        Advertisement result = advertisementService.save(advertisement);
 	        return ResponseEntity.ok()

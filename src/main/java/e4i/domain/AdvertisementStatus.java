@@ -20,6 +20,10 @@ public class AdvertisementStatus implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public static final String ACTIVE = "Активан";
+    public static final String INACTIVE = "Неактиван";
+    public static final String ARCHIVED = "Архивиран";
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")

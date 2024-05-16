@@ -243,9 +243,10 @@ export default class Advertisement extends mixins(AlertMixin) {
         const message = 'Oglas je aktiviran!';
         this.alertService().showAlert(message, 'danger');
         this.getAlertFromStore();
-        this.retrieveAllAdvertisements();
-        this.closeActivateDialog();
+        this.$router.push({ name: 'AdvertisementEdit', params: {advertisementId: this.advertisementToSwitchStatus.id}});
       });
+      
+      this.closeActivateDialog();
   }
 
   public prepareSoftDelete(instance: IAdvertisement): void {

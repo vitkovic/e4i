@@ -183,6 +183,10 @@ export default class AdvertisementUpdate extends Vue {
     if (this.advertisement.id) {
       // Dodeljivannje default vrednosti
       this.advertisement.modifiedAt = new Date();
+      
+      this.advertisement.expirationDatetime = new Date(this.advertisement.activationDatetime);
+      const expirationMonth = this.advertisement.expirationDatetime.getMonth();
+      this.advertisement.expirationDatetime.setMonth(expirationMonth + this.advertisement.duration.duration);
 
       this.advertisementService()
         .update(this.advertisement)
@@ -198,6 +202,11 @@ export default class AdvertisementUpdate extends Vue {
       // Dodeljivannje default vrednosti
       this.advertisement.createdAt = new Date();
       this.advertisement.activationDatetime = this.advertisement.createdAt;
+
+      this.advertisement.expirationDatetime = new Date();
+      const expirationMonth = this.advertisement.expirationDatetime.getMonth();
+      this.advertisement.expirationDatetime.setMonth(expirationMonth + this.advertisement.duration.duration);
+
       this.advertisement.status = this.advertisementStatuses.filter(status => status.status === 'Активан')[0];
 
       this.advertisementService()
@@ -272,16 +281,16 @@ export default class AdvertisementUpdate extends Vue {
       .then(res => {
         this.documents = res.data;
       });
-    this.portalUserService()
-      .retrieve()
-      .then(res => {
-        this.portalUsers = res.data;
-      });
-    this.portalUserService()
-      .retrieve()
-      .then(res => {
-        this.portalUsers = res.data;
-      });
+    // this.portalUserService()
+    //   .retrieve()
+    //   .then(res => {
+    //     this.portalUsers = res.data;
+    //   });
+    // this.portalUserService()
+    //   .retrieve()
+    //   .then(res => {
+    //     this.portalUsers = res.data;
+    //   });
     this.companyService()
       .retrieve()
       .then(res => {

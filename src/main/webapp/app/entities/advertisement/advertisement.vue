@@ -49,7 +49,8 @@
                     <th v-on:click="changeOrder('company.id')"><span v-text="$t('riportalApp.advertisement.company')">Company</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'company.id'"></jhi-sort-indicator></th>
                     <th v-on:click="changeOrder('activationDatetime')"><span v-text="$t('riportalApp.advertisement.activationDatetime')">Activation Datetime</span> 
                     <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'activationDatetime'"></jhi-sort-indicator></th>
-                    <th v-on:click="changeOrder('duration.id')"><span v-text="'Expiration Date'">Duration</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'duration.id'"></jhi-sort-indicator></th>
+                    <th v-on:click="changeOrder('expirationDatetime')"><span v-text="$t('riportalApp.advertisement.expirationDatetime')">Expiration Date</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'expirationDatetime'"></jhi-sort-indicator></th>
+                    <th v-on:click="changeOrder('deletionDatetime')"><span v-text="$t('riportalApp.advertisement.deletionDatetime')">Deletion Date</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'deletionDatetime'"></jhi-sort-indicator></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -81,8 +82,11 @@
                             {{advertisement.status.status}}
                         </div>
                     </td>
-
-                    <td>{{advertisement.type.type}}</td>
+                    <td>
+                        <div v-if="advertisement.type">
+                            {{advertisement.type.type}}
+                        </div>
+                    </td>
                     <td>
                         <div v-if="advertisement.kind">
                             {{advertisement.kind.kind}}
@@ -99,13 +103,9 @@
                             <router-link :to="{name: 'CompanyView', params: {companyId: advertisement.company.id}}">{{advertisement.company.name}}</router-link>
                         </div>
                     </td>             
-                    <td>{{advertisement.activationDatetime ? $d(Date.parse(advertisement.activationDatetime), 'short') : ''}}</td>
-                    <td>
-                        <div v-if="advertisement.duration && advertisement.activationDatetime">
-                            <!-- {{advertisement.duration.duration}} -->
-                            {{ $d(Date.parse(getExpirationDate(advertisement)), 'short') }}
-                        </div>
-                    </td>
+                    <td>{{ advertisement.activationDatetime ? $d(Date.parse(advertisement.activationDatetime.toString()), { dateStyle: 'short' }) : ''}}</td>
+                    <td>{{ advertisement.expirationDatetime ? $d(Date.parse(advertisement.expirationDatetime.toString()), { dateStyle: 'short' }) : '' }}</td>
+                    <td>{{ advertisement.deletionDatetime ? $d(Date.parse(advertisement.deletionDatetime.toString()), { dateStyle: 'short' }) : '' }}</td>
                     <td class="text-right">
                         <div class="btn-group">
                             <router-link :to="{name: 'AdvertisementView', params: {advertisementId: advertisement.id}}" tag="button" class="btn btn-info btn-sm details">
