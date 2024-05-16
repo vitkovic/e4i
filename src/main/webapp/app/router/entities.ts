@@ -297,6 +297,12 @@ const CollaborationDetails = () => import('@/entities/collaboration/collaboratio
 // prettier-ignore
 const CompanyCollaborations = () => import('@/entities/collaboration/company-collaborations.vue');
 // prettier-ignore
+const CollaborationStatus = () => import('@/entities/collaboration-status/collaboration-status.vue');
+// prettier-ignore
+const CollaborationStatusUpdate = () => import('@/entities/collaboration-status/collaboration-status-update.vue');
+// prettier-ignore
+const CollaborationStatusDetails = () => import('@/entities/collaboration-status/collaboration-status-details.vue');
+// prettier-ignore
 const CollaborationRating = () => import('@/entities/collaboration-rating/collaboration-rating.vue');
 // prettier-ignore
 const CollaborationRatingUpdate = () => import('@/entities/collaboration-rating/collaboration-rating-update.vue');
@@ -1580,6 +1586,30 @@ export default [
     path: '/b2b/company/:companyId/collaborations',
     name: 'CompanyCollaborations',
     component: CompanyCollaborations,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/b2b/collaboration-status',
+    name: 'CollaborationStatus',
+    component: CollaborationStatus,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/b2b/collaboration-status/new',
+    name: 'CollaborationStatusCreate',
+    component: CollaborationStatusUpdate,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/b2b/collaboration-status/:collaborationStatusId/edit',
+    name: 'CollaborationStatusEdit',
+    component: CollaborationStatusUpdate,
+    meta: { authorities: [Authority.USER] },
+  },
+  {
+    path: '/b2b/collaboration-status/:collaborationStatusId/view',
+    name: 'CollaborationStatusView',
+    component: CollaborationStatusDetails,
     meta: { authorities: [Authority.USER] },
   },
   {

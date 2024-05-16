@@ -76,6 +76,22 @@
                             <option v-bind:value="collaboration.ratingRequest && collaborationRatingOption.id === collaboration.ratingRequest.id ? collaboration.ratingRequest : collaborationRatingOption" v-for="collaborationRatingOption in collaborationRatings" :key="collaborationRatingOption.id">{{collaborationRatingOption.id}}</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label class="form-control-label" v-text="'Status'" for="collaboration-status">Status</label>
+                        <select class="form-control" id="collaboration-status" name="status" v-model="collaboration.status">
+                        <option v-bind:value="null"></option>
+                        <option
+                            v-bind:value="
+                            collaboration.status && collaborationStatusOption.id === collaboration.status.id
+                                ? collaboration.status
+                                : collaborationStatusOption
+                            "
+                            v-for="collaborationStatusOption in collaborationStatuses"
+                            :key="collaborationStatusOption.id"
+                            >{{ collaborationStatusOption.status }}</option
+                        >
+                        </select>
+                    </div>
                 </div>
                 <div>
                     <button type="button" id="cancel-save" class="btn btn-secondary" v-on:click="previousState()">

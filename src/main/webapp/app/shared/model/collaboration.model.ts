@@ -1,6 +1,7 @@
 import { ICompany } from '@/shared/model/company.model';
 import { IAdvertisement } from '@/shared/model/advertisement.model';
 import { ICollaborationRating } from '@/shared/model/collaboration-rating.model';
+import { ICollaborationStatus } from '@/shared/model/collaboration-status.model';
 import { IThread } from '@/shared/model/thread.model';
 
 export interface ICollaboration {
@@ -14,6 +15,7 @@ export interface ICollaboration {
   advertisement?: IAdvertisement;
   ratingOffer?: ICollaborationRating;
   ratingRequest?: ICollaborationRating;
+  status?: ICollaborationStatus;
   threads?: IThread[];
 }
 
@@ -29,6 +31,7 @@ export class Collaboration implements ICollaboration {
     public advertisement?: IAdvertisement,
     public ratingOffer?: ICollaborationRating,
     public ratingRequest?: ICollaborationRating,
+    public status?: ICollaborationStatus,
     public threads?: IThread[]
   ) {}
 }

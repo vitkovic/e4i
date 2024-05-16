@@ -62,6 +62,10 @@ public class Collaboration implements Serializable {
     @JsonIgnoreProperties(value = "collaborationRequests", allowSetters = true)
     private CollaborationRating ratingRequest;
     
+    @ManyToOne
+    @JsonIgnoreProperties(value = "collaborations", allowSetters = true)
+    private CollaborationStatus status;
+    
     @ManyToMany(mappedBy = "collaborations")
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     @JsonIgnore
@@ -186,6 +190,19 @@ public class Collaboration implements Serializable {
 
     public void setRatingRequest(CollaborationRating collaborationRating) {
         this.ratingRequest = collaborationRating;
+    }
+    
+    public CollaborationStatus getStatus() {
+        return status;
+    }
+
+    public Collaboration status(CollaborationStatus collaborationStatus) {
+        this.status = collaborationStatus;
+        return this;
+    }
+
+    public void setStatus(CollaborationStatus collaborationStatus) {
+        this.status = collaborationStatus;
     }
     
     public Set<Thread> getThreads() {

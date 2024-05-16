@@ -33,6 +33,7 @@
                     <th v-on:click="changeOrder('advertisement.id')"><span v-text="$t('riportalApp.collaboration.advertisement')">Advertisement</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'advertisement.id'"></jhi-sort-indicator></th>
                     <th v-on:click="changeOrder('ratingOffer.id')"><span v-text="$t('riportalApp.collaboration.ratingOffer')">Rating Offer</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'ratingOffer.id'"></jhi-sort-indicator></th>
                     <th v-on:click="changeOrder('ratingRequest.id')"><span v-text="$t('riportalApp.collaboration.ratingRequest')">Rating Request</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'ratingRequest.id'"></jhi-sort-indicator></th>
+                    <th v-on:click="changeOrder('status.id')"><span v-text="'Status'">Status</span> <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'status.id'"></jhi-sort-indicator></th>
                     <th></th>
                 </tr>
                 </thead>
@@ -68,6 +69,11 @@
                     <td>
                         <div v-if="collaboration.ratingRequest">
                             <router-link :to="{name: 'CollaborationRatingView', params: {collaborationRatingId: collaboration.ratingRequest.id}}">{{collaboration.ratingRequest.id}}</router-link>
+                        </div>
+                    </td>
+                    <td>
+                        <div v-if="collaboration.status">
+                            {{collaboration.status.status}}
                         </div>
                     </td>
                     <td class="text-right">

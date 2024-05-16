@@ -68,6 +68,14 @@
                             <router-link :to="{name: 'CollaborationRatingView', params: {collaborationRatingId: collaboration.ratingRequest.id}}">{{collaboration.ratingRequest.id}}</router-link>
                         </div>
                     </dd>
+                    <dt>
+                        <span v-text="'Status'">Status</span>
+                    </dt>
+                    <dd>
+                        <div v-if="collaboration.status">
+                            <span>{{ collaboration.status.status }}</span>
+                        </div>
+                    </dd>
                 </dl>
                 <button type="submit"
                         v-on:click.prevent="previousState()"

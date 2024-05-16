@@ -15,6 +15,9 @@ import { IAdvertisement } from '@/shared/model/advertisement.model';
 import CollaborationRatingService from '../collaboration-rating/collaboration-rating.service';
 import { ICollaborationRating } from '@/shared/model/collaboration-rating.model';
 
+import CollaborationStatusService from '../collaboration-status/collaboration-status.service';
+import { ICollaborationStatus } from '@/shared/model/collaboration-status.model';
+
 import AlertService from '@/shared/alert/alert.service';
 import { ICollaboration, Collaboration } from '@/shared/model/collaboration.model';
 import CollaborationService from './collaboration.service';
@@ -47,6 +50,10 @@ export default class CollaborationUpdate extends Vue {
   public advertisements: IAdvertisement[] = [];
 
   @Inject('collaborationRatingService') private collaborationRatingService: () => CollaborationRatingService;
+
+  @Inject('collaborationStatusService') private collaborationStatusService: () => CollaborationStatusService;
+
+  public collaborationStatuses: ICollaborationStatus[] = [];
 
   public collaborationRatings: ICollaborationRating[] = [];
   public isSaving = false;
@@ -156,5 +163,10 @@ export default class CollaborationUpdate extends Vue {
       .then(res => {
         this.collaborationRatings = res.data;
       });
+      this.collaborationStatusService()
+      .retrieve()
+      .then(res => {
+        this.collaborationStatuses = res.data;
+      })
   }
 }

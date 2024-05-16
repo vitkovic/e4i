@@ -88,6 +88,7 @@ import AdvertisementCategoryService from '@/entities/advertisement-category/adve
 import AdvertisementSubcategoryService from '@/entities/advertisement-subcategory/advertisement-subcategory.service';
 import AdvertisementSubsubcategoryService from '@/entities/advertisement-subsubcategory/advertisement-subsubcategory.service';
 import CollaborationService from '@/entities/collaboration/collaboration.service';
+import CollaborationStatusService from '@/entities/collaboration-status/collaboration-status.service';
 import CollaborationRatingService from '@/entities/collaboration-rating/collaboration-rating.service';
 import ThreadService from '@/entities/thread/thread.service';
 import MeetingService from '@/entities/meeting/meeting.service';
@@ -253,6 +254,7 @@ new Vue({
     advertisementSubcategoryService: () => new AdvertisementSubcategoryService(),
     advertisementSubsubcategoryService: () => new AdvertisementSubsubcategoryService(),
     collaborationService: () => new CollaborationService(),
+    collaborationStatusService: () => new CollaborationStatusService(),
     collaborationRatingService: () => new CollaborationRatingService(),
     threadService: () => new ThreadService(),
     meetingService: () => new MeetingService(),
