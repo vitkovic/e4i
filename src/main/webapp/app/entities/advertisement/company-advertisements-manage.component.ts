@@ -37,6 +37,7 @@ export default class Advertisement extends mixins(AlertMixin) {
   public advertisements: IAdvertisement[] = [];
   public advertisementStatuses: IAdvertisementStatus[] = [];
   public activeAdStatus : IAdvertisementStatus | null = null;
+  public archivedAdStatus : IAdvertisementStatus | null = null;
   public company: ICompany | null = null;
 
   private removeId: number = null;
@@ -74,11 +75,12 @@ export default class Advertisement extends mixins(AlertMixin) {
   }
 
   public mounted(): void {
-    this.retrieveAllAdvertisements();
     this.advertisementStatusService()
       .retrieve()
       .then(res => {
         this.advertisementStatuses = res.data;
+        this.archivedAdStatus = this.advertisementStatuses.find(status => status.status === AdvertisementStatus.ARCHIVED);
+        this.retrieveAllAdvertisements();
       });
   }
 
@@ -98,7 +100,7 @@ export default class Advertisement extends mixins(AlertMixin) {
 
     if (this.activeAdStatusFilter === AdvertisementStatusFilter.ALL) {
       this.advertisementService()
-      .retrieve(paginationQuery)
+      .retrieveAllByCompanyAndNotStatusId(this.companyId, this.archivedAdStatus.id, paginationQuery)
       .then(
         res => {
           this.advertisements = res.data;

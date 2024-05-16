@@ -180,6 +180,11 @@ public class AdvertisementService {
     }
     
     @Transactional
+    public Page<Advertisement> findAllByCompanyIdAndNotStatusId(Long companyId, Long statusId, Pageable pageable) {
+    	return advertisementRepository.findAllByCompanyIdandNotStatusId(companyId, statusId, pageable);
+    }
+    
+    @Transactional
     public Page<Advertisement> findAllByStatusId(Long statusId, Pageable pageable) {
     	return advertisementRepository.findAllByStatusId(statusId, pageable);
     }

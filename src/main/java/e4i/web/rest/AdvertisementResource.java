@@ -387,6 +387,19 @@ public class AdvertisementResource {
 	        return ResponseEntity.ok().headers(headers).body(page.getContent());
 	    }
 	    
+	    @GetMapping("/advertisements/company-not-status")
+	    public ResponseEntity<List<Advertisement>> findAllAdvertisementsByCompanyAndNotStatus(
+	    		Pageable pageable, 
+	    		@RequestParam Long companyId,
+	    		@RequestParam Long statusId) {
+	    	log.debug("REST request to get a page of Advertisements for company: {} and not status: {}", companyId, statusId);
+	    	
+	        Page<Advertisement> page = advertisementService.findAllByCompanyIdAndNotStatusId(companyId, statusId, pageable);
+	        	        
+	        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+	        return ResponseEntity.ok().headers(headers).body(page.getContent());
+	    }
+	    
 	    @GetMapping("/advertisements/status")
 	    public ResponseEntity<List<Advertisement>> findAllAdvertisementsByStatus(
 	    		Pageable pageable, 

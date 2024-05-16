@@ -15,6 +15,7 @@ const apiUpdateStatus = 'api/advertisements/update-status';
 const apiBrowse = 'api/advertisements/browse';
 const apiFindAllByCompany = 'api/advertisements/company';
 const apiFindAllByCompanyIdAndStatusId = 'api/advertisements/company-status';
+const apiFindAllByCompanyIdAndNotStatusId = 'api/advertisements/company-not-status';
 const apiFindAllByStatusId = 'api/advertisements/status';
 const apiFindAllByCompanyIdAndTypeId = 'api/advertisements/company-type';
 
@@ -78,6 +79,21 @@ export default class AdvertisementService {
       axios
         .get(
           apiFindAllByCompanyIdAndStatusId + `?companyId=${companyId}` + `&` + `statusId=${statusId}` + `&` + `${buildPaginationQueryOpts(paginationQuery)}`
+        )
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public retrieveAllByCompanyAndNotStatusId(companyId: number, statusId: number, paginationQuery?: any): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .get(
+          apiFindAllByCompanyIdAndNotStatusId + `?companyId=${companyId}` + `&` + `statusId=${statusId}` + `&` + `${buildPaginationQueryOpts(paginationQuery)}`
         )
         .then(res => {
           resolve(res);
