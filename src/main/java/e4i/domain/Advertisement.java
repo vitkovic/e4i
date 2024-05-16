@@ -37,6 +37,12 @@ public class Advertisement implements Serializable {
     @NotNull
     @Column(name = "activation_datetime", nullable = false)
     private Instant activationDatetime;
+    
+    @Column(name = "expiration_datetime")
+    private Instant expirationDatetime;
+    
+    @Column(name = "deletion_datetime")
+    private Instant deletionDatetime;
 
     @NotNull
     @Column(name = "title", nullable = false)
@@ -156,7 +162,33 @@ public class Advertisement implements Serializable {
         this.activationDatetime = activationDatetime;
     }
 
-    public String getTitle() {
+    public Instant getExpirationDatetime() {
+		return expirationDatetime;
+	}
+
+    public Advertisement expirationDatetime(Instant expirationDatetime) {
+        this.expirationDatetime = expirationDatetime;
+        return this;
+    }
+
+	public void setExpirationDatetime(Instant expirationDatetime) {
+		this.expirationDatetime = expirationDatetime;
+	}
+
+	public Instant getDeletionDatetime() {
+		return deletionDatetime;
+	}
+	
+    public Advertisement deletionDatetime(Instant deletionDatetime) {
+        this.deletionDatetime = deletionDatetime;
+        return this;
+    }
+
+	public void setDeletionDatetime(Instant deletionDatetime) {
+		this.deletionDatetime = deletionDatetime;
+	}
+
+	public String getTitle() {
         return title;
     }
 
@@ -462,6 +494,8 @@ public class Advertisement implements Serializable {
             ", createdAt='" + getCreatedAt() + "'" +
             ", modifiedAt='" + getModifiedAt() + "'" +
             ", activationDatetime='" + getActivationDatetime() + "'" +
+            ", expirationDatetime='" + getExpirationDatetime() + "'" +
+            ", deletionDatetime='" + getDeletionDatetime() + "'" +
             ", title='" + getTitle() + "'" +
             ", description='" + getDescription() + "'" +
             ", budget=" + getBudget() +

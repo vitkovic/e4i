@@ -22,6 +22,7 @@
       "modifiedAt": "Измењено",
       "activationDatetime": "Датум активације",
       "expirationDatetime": "Датум истека",
+      "deletionDatetime": "Датум брисања",
       "title": "Наслов",
       "description": "Опис",
       "budget": "Буџет",

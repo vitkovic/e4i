@@ -16,6 +16,8 @@ export interface IAdvertisement {
   createdAt?: Date;
   modifiedAt?: Date;
   activationDatetime?: Date;
+  expirationDatetime?: Date;
+  deletionDatetime?: Date;
   title?: string;
   description?: string;
   budget?: number;
@@ -41,6 +43,8 @@ export class Advertisement implements IAdvertisement {
     public createdAt?: Date,
     public modifiedAt?: Date,
     public activationDatetime?: Date,
+    public expirationDatetime?: Date,
+    public deletionDatetime?: Date,
     public title?: string,
     public description?: string,
     public budget?: number,

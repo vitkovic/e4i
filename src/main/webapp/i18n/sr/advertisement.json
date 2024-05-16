@@ -22,6 +22,7 @@
       "modifiedAt": "Izmenjeno",
       "activationDatetime": "Datum aktivacije",
       "expirationDatetime": "Datum isteka",
+      "deletionDatetime": "Datum brisanja",
       "title": "Naslov",
       "description": "Opis",
       "budget": "Budžet",

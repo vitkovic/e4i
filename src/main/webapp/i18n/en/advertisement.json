@@ -22,6 +22,7 @@
       "modifiedAt": "Modified at",
       "activationDatetime": "Activation datetime",
       "expirationDatetime": "Expiration datetime",
+      "deletionDatetime": "Deletion datetime",
       "title": "Title",
       "description": "Description",
       "budget": "Budget",
