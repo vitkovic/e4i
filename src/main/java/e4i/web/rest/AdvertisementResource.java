@@ -18,6 +18,7 @@ import e4i.domain.AdvertisementStatus;
 import e4i.domain.Document;
 import e4i.domain.DocumentType;
 import e4i.domain.PortalUser;
+import e4i.domain.User;
 import e4i.repository.AdvertisementRepository;
 import e4i.repository.AdvertisementStatusRepository;
 import e4i.repository.DocumentRepository;
@@ -25,6 +26,8 @@ import e4i.repository.DocumentTypeRepository;
 import e4i.repository.PortalUserRepository;
 import e4i.service.AdvertisementService;
 import e4i.service.FilesStorageService;
+import e4i.service.PortalUserService;
+import e4i.service.UserService;
 import e4i.web.rest.errors.BadRequestAlertException;
 
 import org.springframework.http.ResponseEntity;
@@ -57,6 +60,12 @@ public class AdvertisementResource {
     private String applicationName;
 
     private final AdvertisementService advertisementService;
+    
+    @Autowired
+    UserService userService;
+    
+    @Autowired
+    PortalUserService portalUserService;
     
     @Autowired
     AdvertisementRepository advertisementRepository;
@@ -93,6 +102,14 @@ public class AdvertisementResource {
         if (advertisement.getId() != null) {
             throw new BadRequestAlertException("A new advertisement cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        
+        User user = userService.getLoggedInUser();
+        PortalUser portalUser = portalUserService.findByUserId(user.getId());
+        
+        advertisement.setCreatedAt(Instant.now());
+  	  	advertisement.setCreatedBy(portalUser);
+   	  	portalUserService.save(portalUser);
+        
         Advertisement result = advertisementService.save(advertisement);
         return ResponseEntity.created(new URI("/api/advertisements/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -114,6 +131,14 @@ public class AdvertisementResource {
         if (advertisement.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        
+        User user = userService.getLoggedInUser();
+        PortalUser portalUser = portalUserService.findByUserId(user.getId());
+        
+        advertisement.setModifiedAt(Instant.now());
+  	  	advertisement.setModifiedBy(portalUser);
+  	  	portalUserService.save(portalUser);
+        
         Advertisement result = advertisementService.save(advertisement);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, advertisement.getId().toString()))
@@ -201,6 +226,54 @@ public class AdvertisementResource {
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, advertisement.getId().toString()))
             .body(result);
     }
+    
+	  @PostMapping("/advertisements/upload-files")
+	  @Transactional
+	  public ResponseEntity<Set<Document>> uploadFiles(
+			  @RequestParam Long id, 
+			  @RequestParam("imageFiles") MultipartFile[] imageFiles,
+			  @RequestParam("documentFiles") MultipartFile[] documentFiles
+			  ) {	
+		  
+		  Optional<Advertisement> advertisementOptional = advertisementRepository.findById(id);
+		  Advertisement advertisement = advertisementOptional.get();
+		
+		  DocumentType imageType = documentTypeRepository.findByType("image");  
+		  Set<Document> images = new HashSet<Document>();
+		  
+       	  DocumentType documentType = documentTypeRepository.findByType("document");  
+       	  Set<Document> documents = new HashSet<Document>();
+	    	    	
+		  Arrays.asList(imageFiles).stream().forEach(file -> {
+			  Document image = new Document();		  
+			  String namePrefix = "img_ad_" + id + "_";
+			  String imageName = storageService.saveImage(namePrefix, file);
+			  image.setFilename(imageName);
+			  image.setType(imageType);
+			  images.add(image);    		
+		  });
+		  
+       	  Arrays.asList(documentFiles).stream().forEach(file -> {
+       		  String namePrefix = "doc_ad_" + id + "_";
+       		  Document document = new Document();		  
+       		  String documentName = storageService.saveDocument(namePrefix, file);
+       		  document.setFilename(documentName);
+       		  document.setType(documentType);
+       		  documents.add(document);    		
+       	  });
+	
+		  documentRepository.saveAll(images);
+       	  documentRepository.saveAll(documents);
+       	  
+	   	  Set<Document> allFiles = images;
+	   	  allFiles.addAll(documents);
+	   	  allFiles.addAll(advertisement.getDocuments());
+	   	  advertisement.setDocuments(allFiles);
+	   	         	  
+       	  advertisementRepository.save(advertisement);
+		  
+		  return ResponseEntity.ok().body(images);
+	  }
     
     /***********************************************************************************************************
     * Upload slika za oglase

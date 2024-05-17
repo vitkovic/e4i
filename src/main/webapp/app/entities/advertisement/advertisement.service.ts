@@ -7,6 +7,7 @@ import { IAdvertisement } from '@/shared/model/advertisement.model';
 const baseApiUrl = 'api/advertisements';
 const updateCreatedByApiUrl = 'api/advertisements/update-created';
 const updateModifiedByApiUrl = 'api/advertisements/update-modified';
+const apiUploadFiles = 'api/advertisements/upload-files';
 const apiUploadImages = 'api/advertisements/upload-images';
 const apiDeleteImage = 'api/advertisements/delete-image';
 const apiUploadDocuments = 'api/advertisements/upload-documents';
@@ -190,6 +191,23 @@ export default class AdvertisementService {
     return new Promise<any>((resolve, reject) => {
       axios
         .put(`${updateModifiedByApiUrl}/${advertisementId}/${userId}`)
+        .then(res => {
+          resolve(res.data);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public uploadFiles(entity: FormData): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .post(apiUploadFiles, entity, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
         .then(res => {
           resolve(res.data);
         })

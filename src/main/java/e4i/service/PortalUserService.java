@@ -253,4 +253,11 @@ public class PortalUserService {
     	
     	return company;
     }
+    
+    @Transactional
+    public PortalUser findByUserId(Long userId) {
+    	PortalUser portalUser = portalUserRepository.findByUserId(userId);
+    	
+    	return portalUser;
+    }
 }

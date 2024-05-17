@@ -361,13 +361,13 @@
                 </li>
               </ol>
             </div>
-            <b-row>
+            <!-- <b-row>
               <b-col sm="11">
                 <button v-if="imageFiles.length > 0" type="button" id="save-entity" class="btn btn-primary mb-5" v-on:click="saveImages()">
                   <span v-text="$t('entity.action.saveImages')">Save</span>
                 </button>
               </b-col>
-            </b-row>
+            </b-row> -->
           </div>
           <hr />
           <div class="col-5">
@@ -434,7 +434,7 @@
                 </li>
               </ol>
             </div>
-            <b-row>
+            <!-- <b-row>
               <b-col sm="11">
                 <button
                   v-if="documentFiles.length > 0"
@@ -446,7 +446,7 @@
                   <span v-text="$t('entity.action.saveDocuments')">Save</span>
                 </button>
               </b-col>
-            </b-row>
+            </b-row> -->
           </div>
           <!-- <div class="form-group">
                         <label v-text="$t('riportalApp.advertisement.document')" for="advertisement-document">Document</label>

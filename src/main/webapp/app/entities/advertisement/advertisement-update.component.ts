@@ -181,9 +181,6 @@ export default class AdvertisementUpdate extends Vue {
   public save(): void {
     this.isSaving = true;
     if (this.advertisement.id) {
-      // Dodeljivannje default vrednosti
-      this.advertisement.modifiedAt = new Date();
-      
       this.advertisement.expirationDatetime = new Date(this.advertisement.activationDatetime);
       const expirationMonth = this.advertisement.expirationDatetime.getMonth();
       this.advertisement.expirationDatetime.setMonth(expirationMonth + this.advertisement.duration.duration);
@@ -195,14 +192,11 @@ export default class AdvertisementUpdate extends Vue {
           this.$router.go(-1);
           const message = this.$t('riportalApp.advertisement.updated', { param: param.id });
           this.alertService().showAlert(message, 'info');
-          const user = this.$store.getters.account;
-          this.advertisementService().updateModifiedBy(this.advertisement.id, user.id);
+
+          this.saveFiles();
         });
     } else {
-      // Dodeljivannje default vrednosti
-      this.advertisement.createdAt = new Date();
-      this.advertisement.activationDatetime = this.advertisement.createdAt;
-
+      this.advertisement.activationDatetime = new Date();
       this.advertisement.expirationDatetime = new Date();
       const expirationMonth = this.advertisement.expirationDatetime.getMonth();
       this.advertisement.expirationDatetime.setMonth(expirationMonth + this.advertisement.duration.duration);
@@ -216,8 +210,9 @@ export default class AdvertisementUpdate extends Vue {
           this.$router.go(-1);
           const message = this.$t('riportalApp.advertisement.created', { param: param.id });
           this.alertService().showAlert(message, 'success');
-          const user = this.$store.getters.account;
-          this.advertisementService().updateCreatedBy(param.id, user.id);
+
+          this.advertisement = param;
+          this.saveFiles();
         });
     }
   }
@@ -363,12 +358,65 @@ export default class AdvertisementUpdate extends Vue {
     // return files.length === 1 ? files[0].name : `${files.length} files selected`;
   }
 
-  public saveImages(): void {
-    if (this.imageFiles.length === 0) {
-      const por = this.$t('riportalApp.researchInfrastructure.errors.fileTypeNotMatch');
-      this.$notify({ text: JSON.stringify(por).replace(/["]/g, ''), type: 'error', duration: 10000 });
+  public saveFiles(): void {
+    if (this.imageFiles.length === 0 && this.documentFiles.length === 0) {
       return;
     }
+
+    if (this.imageFiles.length > 0 && this.documentFiles.length === 0) {
+      this.saveImages();
+      return
+    }
+
+    if (this.imageFiles.length === 0 && this.documentFiles.length > 0) {
+      this.saveDocuments();
+      return
+    }
+
+    if (this.imageFiles.length > 0 && this.documentFiles.length > 0) {
+      this.saveImagesAndDocuments();
+      return
+    }
+  }
+
+  public saveImagesAndDocuments(): void {
+    if (this.imageFiles.length === 0 || this.documentFiles.length === 0) {
+      return;
+    }
+
+    this.isSaving = true;
+    const formData = new FormData();
+
+    for (let i = 0; i < this.imageFiles.length; i++) {
+      formData.append('imageFiles', this.imageFiles[i]);
+    }
+
+    for (let i = 0; i < this.documentFiles.length; i++) {
+      formData.append('documentFiles', this.documentFiles[i]);
+    }
+
+    formData.append('id', '' + this.advertisement.id);
+
+    this.advertisementService()
+      .uploadFiles(formData)
+      .then(res => {
+        this.isSaving = false;
+        this.imageFiles = [];
+      })
+      .catch(error => {
+        this.isSaving = false;
+        if (error.response.status === 400 && error.response.data.type === 'INFRASTRUCTURE_IMAGES_LIMIT') {
+          const por = this.$t('riportalApp.researchInfrastructure.errors.infrastructureImagesLimit');
+          this.$notify({ text: JSON.stringify(por).replace(/["]/g, ''), type: 'error', duration: 10000 });
+        }
+      });
+  }
+
+  public saveImages(): void {
+    if (this.imageFiles.length === 0) {
+      return;
+    }
+
     this.isSaving = true;
     const formData = new FormData();
 
@@ -383,8 +431,7 @@ export default class AdvertisementUpdate extends Vue {
       .then(res => {
         this.isSaving = false;
         this.imageFiles = [];
-        // this.company.documents = res;
-        this.retrieveAdvertisement(this.advertisement.id);
+        // this.retrieveAdvertisement(this.advertisement.id);
       })
       .catch(error => {
         this.isSaving = false;
@@ -397,10 +444,9 @@ export default class AdvertisementUpdate extends Vue {
 
   public saveDocuments(): void {
     if (this.documentFiles.length === 0) {
-      const por = this.$t('riportalApp.researchInfrastructure.errors.fileTypeNotMatch');
-      this.$notify({ text: JSON.stringify(por).replace(/["]/g, ''), type: 'error', duration: 10000 });
       return;
     }
+
     this.isSaving = true;
     const formData = new FormData();
 
@@ -415,8 +461,7 @@ export default class AdvertisementUpdate extends Vue {
       .then(res => {
         this.isSaving = false;
         this.documentFiles = [];
-        // this.company.documents = res;
-        this.retrieveAdvertisement(this.advertisement.id);
+        // this.retrieveAdvertisement(this.advertisement.id);
       })
       .catch(error => {
         this.isSaving = false;

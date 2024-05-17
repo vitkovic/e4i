@@ -29,6 +29,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 /**
  * Service class for managing users.
  */
@@ -331,6 +333,20 @@ public class UserService {
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities() {
         return SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
+    }
+    
+    @Transactional(readOnly = true)
+    public User getLoggedInUser() {
+    	Optional<User> userOptional = SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
+    	
+    	if (userOptional.isEmpty()) {
+    		String errorMessage = String.format("No logged user!");
+        	throw new EntityNotFoundException(errorMessage);
+    	}
+    	
+    	User user = userOptional.get();
+    	
+    	return user;
     }
 
     /**
