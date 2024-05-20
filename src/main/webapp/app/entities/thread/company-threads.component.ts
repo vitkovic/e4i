@@ -72,6 +72,9 @@ export default class Thread extends mixins(AlertMixin) {
   public filterReceiverButtonVariant = 'outline-secondary';
 
   public openThreadId: string | null = null;
+  public selectedCollRadioBtn: string = 'ne';
+
+  public isCanceled: boolean = false;
 
   beforeRouteEnter(to, from, next) {
     next(vm => {
@@ -283,10 +286,12 @@ export default class Thread extends mixins(AlertMixin) {
           this.messages = res;
         });
     }
+
+    console.log(thread.subject);
   }
 
   public buildThreadDisplayString(thread: IThreadDTO): String {
-    const CHAR_LIMIT = 70;
+    const CHAR_LIMIT = 60;
     const subjectLength = thread.subject.length;
     let displayString = '';
 
@@ -386,14 +391,42 @@ export default class Thread extends mixins(AlertMixin) {
     }
   }
 
+  public prepareCancelCollaboration(instance: ICollaboration): void {
+    this.collaboration = instance;
+
+    if (<any>this.$refs.cancelCollaboration) {
+      (<any>this.$refs.cancelCollaboration).show();
+    }
+  }
+
   public closeConfirmCollaboration(): void {
     (<any>this.$refs.confirmCollaboration).hide();
   }
 
-  public closeConfirmCollaborationSecond(): void {
-    this.collaboration = null;
-    (<any>this.$refs.confirmCollaboration).hide();
+  public closeCancelCollaboration(): void {
+    (<any>this.$refs.cancelCollaboration).hide();
   }
+
+  public cancelCollaboration(): void {
+    const ADVERTISEMENT_TITLE = this.collaboration.advertisement.title;
+
+    if (!this.collaboration) {
+      this.closeCancelCollaboration();
+      return;
+    }
+
+    this.isCanceled = true;
+
+    const message = this.$t('riportalApp.thread.notifications.cancelCollaboration', { ADVERTISEMENT_TITLE });
+
+    this.$notify({
+      text: message,
+    });
+
+    this.closeCancelCollaboration();
+
+  }
+
 
   public confirmCollaboration(): void {
     const ADVERTISEMENT_TITLE = this.collaboration.advertisement.title;
@@ -406,46 +439,26 @@ export default class Thread extends mixins(AlertMixin) {
     this.collaborationService()
       .confirmCollaboration(this.collaboration.id)
       .then(res => {
-        // const message = 'Potvrdili ste zahtev za saradnju za oglas "' + ADVERTISEMENT_TITLE + '".';
-        // this.$notify({
-        //   text: message,
-        // });
+        const message1 = this.$t('riportalApp.thread.notifications.confirmCollaboration1', { ADVERTISEMENT_TITLE });
+        const message2 = this.$t('riportalApp.thread.notifications.confirmCollaboration2', { ADVERTISEMENT_TITLE });
+
+        if (this.selectedCollRadioBtn === 'ne') {
+          this.$notify({
+            text: message1,
+          });
+        } else {
+          this.$notify({
+            text: message2,
+          });
+          this.selectedCollRadioBtn = "ne";
+        }
         this.retrieveThreads();
       });
+
 
     this.closeConfirmCollaboration();
   }
 
-  public confirmCollaborationSecond(): void {
-    const ADVERTISEMENT_TITLE = this.collaboration.advertisement.title;
-
-    if (!this.collaboration) {
-      this.closeConfirmCollaborationSecond();
-      return;
-    }
-
-    const message =
-      'Potvrdili ste zahtev za saradnju za oglas "' +
-      ADVERTISEMENT_TITLE +
-      '".<br>Ostali zahtevi za saradnju na oglasu "' +
-      ADVERTISEMENT_TITLE +
-      '" su odbijeni.';
-    this.$notify({
-      text: message,
-    });
-
-    // this.collaborationService()
-    // .confirmCollaboration(this.collaboration.id)
-    // .then(res => {
-    //   // const message = 'Potvrdili ste zahtev za saradnju za oglas "' + ADVERTISEMENT_TITLE + '".';
-    //   // this.$notify({
-    //   //   text: message,
-    //   // });
-    //   this.retrieveThreads();
-    //   });
-
-    this.closeConfirmCollaborationSecond();
-  }
 
   public toggleThreadCollapse(threadId) {
     this.openThreadId = threadId;
@@ -459,5 +472,23 @@ export default class Thread extends mixins(AlertMixin) {
 
   get placeholderText(): string {
     return this.$t('riportalApp.thread.messageSection.placeholder') as string;
+  }
+
+  public buildThreadDisplayStringMoja(thread: IThreadDTO): String {
+    const CHAR_LIMIT = 70;
+    const subjectLength = thread.subject.length;
+    let displayString = '';
+
+    if (!thread?.lastMessageContent) {
+      return displayString;
+    }
+
+    if (thread.lastMessageContent.length + subjectLength <= CHAR_LIMIT) {
+      return ' - ' + thread.lastMessageContent;
+    }
+
+    displayString = ' - ' + thread.lastMessageContent.substring(0, CHAR_LIMIT - subjectLength) + '...';
+
+    return displayString;
   }
 }

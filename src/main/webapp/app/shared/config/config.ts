@@ -35,6 +35,7 @@ import { faTasks } from '@fortawesome/free-solid-svg-icons/faTasks';
 import { faThList } from '@fortawesome/free-solid-svg-icons/faThList';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons/faTimesCircle';
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
+import { faCheck } from '@fortawesome/free-solid-svg-icons/faCheck';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons/faUserPlus';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
@@ -154,6 +155,7 @@ export function initFortAwesome(vue) {
     faTasks,
     faThList,
     faTimes,
+    faCheck,
     faTimesCircle,
     faTrash,
     faUser,
