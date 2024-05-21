@@ -112,6 +112,40 @@ const dateTimeFormats = {
       minute: 'numeric',
     },
   },
+  src: {
+    short: {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: false,
+
+    },
+    shortWithoutMinutes: {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    },
+    medium: {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: false,
+
+    },
+    long: {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: false,
+
+    },
+  }
   // jhipster-needle-i18n-language-date-time-format - JHipster will add/remove format options in this object
 };
 
@@ -166,6 +200,7 @@ export function initFortAwesome(vue) {
 
 export function initI18N(vue) {
   vue.use(VueI18n);
+
   return new VueI18n({
     dateTimeFormats,
     silentTranslationWarn: true,

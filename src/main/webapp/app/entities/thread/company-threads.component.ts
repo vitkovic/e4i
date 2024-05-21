@@ -94,6 +94,7 @@ export default class Thread extends mixins(AlertMixin) {
   //   this.retrieveAllThreads();
   // }
 
+
   public clear(): void {
     this.page = 1;
     this.retrieveThreads();
@@ -286,8 +287,6 @@ export default class Thread extends mixins(AlertMixin) {
           this.messages = res;
         });
     }
-
-    console.log(thread.subject);
   }
 
   public buildThreadDisplayString(thread: IThreadDTO): String {
