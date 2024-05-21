@@ -424,9 +424,7 @@ export default class Thread extends mixins(AlertMixin) {
     });
 
     this.closeCancelCollaboration();
-
   }
-
 
   public confirmCollaboration(): void {
     const ADVERTISEMENT_TITLE = this.collaboration.advertisement.title;
@@ -450,15 +448,13 @@ export default class Thread extends mixins(AlertMixin) {
           this.$notify({
             text: message2,
           });
-          this.selectedCollRadioBtn = "ne";
+          this.selectedCollRadioBtn = 'ne';
         }
         this.retrieveThreads();
       });
 
-
     this.closeConfirmCollaboration();
   }
-
 
   public toggleThreadCollapse(threadId) {
     this.openThreadId = threadId;
@@ -474,21 +470,14 @@ export default class Thread extends mixins(AlertMixin) {
     return this.$t('riportalApp.thread.messageSection.placeholder') as string;
   }
 
-  public buildThreadDisplayStringMoja(thread: IThreadDTO): String {
-    const CHAR_LIMIT = 70;
-    const subjectLength = thread.subject.length;
+  public buildThreadColumnString(name: string): String {
+    const CHAR_LIMIT = 40;
     let displayString = '';
 
-    if (!thread?.lastMessageContent) {
-      return displayString;
+    if (name.length <= CHAR_LIMIT) {
+      return name;
+    } else {
+      return (displayString = name.slice(0, CHAR_LIMIT - 3) + '...');
     }
-
-    if (thread.lastMessageContent.length + subjectLength <= CHAR_LIMIT) {
-      return ' - ' + thread.lastMessageContent;
-    }
-
-    displayString = ' - ' + thread.lastMessageContent.substring(0, CHAR_LIMIT - subjectLength) + '...';
-
-    return displayString;
   }
 }

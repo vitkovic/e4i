@@ -88,7 +88,8 @@
         "imgSize&Number": "Broj slika koji ne može biti dodat je {totalNumberOfImages}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj slika (15).</li><li>veličina slike (2mb).</li></ul>",
         "documentSize": "Broj dokumenata koji ne može biti dodat je {numberOfBigDocuments}.<br>Prekoračena ograničenja:<br><ul><li>veličina dokumenta (2mb).</li></ul>",
         "documentNumber": "Broj dokumenata koji ne može biti dodat je {numberOfLimitDocuments}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj dokumenata (15).</li></ul>",
-        "documentSize&Number": "Broj dokumenata koji ne može biti dodat je {totalNumberOfDocuments}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj dokumenata (15).</li><li>veličina dokumenta (2mb).</li></ul>"
+        "documentSize&Number": "Broj dokumenata koji ne može biti dodat je {totalNumberOfDocuments}.<br>Prekoračena ograničenja:<br><ul><li>maksimalan broj dokumenata (15).</li><li>veličina dokumenta (2mb).</li></ul>",
+        "noLogo": "Logotip nije pronađen"
       },
       "modal": {
         "advertisementModalTitle": "Stupite u kontakt sa kompanijom "

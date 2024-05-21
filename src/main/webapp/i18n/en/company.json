@@ -53,6 +53,7 @@
       "upload": {
         "imgUpload": "Upload images",
         "documentUpload": "Upload documents",
+        "logoUpload": "Upload logo image",
         "imgInfo": {
           "imgNumber": "* Number of images you can add is: ",
           "imgSize": "* Maximum allowed image size is 2 mb.",
@@ -89,7 +90,8 @@
         "imgSize&Number": "Number of images that cannot be added is {totalNumberOfImages}.<br>Limits exceeded:<br><ul><li>maximum number of images (15).</li><li>maximum image size (2mb).</li></ul>",
         "documentSize": "Number of images that cannot be added is {numberOfBigDocuments}.<br>Limits exceeded:<br><ul><li>maximum document size (2mb).</li></ul>",
         "documentNumber": "Number of documents that cannot be added is {numberOfLimitDocuments}.<br>Limits exceeded:<br><ul><li>maximum number of documents (15).</li></ul>",
-        "documentSize&Number": "Number of documents that cannot be added is {totalNumberOfDocuments}.<br>Limits exceeded:<br><ul><li>maximum number of documents (15).</li><li>maximum document size (2mb).</li></ul>"
+        "documentSize&Number": "Number of documents that cannot be added is {totalNumberOfDocuments}.<br>Limits exceeded:<br><ul><li>maximum number of documents (15).</li><li>maximum document size (2mb).</li></ul>",
+        "noLogo": "There is no logo found"
       },
       "modal": {
         "advertisementModalTitle": "Get in touch with the company "

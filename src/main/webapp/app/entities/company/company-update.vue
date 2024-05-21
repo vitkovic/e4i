@@ -126,7 +126,7 @@
                       </button>
                     </div>
                   </div>
-                  <div v-else>There is no logo found</div>
+                  <div v-else v-text="$t('riportalApp.company.error.noLogo')" >There is no logo found</div>
                 </div>
               </div>
               <div v-if="imageLogo != null" class="mb-4">

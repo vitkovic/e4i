@@ -279,21 +279,21 @@
                 <b-col class="d-flex align-items-center h-100">
                   <div v-if="thread.companyReceiver" class="spacing-subject h-100 d-flex align-items-center">
                     <router-link :to="{ name: 'CompanyView', params: { companyId: thread.companyReceiver.id } }">{{
-                      thread.companyReceiver.name
+                      buildThreadColumnString(thread.companyReceiver.name)
                     }}</router-link>
                   </div>
                 </b-col>
                 <b-col class="h-100">
                   <div v-if="thread.companySender" class="spacing-subject h-100 d-flex align-items-center">
                     <router-link :to="{ name: 'CompanyView', params: { companyId: thread.companySender.id } }">{{
-                      thread.companySender.name
+                      buildThreadColumnString(thread.companySender.name)
                     }}</router-link>
                   </div>
                 </b-col>
                 <b-col class="h-100">
                   <div v-if="thread.advertisement" class="spacing-subject h-100 d-flex align-items-center">
                     <router-link :to="{ name: 'AdvertisementView', params: { advertisementId: thread.advertisement.id } }">{{
-                      thread.advertisement.title
+                      buildThreadColumnString(thread.advertisement.title)
                     }}</router-link>
                   </div>
                 </b-col>
