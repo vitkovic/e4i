@@ -246,7 +246,23 @@
               >
                 <b-col class="d-flex h-100 justify-content-between align-items-center" sm="4">
                   <div class="firstcol-p1 d-flex align-items-center">
-                    <div
+                    <div v-if="thread.collaboration && thread.collaboration.status && (thread.collaboration.status.status === collaborationStatusOptions.ACCEPTED)" 
+                      v-b-tooltip.hover="{ variant: 'success', customClass: 'custom-tooltip' }"
+                      :title="$t('riportalApp.thread.iconHover.confirmCollaboration')">
+                      <b-button variant='success' disabled class="btn btn-sm mr-1">
+                        <font-awesome-icon icon='check'></font-awesome-icon>
+                      </b-button>
+                    </div>
+
+                    <div v-if="thread.collaboration && thread.collaboration.status && (thread.collaboration.status.status === collaborationStatusOptions.REJECTED)" 
+                      v-b-tooltip.hover="{ variant: 'danger', customClass: 'custom-tooltip' }"
+                      :title="$t('riportalApp.thread.iconHover.cancelCollaboration')">
+                      <b-button variant='danger' disabled class="btn btn-sm mr-1">
+                        <font-awesome-icon icon='times'></font-awesome-icon>
+                      </b-button>
+                    </div>
+                    
+                    <!-- <div
                       v-if="thread.collaboration && (thread.collaboration.isAccepted || isCanceled)"
                       v-b-tooltip.hover="{ variant: thread.collaboration.isAccepted ? 'success' : 'danger', customClass: 'custom-tooltip' }"
                       :title="
@@ -258,7 +274,7 @@
                       <b-button :variant="thread.collaboration.isAccepted ? 'success' : 'danger'" disabled class="btn btn-sm mr-1">
                         <font-awesome-icon :icon="thread.collaboration.isAccepted ? 'check' : 'times'"></font-awesome-icon>
                       </b-button>
-                    </div>
+                    </div> -->
 
                     <div class="d-flex align-items-center">
                       <span class="spacing-subject">
@@ -300,11 +316,10 @@
                 <b-col class="text-right h-100 pl-0" sm="2">
                   <div class="btn-group h-100">
                     <b-button
-                      v-if="
-                        thread.collaboration &&
-                        !thread.collaboration.isAccepted &&
-                        !isCanceled &&
-                        thread.collaboration.companyOffer.id === company.id
+                      v-if="thread.collaboration 
+                      && thread.collaboration.status 
+                      && (thread.collaboration.status.status === collaborationStatusOptions.PENDING)
+                      && thread.collaboration.companyOffer.id === company.id
                       "
                       v-on:click.stop="prepareConfirmCollaboration(thread.collaboration)"
                       variant="success"
@@ -316,12 +331,11 @@
                       >
                     </b-button>
                     <b-button
-                      v-if="
-                        thread.collaboration &&
-                        !thread.collaboration.isAccepted &&
-                        !isCanceled &&
-                        thread.collaboration.companyOffer.id === company.id
-                      "
+                      v-if="thread.collaboration 
+                        && thread.collaboration.status 
+                        && (thread.collaboration.status.status === collaborationStatusOptions.PENDING)
+                        && thread.collaboration.companyOffer.id === company.id
+                        "
                       v-on:click.stop="prepareCancelCollaboration(thread.collaboration)"
                       variant="warning"
                       class="btn btn-sm spacing-subject-btn mr-1 pl-1 pr-1"
@@ -400,8 +414,9 @@
         <p id="jhi-delete-advertisement-heading">
           <b>{{ $t('riportalApp.thread.modalConfirm.company') }} </b>{{ collaboration.companyRequest.name }}
         </p>
-        <hr />
+        <hr v-if="pendingCollaborationsCount > 1"/>
         <b-form-group
+          v-if="pendingCollaborationsCount > 1"
           :label="$t('riportalApp.thread.modalConfirm.bodyTitle', { title: collaboration.advertisement.title })"
           v-slot="{ ariaDescribedby }"
         >

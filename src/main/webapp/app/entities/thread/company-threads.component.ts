@@ -22,6 +22,12 @@ enum ThreadsFilter {
   RECEIVER = 'receiver',
 }
 
+enum CollaborationStatusOptions {
+  ACCEPTED = 'прихваћена',
+  REJECTED = 'одбијена',
+  PENDING = 'на чекању',
+}
+
 interface IThreadDTO {
   id: number;
   subject: string;
@@ -60,6 +66,7 @@ export default class Thread extends mixins(AlertMixin) {
   public threads: IThread[] = [];
   public threadsDTO: IThreadDTO[] = [];
   public collaboration: ICollaboration | null = null;
+  public pendingCollaborationsCount = 0;
   public company: ICompany = null;
   public messages: IMessage[] = [];
   public newMessage: IMessage = new Message();
@@ -67,6 +74,7 @@ export default class Thread extends mixins(AlertMixin) {
   public isFetching = false;
 
   public activeThreadFilter = ThreadsFilter.ALL;
+  public collaborationStatusOptions = CollaborationStatusOptions;
   public filterAllButtonVariant = 'secondary';
   public filterSenderButtonVariant = 'outline-secondary';
   public filterReceiverButtonVariant = 'outline-secondary';
@@ -385,6 +393,15 @@ export default class Thread extends mixins(AlertMixin) {
   public prepareConfirmCollaboration(instance: ICollaboration): void {
     this.collaboration = instance;
 
+    if (this.collaboration.advertisement) {
+      this.collaborationService()
+      .getPendingCollaborationsCountForAdvertisement(this.collaboration.advertisement.id).
+      then(res => {
+        this.pendingCollaborationsCount = res.data;
+      })  
+    }
+
+
     if (<any>this.$refs.confirmCollaboration) {
       (<any>this.$refs.confirmCollaboration).show();
     }
@@ -414,18 +431,23 @@ export default class Thread extends mixins(AlertMixin) {
       return;
     }
 
-    this.isCanceled = true;
+    this.collaborationService()
+    .cancelCollaboration(this.collaboration.id)
+    .then(res => {
+      this.isCanceled = true;
+      const message = this.$t('riportalApp.thread.notifications.cancelCollaboration', { ADVERTISEMENT_TITLE });
+      this.$notify({
+        text: message,
+      });
 
-    const message = this.$t('riportalApp.thread.notifications.cancelCollaboration', { ADVERTISEMENT_TITLE });
-
-    this.$notify({
-      text: message,
+      this.retrieveThreads();
     });
 
     this.closeCancelCollaboration();
   }
 
   public confirmCollaboration(): void {
+    const ADVERTISEMENT_ID = this.collaboration.advertisement.id;
     const ADVERTISEMENT_TITLE = this.collaboration.advertisement.title;
 
     if (!this.collaboration) {
@@ -440,16 +462,22 @@ export default class Thread extends mixins(AlertMixin) {
         const message2 = this.$t('riportalApp.thread.notifications.confirmCollaboration2', { ADVERTISEMENT_TITLE });
 
         if (this.selectedCollRadioBtn === 'ne') {
+          this.retrieveThreads();
           this.$notify({
             text: message1,
           });
         } else {
-          this.$notify({
-            text: message2,
-          });
           this.selectedCollRadioBtn = 'ne';
+
+          this.collaborationService()
+          .cancelPendingCollaborationsForAdvertisement(ADVERTISEMENT_ID)
+          .then(res => {
+            this.retrieveThreads();
+            this.$notify({
+              text: message2,
+            });
+          })
         }
-        this.retrieveThreads();
       });
 
     this.closeConfirmCollaboration();

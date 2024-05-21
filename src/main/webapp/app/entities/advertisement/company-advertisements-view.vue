@@ -52,7 +52,11 @@
                                 {{advertisement.title}}
                         </router-link>
                     </td>
-                    <td>{{advertisement.type.type}}</td>
+                    <td>
+                        <div v-if="advertisement.type">
+                            {{advertisement.type.type}}
+                        </div>
+                    </td>
                     <td>
                         <div v-if="advertisement.kind">
                             {{advertisement.kind.kind}}

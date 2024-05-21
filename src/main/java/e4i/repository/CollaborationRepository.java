@@ -1,5 +1,6 @@
 package e4i.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -35,4 +36,8 @@ public interface CollaborationRepository extends JpaRepository<Collaboration, Lo
 	Page<Collaboration> findAllByCompanyRequestAndIsAccepted(@Param("companyId") Long companyId, @Param("isAccepted") Boolean isAccepted, Pageable pageable);
 
     Optional<Collaboration> findOneByThreads(Thread thread);
+    
+    Long countByAdvertisementIdAndStatusStatus(Long advertisementId, String status);
+    
+    List<Collaboration> findAllByAdvertisementIdAndStatusStatus(Long advertisementId, String status);
 }
