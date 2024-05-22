@@ -33,6 +33,7 @@ public class Collaboration implements Serializable {
     @Column(name = "datetime", nullable = false)
     private Instant datetime;
     
+    @Deprecated
     @Column(name = "is_accepted")
     private Boolean isAccepted;
 

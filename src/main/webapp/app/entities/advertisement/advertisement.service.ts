@@ -19,6 +19,7 @@ const apiFindAllByCompanyIdAndStatusId = 'api/advertisements/company-status';
 const apiFindAllByCompanyIdAndNotStatusId = 'api/advertisements/company-not-status';
 const apiFindAllByStatusId = 'api/advertisements/status';
 const apiFindAllByCompanyIdAndTypeId = 'api/advertisements/company-type';
+const apiCreateCopyOfAdvertisement = 'api/advertisements/create-copy';
 
 export default class AdvertisementService {
   public find(id: number): Promise<IAdvertisement> {
@@ -289,6 +290,19 @@ export default class AdvertisementService {
     return new Promise<any>((resolve, reject) => {
       axios
         .put(`${apiUpdateStatus}/${id}/${statusId}`)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  }
+
+  public createCopy(id: number): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      axios
+        .post(`${apiCreateCopyOfAdvertisement}/${id}`)
         .then(res => {
           resolve(res);
         })

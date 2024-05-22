@@ -192,4 +192,26 @@ public class CollaborationService {
     	return collaborationRepository.findAllByAdvertisementIdAndStatusStatus(advertisementId, CollaborationStatus.PENDING);
     }
     
+    
+    @Transactional
+    public Page<Collaboration> findAllAcceptedCollaborationsForCompany(Long companyId, Pageable pageable) {
+    	CollaborationStatus collaborationStatus = collaborationStatusService.getOneByStatus(CollaborationStatus.ACCEPTED); 
+    	
+    	return collaborationRepository.findAllByCompanyAndStatus(companyId, collaborationStatus.getId(), pageable);
+    }
+    
+    @Transactional
+    public Page<Collaboration> findAllAcceptedCollaborationsForCompanyOffer(Long companyId, Pageable pageable) {
+    	CollaborationStatus collaborationStatus = collaborationStatusService.getOneByStatus(CollaborationStatus.ACCEPTED); 
+    	
+    	return collaborationRepository.findAllByCompanyOfferAndStatus(companyId, collaborationStatus.getId(), pageable);
+    }
+    
+    @Transactional
+    public Page<Collaboration> findAllAcceptedCollaborationsForCompanyRequest(Long companyId, Pageable pageable) {
+    	CollaborationStatus collaborationStatus = collaborationStatusService.getOneByStatus(CollaborationStatus.ACCEPTED); 
+    	
+    	return collaborationRepository.findAllByCompanyRequestAndStatus(companyId, collaborationStatus.getId(), pageable);
+    }
+    
 }

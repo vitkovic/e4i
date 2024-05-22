@@ -22,14 +22,33 @@ public interface CollaborationRepository extends JpaRepository<Collaboration, Lo
 	@Query("SELECT collaboration FROM Collaboration collaboration " +
 	        "WHERE ((collaboration.companyOffer.id = :companyId " +
 	        "OR (collaboration.companyRequest.id = :companyId)) " + 
+	        "AND (collaboration.status.id = :statusId))")
+	Page<Collaboration> findAllByCompanyAndStatus(@Param("companyId") Long companyId, @Param("statusId") Long statusId, Pageable pageable);
+    
+    @Query("SELECT collaboration FROM Collaboration collaboration " +
+            "WHERE ((collaboration.companyOffer.id = :companyId) " +
+			"AND (collaboration.status.id = :statusId))")
+	Page<Collaboration> findAllByCompanyOfferAndStatus(@Param("companyId") Long companyId, @Param("statusId") Long statusId, Pageable pageable);
+    
+    @Query("SELECT collaboration FROM Collaboration collaboration " +
+            "WHERE ((collaboration.companyRequest.id = :companyId) " +
+			"AND (collaboration.status.id = :statusId))")
+	Page<Collaboration> findAllByCompanyRequestAndStatus(@Param("companyId") Long companyId, @Param("statusId") Long statusId, Pageable pageable);
+	
+	@Deprecated
+	@Query("SELECT collaboration FROM Collaboration collaboration " +
+	        "WHERE ((collaboration.companyOffer.id = :companyId " +
+	        "OR (collaboration.companyRequest.id = :companyId)) " + 
 	        "AND (collaboration.isAccepted = :isAccepted))")
 	Page<Collaboration> findAllByCompanyAndIsAccepted(@Param("companyId") Long companyId, @Param("isAccepted") Boolean isAccepted, Pageable pageable);
     
+	@Deprecated
     @Query("SELECT collaboration FROM Collaboration collaboration " +
             "WHERE ((collaboration.companyOffer.id = :companyId) " +
 			"AND (collaboration.isAccepted = :isAccepted))")
 	Page<Collaboration> findAllByCompanyOfferAndIsAccepted(@Param("companyId") Long companyId, @Param("isAccepted") Boolean isAccepted, Pageable pageable);
     
+	@Deprecated
     @Query("SELECT collaboration FROM Collaboration collaboration " +
             "WHERE ((collaboration.companyRequest.id = :companyId) " +
 			"AND (collaboration.isAccepted = :isAccepted))")

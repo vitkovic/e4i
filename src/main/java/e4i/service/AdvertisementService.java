@@ -19,6 +19,11 @@ import e4i.repository.PortalUserRepository;
 import e4i.security.AuthoritiesConstants;
 import e4i.security.SecurityUtils;
 
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAmount;
+import java.time.temporal.TemporalUnit;
 import java.util.Optional;
 
 import javax.persistence.EntityNotFoundException;
@@ -192,5 +197,39 @@ public class AdvertisementService {
     @Transactional
     public Page<Advertisement> findAllByCompanyIdAndTypeId(Long companyId, Long typeId, Pageable pageable) {
     	return advertisementRepository.findAllByCompanyIdandTypeId(companyId, typeId, pageable);
+    }
+    
+    @Transactional
+    public Advertisement createCopyOfAdvertisement(Advertisement advertisement) {
+    	
+    	Advertisement advertisementCopy = new Advertisement();
+    	advertisementCopy.setTitle(advertisement.getTitle());
+    	advertisementCopy.setDescription(advertisement.getDescription());
+    	advertisementCopy.setCompany(advertisement.getCompany());
+    	advertisementCopy.setType(advertisement.getType());
+    	advertisementCopy.setKind(advertisement.getKind());
+    	advertisementCopy.setSubsubcategory(advertisement.getSubsubcategory());
+    	advertisementCopy.setDuration(advertisement.getDuration());
+    	advertisementCopy.setBudget(advertisement.getBudget());
+    	advertisementCopy.setConditions(advertisement.getConditions());
+    	
+    	Optional<AdvertisementStatus> advertisementStatusOptional = advertisementStatusService.findOneByStatus(AdvertisementStatus.ACTIVE);
+    	if (advertisementStatusOptional.isEmpty()) {
+    		String errorMessage = String.format("AdvertisementStatus with status={} could not be found", AdvertisementStatus.ACTIVE);
+        	throw new EntityNotFoundException(errorMessage);
+        }
+    	
+    	advertisementCopy.setStatus(advertisementStatusOptional.get());
+    	advertisementCopy.setActivationDatetime(Instant.now());
+    	
+    	Instant expirationDatetime = ZonedDateTime.now()
+    			.plus(advertisement.getDuration().getDuration(), ChronoUnit.MONTHS)
+    			.toInstant();
+    	advertisementCopy.setExpirationDatetime(expirationDatetime);
+    	
+    	// Odraditi i kopiranje slika i dokumenata
+    	
+    	Advertisement result = this.save(advertisementCopy);
+    	return result;
     }
 }

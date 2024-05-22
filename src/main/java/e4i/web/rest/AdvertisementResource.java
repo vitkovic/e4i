@@ -35,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -496,5 +497,28 @@ public class AdvertisementResource {
 	        	        
 	        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
 	        return ResponseEntity.ok().headers(headers).body(page.getContent());
+	    }
+	    
+	    @PostMapping("/advertisements/create-copy/{id}")
+	    public ResponseEntity<Advertisement> createCopyOfAdvertisement(@PathVariable Long id) {
+	        log.debug("REST request to create copy of Advertisement : {}", id);
+	        
+	        try {
+		        Optional<Advertisement> advertisementOptional = advertisementService.findOne(id);
+		        
+		        if (advertisementOptional.isEmpty()) {
+		    		String errorMessage = String.format("Advertisement with id={} could not be found", id);
+		        	throw new EntityNotFoundException(errorMessage);
+		        }
+		        
+		        Advertisement advertisement = advertisementService.createCopyOfAdvertisement(advertisementOptional.get());
+
+				return ResponseEntity.created(new URI("/api/advertisements/create-copy" + advertisement.getId()))
+				        .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, advertisement.getId().toString()))
+				        .body(advertisement);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return ResponseEntity.noContent().build();
+			}
 	    }
 }
