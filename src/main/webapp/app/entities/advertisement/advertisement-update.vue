@@ -157,8 +157,13 @@
               />
             </div>
             <div class="form-group">
-              <label class="form-control-label" v-text="$t('riportalApp.advertisement.conditions')" for="advertisement-conditions"
-                >Conditions</label
+              <label class="form-control-label" for="advertisement-conditions"
+                >{{ $t('riportalApp.advertisement.conditions') }} 
+                <span
+                  class="text-info"
+                  v-b-tooltip.hover.v-info
+                  :title="$t('riportalApp.advertisement.conditionsInfo')"
+                ><font-awesome-icon icon='info-circle'></font-awesome-icon></span></label
               >
               <textarea
                 type="text"
@@ -512,4 +517,5 @@
 .form-group textarea {
   height: 40px;
 }
+
 </style>

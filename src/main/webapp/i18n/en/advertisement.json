@@ -27,6 +27,7 @@
       "description": "Description",
       "budget": "Expected budget (rsd)",
       "conditions": "Conditions",
+      "conditionsInfo": "In this field, describe the conditions of collaboration - possible price, what are the deadlines for the completion of collaboration, what is expected as input, what as output, etc.",
       "advertisementSupporter": "Advertisement Supporter",
       "collaboration": "Collaboration",
       "meeting": "Meeting",

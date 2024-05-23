@@ -27,6 +27,7 @@
       "description": "Опис",
       "budget": "Очекивани буџет (рсд)",
       "conditions": "Услови",
+      "conditionsInfo": "У овом пољу опишите који су услови сарадње - евентуална цена, који су рокови за завршетак сарадње, шта се очекује као улаз, шта као излаз итд.",
       "advertisementSupporter": "Advertisement Supporter",
       "collaboration": "Collaboration",
       "meeting": "Meeting",
