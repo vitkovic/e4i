@@ -198,7 +198,7 @@ export default class AdvertisementUpdate extends Vue {
         setTimeout(() => {
           this.isLoading = false;
           this.$router.go(-1); // Navigate after saveFiles() is done and 5 seconds delay
-      }, 5000);
+      }, 500);
       } catch (error) {
         console.error('Failed to update advertisement:', error);
         this.isSaving = false;
@@ -234,7 +234,7 @@ export default class AdvertisementUpdate extends Vue {
         setTimeout(() => {
           this.isLoading = false;
           this.$router.go(-1); // Navigate after saveFiles() is done and 5 seconds delay
-      }, 5000);
+      }, 500);
       } catch (error) {
         console.error('Failed to create advertisement:', error);
         this.isSaving = false;

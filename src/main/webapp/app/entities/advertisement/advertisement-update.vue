@@ -461,8 +461,6 @@
                     </div> -->
         </div>
         <hr />
-        <b-spinner v-if="isLoading" label="Loading..."></b-spinner>
-
         <div class="mt-4">
           <button type="button" id="cancel-save" class="btn btn-secondary" v-on:click="previousState()">
             <font-awesome-icon icon="ban"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.cancel')">Cancel</span>
@@ -470,6 +468,7 @@
           <button type="submit" id="save-entity" :disabled="$v.advertisement.$invalid || isSaving" class="btn btn-primary">
             <font-awesome-icon icon="save"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.save')">Save</span>
           </button>
+        <b-spinner v-if="isLoading" small label="Loading..." type="border" class="d-inline-block ml-2"></b-spinner>
         </div>
       </form>
       <b-modal ref="deleteImageModal" id="deleteImageModal">
