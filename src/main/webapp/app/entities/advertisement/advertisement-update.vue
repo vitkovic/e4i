@@ -36,6 +36,26 @@
                 >
               </select>
             </div>
+            <div v-if="!advertisementTitleHasID" class="form-group">
+              <label
+                  class="form-control-label"
+                  v-text="$t('riportalApp.advertisement.activationDatetime')"
+                  for="advertisement-activationDatetime"
+                  >Activation Datetime</label
+                >
+                <div class="d-flex">
+                  <input
+                    id="advertisement-activationDatetime"
+                    type="datetime-local"
+                    class="form-control"
+                    name="activationDatetime"
+                    :class="{ valid: !$v.advertisement.activationDatetime.$invalid, invalid: $v.advertisement.activationDatetime.$invalid }"
+                    :value="convertDateTimeFromServer($v.advertisement.activationDatetime.$model)"
+                    @change="updateInstantField('activationDatetime', $event)"
+                    readonly
+                  />
+                </div>
+            </div>
             <div class="form-group">
               <label class="form-control-label" v-text="$t('riportalApp.advertisement.title')" for="advertisement-title">Title</label>
               <input
@@ -250,7 +270,7 @@
                         </select> -->
               </div>
               <div class="form-group">
-                <label
+                <!-- <label
                   class="form-control-label"
                   v-text="$t('riportalApp.advertisement.activationDatetime')"
                   for="advertisement-activationDatetime"
@@ -267,7 +287,7 @@
                     @change="updateInstantField('activationDatetime', $event)"
                     readonly
                   />
-                </div>
+                </div> -->
                 <div v-if="$v.advertisement.activationDatetime.$anyDirty && $v.advertisement.activationDatetime.$invalid">
                   <small
                     class="form-text text-danger"
