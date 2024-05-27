@@ -163,7 +163,7 @@
                   class="text-info"
                   v-b-tooltip.hover.v-info
                   :title="$t('riportalApp.advertisement.conditionsInfo')"
-                ><font-awesome-icon icon='info-circle'></font-awesome-icon></span></label
+                ><font-awesome-icon icon='question-circle'></font-awesome-icon></span></label
               >
               <textarea
                 type="text"
@@ -461,6 +461,8 @@
                     </div> -->
         </div>
         <hr />
+        <b-spinner v-if="isLoading" label="Loading..."></b-spinner>
+
         <div class="mt-4">
           <button type="button" id="cancel-save" class="btn btn-secondary" v-on:click="previousState()">
             <font-awesome-icon icon="ban"></font-awesome-icon>&nbsp;<span v-text="$t('entity.action.cancel')">Cancel</span>
